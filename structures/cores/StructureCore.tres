@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bd7gpfx0nnd3c"]
+
+[ext_resource type="Shader" path="res://structures/cores/StructureCore.gdshader" id="1_lslrk"]
+
+[resource]
+shader = ExtResource("1_lslrk")
+shader_parameter/color1 = Vector3(0.4, 0, 0.4)
+shader_parameter/color2 = Vector3(0.7, 0, 0.7)
+shader_parameter/focus = 0.9

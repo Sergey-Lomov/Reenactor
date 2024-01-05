@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://x3brwsp0whfx"]
+
+[ext_resource type="Script" path="res://memory/connections/MemoryConnection.gd" id="1_uils2"]
+[ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/gradient_path_2d.gd" id="2_ihu5x"]
+
+[sub_resource type="Curve2D" id="Curve2D_5l2e5"]
+
+[node name="MemoryConnection" type="Node2D"]
+script = ExtResource("1_uils2")
+
+[node name="Path" type="Path2D" parent="."]
+curve = SubResource("Curve2D_5l2e5")
+script = ExtResource("2_ihu5x")
+fromColor = Color(0.647059, 0, 0.768627, 1)
+toColor = Color(0.12549, 0.286275, 0.584314, 1)

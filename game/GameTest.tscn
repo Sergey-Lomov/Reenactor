@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://c0taucmawc4ar"]
+
+[ext_resource type="PackedScene" uid="uid://dtnsemrwosgnf" path="res://game/Game.tscn" id="1_wbxbd"]
+[ext_resource type="PackedScene" uid="uid://dqn2ih740t6ko" path="res://memory/nodes/MemoryNode.tscn" id="2_rt1ro"]
+[ext_resource type="PackedScene" uid="uid://d0e4sh1adgeav" path="res://structures/test/PlayerTest.tscn" id="3_nyeph"]
+
+[node name="GameTest" type="Node2D"]
+
+[node name="Game" parent="." instance=ExtResource("1_wbxbd")]
+
+[node name="MemoryNode" parent="Game/World/MemoryGraph" index="0" instance=ExtResource("2_rt1ro")]
+
+[node name="PlayerTest" parent="Game/World" index="1" instance=ExtResource("3_nyeph")]
+
+[connection signal="structure_prespawned" from="Game/World" to="Game" method="_on_world_structure_prespawned"]
+[connection signal="structure_spawn_requested" from="Game/World/PlayerTest/StructureVisualization/StructureFeatureContext" to="Game/World" method="_on_structure_feature_context_structure_spawn_requested"]
+
+[editable path="Game"]
+[editable path="Game/World"]
+[editable path="Game/World/PlayerTest"]
+[editable path="Game/World/PlayerTest/StructureVisualization"]

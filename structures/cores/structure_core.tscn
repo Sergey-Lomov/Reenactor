@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnnkaelgmwqx"]
+
+[ext_resource type="Script" path="res://structures/cores/structure_core.gd" id="1_kqehj"]
+[ext_resource type="Material" uid="uid://bd7gpfx0nnd3c" path="res://structures/cores/StructureCore.tres" id="3_7f1xd"]
+[ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/rectangle_2d.gd" id="3_guofg"]
+
+[node name="StructureCore" type="Node2D"]
+script = ExtResource("1_kqehj")
+
+[node name="CoreCircle" type="Node2D" parent="."]
+material = ExtResource("3_7f1xd")
+script = ExtResource("3_guofg")
+size = Vector2(60, 60)
+color = Color(0, 0.427451, 0.427451, 1)

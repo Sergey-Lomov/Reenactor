@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://bb7s8ek83dose"]
+
+[ext_resource type="Script" path="res://structures/visualization/StructureVisualization.gd" id="1_cey4y"]
+[ext_resource type="Script" path="res://structures/features/structure_feature_context.gd" id="2_4365x"]
+[ext_resource type="Script" path="res://structures/structure.gd" id="3_1wwdr"]
+[ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/circle_2d.gd" id="4_4je6h"]
+
+[node name="StructureVisualization" type="Node2D"]
+script = ExtResource("1_cey4y")
+
+[node name="StructureFeatureContext" type="Node" parent="."]
+script = ExtResource("2_4365x")
+
+[node name="Structure" type="Node" parent="."]
+script = ExtResource("3_1wwdr")
+
+[node name="Circle2D" type="Node2D" parent="."]
+script = ExtResource("4_4je6h")
+radius = 5
+
+[connection signal="feature_execution_requested" from="Structure" to="." method="_on_structure_feature_execution_requested"]
+[connection signal="move_produced" from="Structure" to="." method="_on_structure_move_produced"]
+[connection signal="selfdestruction_requested" from="Structure" to="." method="_on_structure_selfdestruction_requested"]

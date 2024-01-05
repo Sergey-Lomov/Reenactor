@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://d0e4sh1adgeav"]
+
+[ext_resource type="PackedScene" uid="uid://bb7s8ek83dose" path="res://structures/visualization/StructureVisualization.tscn" id="1_kmwsc"]
+[ext_resource type="Script" path="res://structures/nodes/engines/base_engine.gd" id="2_6q8xu"]
+[ext_resource type="Script" path="res://structures/nodes/navigation/player_controller.gd" id="3_f2lrf"]
+[ext_resource type="Script" path="res://structures/nodes/feature_providers/structures_spawner.gd" id="4_gyqt4"]
+
+[node name="PlayerTest" type="Node2D"]
+
+[node name="StructureVisualization" parent="." instance=ExtResource("1_kmwsc")]
+
+[node name="SN_BaseEngine4" type="Node" parent="StructureVisualization/Structure" index="0"]
+script = ExtResource("2_6q8xu")
+
+[node name="SN_BaseEngine3" type="Node" parent="StructureVisualization/Structure" index="1"]
+script = ExtResource("2_6q8xu")
+
+[node name="SN_BaseEngine2" type="Node" parent="StructureVisualization/Structure" index="2"]
+script = ExtResource("2_6q8xu")
+
+[node name="SN_PlayerController" type="Node" parent="StructureVisualization/Structure" index="3"]
+script = ExtResource("3_f2lrf")
+
+[node name="SN_BaseEngine" type="Node" parent="StructureVisualization/Structure" index="4"]
+script = ExtResource("2_6q8xu")
+
+[node name="SN_StructuresSpawner" type="Node" parent="StructureVisualization/Structure" index="5"]
+script = ExtResource("4_gyqt4")
+
+[node name="Circle2D" parent="StructureVisualization" index="2"]
+radius = 10
+
+[editable path="StructureVisualization"]

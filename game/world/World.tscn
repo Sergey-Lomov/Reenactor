@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://cctg017tr6q1u"]
+
+[ext_resource type="Script" path="res://game/world/World.gd" id="1_74ptx"]
+[ext_resource type="PackedScene" uid="uid://b4adtf045px8y" path="res://memory/memory_graph.tscn" id="2_u8b12"]
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_74ptx")
+
+[node name="MemoryGraph" parent="." instance=ExtResource("2_u8b12")]

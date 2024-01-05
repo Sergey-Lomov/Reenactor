@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqn2ih740t6ko"]
+
+[ext_resource type="Script" path="res://memory/nodes/MemoryNode.gd" id="1_eba5k"]
+[ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/circle_2d.gd" id="1_i5q88"]
+
+[node name="MemoryNode" type="Node2D"]
+script = ExtResource("1_eba5k")
+
+[node name="Circle" type="Node2D" parent="."]
+script = ExtResource("1_i5q88")
+radius = 30
