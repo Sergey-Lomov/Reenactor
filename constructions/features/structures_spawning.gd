@@ -13,17 +13,22 @@ func _init(_structure: Structure):
 	structure = _structure
 
 func execute(context: StructureFeatureContext):
-	var construction = context.construction
-	var direction = 0
+	var parent = context.construction
+	
+	var rotation = 0
 	match direction_mode:
 		Direction.BY_TARGET:
 			if context.is_player_controlled:
-				var mouse_position = construction.get_viewport().get_mouse_position()
-				var control_vector = construction.position.direction_to(mouse_position)
-				direction = control_vector.angle()
+				var mouse_position = parent.get_viewport().get_mouse_position()
+				var control_vector = parent.position.direction_to(mouse_position)
+				rotation = control_vector.angle()
 		Direction.BY_SPAWNER:
-			direction = construction.rotation
+			rotation = parent.rotation
+	rotation += additional_angle
 	
-	direction += additional_angle
-	var point = construction.position + Vector2(cos(direction), sin(direction)) * construction.radius
-	context.structure_spawn_requested.emit(structure, point, direction)
+	var construction = Construction.new(structure, StructureFeatureContext.new())
+	var position = parent.position + Vector2(cos(rotation), sin(rotation)) * (parent.radius + construction.radius + 1)
+	construction.position = position
+	construction.rotation = rotation
+	
+	context.construction_spawn_requested.emit(construction)

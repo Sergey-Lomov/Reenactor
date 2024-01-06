@@ -26,7 +26,7 @@ func _enter_tree():
 func _ready():
 	features_list_changed.emit(featureProviders)
 
-func _process(delta):
+func _physics_process(delta):
 	var speed = get_attribute(Attribute.SPEED, 0) as float
 	var absolute_vector = get_attribute(Attribute.MOVEMENT_ABSOLUTE_VECTOR, Vector2.ZERO) as Vector2
 	absolute_vector = absolute_vector.normalized()

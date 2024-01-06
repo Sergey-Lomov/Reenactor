@@ -9,7 +9,4 @@ func _on_structure_feature_list_changed(_providers):
 #		var type = (provider as SN_FeatureProvider).feature_type
 #		match type:
 #			StructureFeature.Type.STRUCTURE_SPAWN:
-#				provider.structure_spawn_requested.connect(_on_structure_spawn_requested)
-				
-#func _on_structure_spawn_requested(blueprint: Structure):
-	
+#				provider.construction_spawn_requested.connect(_on_construction_spawn_requested)

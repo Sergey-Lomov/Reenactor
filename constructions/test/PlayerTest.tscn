@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://d0e4sh1adgeav"]
+[gd_scene load_steps=6 format=3 uid="uid://d0e4sh1adgeav"]
 
 [ext_resource type="PackedScene" uid="uid://bb7s8ek83dose" path="res://constructions/Construction.tscn" id="1_kmwsc"]
 [ext_resource type="Script" path="res://constructions/nodes/engines/base_engine.gd" id="2_6q8xu"]
 [ext_resource type="Script" path="res://constructions/nodes/navigation/player_controller.gd" id="3_f2lrf"]
 [ext_resource type="Script" path="res://constructions/nodes/feature_providers/structures_spawner.gd" id="4_gyqt4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nrp2s"]
 
 [node name="PlayerTest" type="Node2D"]
 
@@ -26,5 +28,11 @@ script = ExtResource("2_6q8xu")
 
 [node name="SN_StructuresSpawner" type="Node" parent="Construction/Structure" index="5"]
 script = ExtResource("4_gyqt4")
+
+[node name="Visual" parent="Construction" index="2"]
+radius = 10
+
+[node name="Shape" parent="Construction" index="3"]
+shape = SubResource("CircleShape2D_nrp2s")
 
 [editable path="Construction"]

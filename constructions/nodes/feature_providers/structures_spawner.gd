@@ -1,7 +1,5 @@
 class_name SN_StructuresSpawner extends SN_FeatureProvider
 
-#signal structure_spawn_requested(blueprint)
-
 var blueprint: Structure
 
 func _init(_blueprint: Structure = null):

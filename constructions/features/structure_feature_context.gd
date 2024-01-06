@@ -1,6 +1,6 @@
 class_name StructureFeatureContext extends Node
 
-signal structure_spawn_requested(structure: Structure, point: Vector2, direction: float)
+signal construction_spawn_requested(construction: Construction)
 
 var construction: Construction:
 	get:

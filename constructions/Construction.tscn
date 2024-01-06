@@ -1,14 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bb7s8ek83dose"]
+[gd_scene load_steps=5 format=3 uid="uid://bb7s8ek83dose"]
 
 [ext_resource type="Script" path="res://constructions/Construction.gd" id="1_1nqft"]
 [ext_resource type="Script" path="res://constructions/features/structure_feature_context.gd" id="2_t6tl6"]
 [ext_resource type="Script" path="res://constructions/structure.gd" id="3_kqi5g"]
 [ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/circle_2d.gd" id="4_1tf8q"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_5polp"]
-radius = 5.0
-
-[node name="Construction" type="Node2D"]
+[node name="Construction" type="CharacterBody2D"]
 script = ExtResource("1_1nqft")
 
 [node name="FeaturesContext" type="Node" parent="."]
@@ -21,10 +18,7 @@ script = ExtResource("3_kqi5g")
 script = ExtResource("4_1tf8q")
 radius = 5
 
-[node name="Body" type="CharacterBody2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
-shape = SubResource("CircleShape2D_5polp")
+[node name="Shape" type="CollisionShape2D" parent="."]
 
 [connection signal="feature_execution_requested" from="Structure" to="." method="_on_structure_feature_execution_requested"]
 [connection signal="move_produced" from="Structure" to="." method="_on_structure_move_produced"]
