@@ -1,21 +1,21 @@
 [gd_scene load_steps=5 format=3 uid="uid://bb7s8ek83dose"]
 
-[ext_resource type="Script" path="res://structures/visualization/StructureVisualization.gd" id="1_cey4y"]
-[ext_resource type="Script" path="res://structures/features/structure_feature_context.gd" id="2_4365x"]
-[ext_resource type="Script" path="res://structures/structure.gd" id="3_1wwdr"]
-[ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/circle_2d.gd" id="4_4je6h"]
+[ext_resource type="Script" path="res://constructions/Construction.gd" id="1_1nqft"]
+[ext_resource type="Script" path="res://constructions/features/structure_feature_context.gd" id="2_t6tl6"]
+[ext_resource type="Script" path="res://constructions/structure.gd" id="3_kqi5g"]
+[ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/circle_2d.gd" id="4_1tf8q"]
 
-[node name="StructureVisualization" type="Node2D"]
-script = ExtResource("1_cey4y")
+[node name="Construction" type="Node2D"]
+script = ExtResource("1_1nqft")
 
 [node name="StructureFeatureContext" type="Node" parent="."]
-script = ExtResource("2_4365x")
+script = ExtResource("2_t6tl6")
 
 [node name="Structure" type="Node" parent="."]
-script = ExtResource("3_1wwdr")
+script = ExtResource("3_kqi5g")
 
 [node name="Circle2D" type="Node2D" parent="."]
-script = ExtResource("4_4je6h")
+script = ExtResource("4_1tf8q")
 radius = 5
 
 [connection signal="feature_execution_requested" from="Structure" to="." method="_on_structure_feature_execution_requested"]

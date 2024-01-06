@@ -1,4 +1,4 @@
-class_name StructureVisualization extends Node2D
+class_name Construction extends Node2D
 
 var structure: Structure
 var features_context: StructureFeatureContext
