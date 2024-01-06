@@ -12,10 +12,13 @@
 
 [node name="PlayerTest" parent="Game/World" index="1" instance=ExtResource("3_nyeph")]
 
+[node name="Visual" parent="Game/World/PlayerTest/Construction" index="2"]
+radius = 10
+
 [connection signal="structure_prespawned" from="Game/World" to="Game" method="_on_world_structure_prespawned"]
-[connection signal="structure_spawn_requested" from="Game/World/PlayerTest/StructureVisualization/StructureFeatureContext" to="Game/World" method="_on_structure_feature_context_structure_spawn_requested"]
+[connection signal="structure_spawn_requested" from="Game/World/PlayerTest/Construction/FeaturesContext" to="Game/World" method="_on_structure_spawn_requested"]
 
 [editable path="Game"]
 [editable path="Game/World"]
 [editable path="Game/World/PlayerTest"]
-[editable path="Game/World/PlayerTest/StructureVisualization"]
+[editable path="Game/World/PlayerTest/Construction"]

@@ -7,27 +7,24 @@
 
 [node name="PlayerTest" type="Node2D"]
 
-[node name="StructureVisualization" parent="." instance=ExtResource("1_kmwsc")]
+[node name="Construction" parent="." instance=ExtResource("1_kmwsc")]
 
-[node name="SN_BaseEngine4" type="Node" parent="StructureVisualization/Structure" index="0"]
+[node name="SN_BaseEngine4" type="Node" parent="Construction/Structure" index="0"]
 script = ExtResource("2_6q8xu")
 
-[node name="SN_BaseEngine3" type="Node" parent="StructureVisualization/Structure" index="1"]
+[node name="SN_BaseEngine3" type="Node" parent="Construction/Structure" index="1"]
 script = ExtResource("2_6q8xu")
 
-[node name="SN_BaseEngine2" type="Node" parent="StructureVisualization/Structure" index="2"]
+[node name="SN_BaseEngine2" type="Node" parent="Construction/Structure" index="2"]
 script = ExtResource("2_6q8xu")
 
-[node name="SN_PlayerController" type="Node" parent="StructureVisualization/Structure" index="3"]
+[node name="SN_PlayerController" type="Node" parent="Construction/Structure" index="3"]
 script = ExtResource("3_f2lrf")
 
-[node name="SN_BaseEngine" type="Node" parent="StructureVisualization/Structure" index="4"]
+[node name="SN_BaseEngine" type="Node" parent="Construction/Structure" index="4"]
 script = ExtResource("2_6q8xu")
 
-[node name="SN_StructuresSpawner" type="Node" parent="StructureVisualization/Structure" index="5"]
+[node name="SN_StructuresSpawner" type="Node" parent="Construction/Structure" index="5"]
 script = ExtResource("4_gyqt4")
 
-[node name="Circle2D" parent="StructureVisualization" index="2"]
-radius = 10
-
-[editable path="StructureVisualization"]
+[editable path="Construction"]
