@@ -21,7 +21,7 @@ func _enter_tree():
 	var engine = SN_BulletEngine.new()
 	blueprint.add_child(engine)
 	
-	var demager = SN_ConstantDemager.new(10)
+	var demager = SN_ConstantDamager.new(10)
 	blueprint.add_child(demager)
 
 func _process(_delta):
@@ -29,6 +29,3 @@ func _process(_delta):
 		var instance = blueprint.copy()
 		var feature = SF_StructuresSpawning.new(instance)
 		feature_execution_requested.emit(feature)
-
-func copy():
-	return SN_StructuresSpawner.new(blueprint.copy())

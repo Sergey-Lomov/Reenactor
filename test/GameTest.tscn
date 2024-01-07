@@ -2,8 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://dtnsemrwosgnf" path="res://game/Game.tscn" id="1_r2328"]
 [ext_resource type="PackedScene" uid="uid://dqn2ih740t6ko" path="res://memory/nodes/MemoryNode.tscn" id="2_ah3hm"]
-[ext_resource type="PackedScene" uid="uid://d0e4sh1adgeav" path="res://constructions/test/PlayerTest.tscn" id="3_oby5u"]
-[ext_resource type="PackedScene" uid="uid://cy2npxy3ys64v" path="res://constructions/test/EnemyTest.tscn" id="4_l40b7"]
+[ext_resource type="PackedScene" uid="uid://d0e4sh1adgeav" path="res://test/PlayerTest.tscn" id="3_oby5u"]
+[ext_resource type="PackedScene" uid="uid://cy2npxy3ys64v" path="res://test/EnemyTest.tscn" id="4_l40b7"]
 
 [node name="GameTest" type="Node2D"]
 

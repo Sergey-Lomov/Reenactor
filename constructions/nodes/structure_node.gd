@@ -2,11 +2,14 @@ class_name StructureNode extends Node
 
 signal broken(node: StructureNode)
 
-var group := StructureNodeGroup.UNSPEC
-var durability: float = 1:
+var group: StructureNodeGroup
+var durability: float:
 	set(value):
 		durability = max(value, 0)
 		if durability == 0: broken.emit(self)
+
+func default_durability(): return 1
+func default_group(): return StructureNodeGroup.UNSPEC
 
 var parent_structure: Structure:
 	get:
@@ -20,11 +23,15 @@ var parent_structure: Structure:
 		push_error("Construction node out of construction")
 		return null
 
-func _init(_durability: float = 1):
+func _init(_durability: float = default_durability(), _group: StructureNodeGroup = default_group()):
+	group = _group
 	durability = _durability
 
 func copy():
-	return duplicate()
+	var new_node = StructureNode.new()
+	for property in get_property_list():
+		new_node.set(property.name, self.get(property.name))
+	return new_node
 
 func affect_priority(_attribute: Structure.Attribute):
 	return 0

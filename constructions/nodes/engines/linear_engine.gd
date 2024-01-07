@@ -2,8 +2,11 @@ class_name SN_LinearEngine extends StructureNode
 
 var boost: float
 
-func _init(_boost: float = 0):
-	group = StructureNodeGroup.ENGINE
+func default_boost(): return 0
+func default_group(): return StructureNodeGroup.ENGINE
+
+func _init(_boost: float = default_boost()):
+	super._init()
 	boost = _boost
 
 func affect_priority(attribute: Structure.Attribute):

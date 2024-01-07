@@ -1,6 +1,6 @@
 class_name Structure extends Node
 
-signal destruction_requested()
+signal destruction_requested(reason: Construction.DestructionReason)
 signal move_produced(absolute: Vector2, relative: Vector2, distance: float)
 signal feature_execution_requested(feature: StructureFeature)
 #TODO: Check is signal really uses
@@ -31,8 +31,14 @@ var construction: Construction:
 var feature_providers: Array:
 	get: return get_children().filter(func(c): return c is SN_FeatureProvider)
 
+var cores: Array:
+	get: return nodes.filter(func(n): return n.group == StructureNodeGroup.CORE)
+
 var live_cores: Array:
 	get: return nodes.filter(func(n): return n.group == StructureNodeGroup.CORE and n.durability > 0)
+	
+var unstability: float:
+	get: return cores.map(func(c): return c.unstability).max()
 
 func _enter_tree():
 	child_entered_tree.connect(_on_child_entered_tree)
@@ -69,7 +75,7 @@ func _on_child_exiting_tree(child: Node):
 func _on_node_broken(node: StructureNode):
 	if node.group == StructureNodeGroup.CORE:
 		if live_cores.is_empty():
-			destruction_requested.emit()
+			destruction_requested.emit(Construction.DestructionReason.CORE_BROKEN)
 
 func _on_node_feature_execution_requested(feature: StructureFeature):
 	feature_execution_requested.emit(feature)
@@ -85,8 +91,8 @@ func copy():
 			
 	return new
 
-func request_destruction():
-	destruction_requested.emit()
+func request_destruction(reason: Construction.DestructionReason):
+	destruction_requested.emit(reason)
 	
 func get_attribute(attribute: Attribute, initial_value: Variant = null):
 	if not initial_value:

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cy2npxy3ys64v"]
 
 [ext_resource type="PackedScene" uid="uid://bb7s8ek83dose" path="res://constructions/Construction.tscn" id="1_106oy"]
-[ext_resource type="Script" path="res://constructions/cores/static_core.gd" id="2_u73ax"]
+[ext_resource type="Script" path="res://constructions/nodes/cores/static_core.gd" id="2_u73ax"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mwwkx"]
 radius = 6.0

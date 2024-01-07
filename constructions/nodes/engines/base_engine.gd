@@ -1,4 +1,3 @@
 class_name SN_BaseEngine extends SN_LinearEngine
 
-func _init():
-	super._init(50)
+func default_boost(): return 50

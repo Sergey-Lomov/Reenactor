@@ -1,6 +1,7 @@
 class_name Construction extends CharacterBody2D
 
 enum Component {FEATURES_CONTEXT, STRUCTURE, VISUAL, SHAPE}
+enum DestructionReason {UNSTABILITY, CORE_BROKEN}
 const component_name = {
 	Component.FEATURES_CONTEXT: "FeaturesContext",
 	Component.STRUCTURE: "Structure",
@@ -25,6 +26,8 @@ var shape: CollisionShape2D:
 	set(value): set_component(value, Component.SHAPE)
 
 var is_alive := true
+var unstability: float: 
+	get: return structure.unstability
 
 #TODO: temporal implementation, should be removed after proper visual implementation
 var radius: float:
@@ -49,16 +52,22 @@ func _on_structure_move_produced(absolute, relative, distance):
 	var collision = move_and_collide(vector)
 	
 	if collision:
-		if collision.get_collider() is Construction:
-			handleConstructionCollision(collision.get_collider())
+		var partner = collision.get_collider() as Construction
+		if partner:
+			if is_alive and partner.is_alive:
+				handle_construction_collision(partner)
 
 func _on_structure_feature_execution_requested(feature: StructureFeature):
 	feature.execute(features_context)
 	
-func _on_structure_destruction_requested():
+func _on_structure_destruction_requested(reason: DestructionReason):
+	apply_destruction(reason)
+
+func apply_destruction(_reason: DestructionReason):
+	#TODO: Implement chace to drop out unbroken nodes if destruction reason was not unstability
 	is_alive = false
 	queue_free()
-	
+
 func get_component(component: Component):
 	return get_node_or_null(component_name[component])
 	
@@ -82,7 +91,7 @@ func connect_component(component: Component):
 			structure.destruction_requested.connect(_on_structure_destruction_requested)
 		Component.VISUAL:
 			pass
-		Component.VISUAL:
+		Component.SHAPE:
 			pass
 
 func set_visual_by_structure():
@@ -107,10 +116,13 @@ func set_shape_by_structure():
 	new_shape.shape = circle
 	shape = new_shape
 	
-func produce_damage():
-	return structure.get_attribute(Structure.Attribute.DAMAGE)
+func produce_damage_to(target: Construction):
+	var damage = structure.get_attribute(Structure.Attribute.DAMAGE)
+	target.handle_income_damages(damage)
 	
 func handle_income_damages(damages: Array[ConstructionDamage]):
+	if damages.is_empty(): return
+	
 	var targeting_protection = structure.get_attribute(Structure.Attribute.DAMAGE_TARGETING_PROTECTION)
 	var untargetedDamage: float = 0
 	var targetedDamage = {}
@@ -130,12 +142,13 @@ func handle_income_damages(damages: Array[ConstructionDamage]):
 		structure.apply_damage(targetedDamage[target_group], target_group)
 		if not is_alive: return
 	
-func handleConstructionCollision(partner: Construction):
-	var self_damage = produce_damage()
-	var partner_damage = partner.produce_damage()
-	
-	if not partner_damage.is_empty():
-		handle_income_damages(partner_damage)
-	
-	if not self_damage.is_empty():
-		partner.handle_income_damages(self_damage)
+func handle_construction_collision(partner: Construction):
+	if partner.unstability > self.unstability:
+		partner.produce_damage_to(self)
+		partner.apply_destruction(DestructionReason.UNSTABILITY)
+	elif partner.unstability < self.unstability:
+		self.produce_damage_to(partner)
+		self.apply_destruction(DestructionReason.UNSTABILITY)
+	else:
+		self.produce_damage_to(partner)
+		partner.produce_damage_to(self)
