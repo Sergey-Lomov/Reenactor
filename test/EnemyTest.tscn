@@ -9,6 +9,7 @@ radius = 6.0
 [node name="EnemyTest" type="Node2D"]
 
 [node name="Construction" parent="." instance=ExtResource("1_106oy")]
+team = "test_enemy"
 
 [node name="SN_StaticCore" type="Node" parent="Construction/Structure" index="0"]
 script = ExtResource("2_u73ax")

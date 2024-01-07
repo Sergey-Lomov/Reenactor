@@ -11,6 +11,7 @@
 [node name="PlayerTest" type="Node2D"]
 
 [node name="Construction" parent="." instance=ExtResource("1_kmwsc")]
+team = "player"
 
 [node name="SN_BaseEngine4" type="Node" parent="Construction/Structure" index="0"]
 script = ExtResource("2_6q8xu")

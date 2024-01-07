@@ -9,11 +9,13 @@ enum Direction {
 const gap: float = 2 #Additional gap between parent and spwaned construictions to avoid collision at spawn point
 
 var structure: Structure
+var custom_team: Variant
 var direction_mode: Direction = Direction.BY_TARGET
 var additional_angle: float = 0 #Angle relative to direction specified by direction mode
 
-func _init(_structure: Structure):
+func _init(_structure: Structure, _custom_team: Variant):
 	structure = _structure
+	custom_team = _custom_team
 
 func execute(context: StructureFeatureContext):
 	var parent = context.construction
@@ -33,5 +35,6 @@ func execute(context: StructureFeatureContext):
 	var position = parent.position + Vector2(cos(rotation), sin(rotation)) * (parent.radius + construction.radius + gap)
 	construction.position = position
 	construction.rotation = rotation
+	construction.team = custom_team if custom_team else parent.team
 	
 	context.construction_spawn_requested.emit(construction)

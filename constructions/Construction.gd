@@ -1,3 +1,4 @@
+@tool
 class_name Construction extends CharacterBody2D
 
 enum Component {FEATURES_CONTEXT, STRUCTURE, VISUAL, SHAPE}
@@ -26,6 +27,7 @@ var shape: CollisionShape2D:
 	set(value): set_component(value, Component.SHAPE)
 
 var is_alive := true
+@export var team: String
 var unstability: float: 
 	get: return structure.unstability
 
@@ -143,6 +145,9 @@ func handle_income_damages(damages: Array[ConstructionDamage]):
 		if not is_alive: return
 	
 func handle_construction_collision(partner: Construction):
+	if partner.team == self.team:
+		return #TODO: Should be replaced by friendly collision
+	
 	if partner.unstability > self.unstability:
 		partner.produce_damage_to(self)
 		partner.apply_destruction(DestructionReason.UNSTABILITY)
