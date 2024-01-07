@@ -18,8 +18,6 @@ script = ExtResource("3_kqi5g")
 script = ExtResource("4_1tf8q")
 radius = 5
 
-[node name="Shape" type="CollisionShape2D" parent="."]
-
 [connection signal="destruction_requested" from="Structure" to="." method="_on_structure_destruction_requested"]
 [connection signal="feature_execution_requested" from="Structure" to="." method="_on_structure_feature_execution_requested"]
 [connection signal="move_produced" from="Structure" to="." method="_on_structure_move_produced"]
