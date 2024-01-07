@@ -1,7 +1,10 @@
 class_name SN_LinearEngine extends StructureNode
 
-func speed_boost():
-	return 0
+var boost: float
+
+func _init(_boost: float = 0):
+	group = StructureNodeGroup.ENGINE
+	boost = _boost
 
 func affect_priority(attribute: Structure.Attribute):
 	if attribute == Structure.Attribute.SPEED:
@@ -11,6 +14,6 @@ func affect_priority(attribute: Structure.Attribute):
 	
 func affected_value(attribute: Structure.Attribute, value: Variant):
 	if attribute == Structure.Attribute.SPEED:
-		return value + speed_boost()
+		return value + boost
 		
 	return value

@@ -1,7 +1,7 @@
 class_name Construction extends CharacterBody2D
 
 enum Component {FEATURES_CONTEXT, STRUCTURE, VISUAL, SHAPE}
-var componentName = {
+const component_name = {
 	Component.FEATURES_CONTEXT: "FeaturesContext",
 	Component.STRUCTURE: "Structure",
 	Component.VISUAL: "Visual",
@@ -9,76 +9,83 @@ var componentName = {
 }
 
 var structure: Structure:
-	get: return getComponent(Component.STRUCTURE) as Structure
-	set(value): setComponent(value, Component.STRUCTURE)
+	get: return get_component(Component.STRUCTURE) as Structure
+	set(value): set_component(value, Component.STRUCTURE)
 
 var features_context: StructureFeatureContext:
-	get: return getComponent(Component.FEATURES_CONTEXT) as StructureFeatureContext
-	set(value): setComponent(value, Component.FEATURES_CONTEXT)
+	get: return get_component(Component.FEATURES_CONTEXT) as StructureFeatureContext
+	set(value): set_component(value, Component.FEATURES_CONTEXT)
 	
 var visual: Node2D:
-	get: return getComponent(Component.VISUAL) as Node2D
-	set(value): setComponent(value, Component.VISUAL)
+	get: return get_component(Component.VISUAL) as Node2D
+	set(value): set_component(value, Component.VISUAL)
 	
 var shape: CollisionShape2D:
-	get: return getComponent(Component.SHAPE) as CollisionShape2D
-	set(value): setComponent(value, Component.SHAPE)
+	get: return get_component(Component.SHAPE) as CollisionShape2D
+	set(value): set_component(value, Component.SHAPE)
+
+var is_alive := true
 
 #TODO: temporal implementation, should be removed after proper visual implementation
 var radius: float:
 	get: return structure.get_child_count() + 2
 
-func _init(_structure: Structure = null, _feature_context: StructureFeatureContext = null, _visual: Node2D = null, _shape: CollisionShape2D = null):
+func _init(_structure: Structure = null, _feature_context: StructureFeatureContext = null, _visual: Node2D = null, _shape: CollisionShape2D = null):	
 	if _structure != null: structure = _structure	
 	if _feature_context != null: features_context = _feature_context
 	if _visual != null: visual = _visual
 	if _shape != null: shape = _shape
 
 func _enter_tree():
-	if visual == null: setVisualByStructure()
+	if visual == null: set_visual_by_structure()
 	if shape == null: 
-		setShapeByStructure()
+		set_shape_by_structure()
 	elif shape.shape == null:
-		setShapeByStructure()
+		set_shape_by_structure()
 
 func _on_structure_move_produced(absolute, relative, distance):
 	var adapted_relative = relative.rotated(rotation)
 	var vector = (absolute + adapted_relative) * distance
-	move_and_collide(vector)
+	var collision = move_and_collide(vector)
+	
+	if collision:
+		if collision.get_collider() is Construction:
+			handleConstructionCollision(collision.get_collider())
 
 func _on_structure_feature_execution_requested(feature: StructureFeature):
 	feature.execute(features_context)
 	
-func _on_structure_selfdestruction_requested():
+func _on_structure_destruction_requested():
+	is_alive = false
 	queue_free()
 	
-func getComponent(component: Component):
-	return get_node_or_null(componentName[component])
+func get_component(component: Component):
+	return get_node_or_null(component_name[component])
 	
-func setComponent(node: Node, component: Component):
-	node.name = componentName[component]
+func set_component(node: Node, component: Component):
+	node.name = component_name[component]
 	
 	var old_node = get_node_or_null(NodePath(node.name))
 	if old_node: 
 		remove_child(old_node)
 	
 	add_child(node)
-	connectComponent(component)
+	connect_component(component)
 	
-func connectComponent(component: Component):
+func connect_component(component: Component):
 	match component:
 		Component.FEATURES_CONTEXT:
 			pass
 		Component.STRUCTURE:
 			structure.move_produced.connect(_on_structure_move_produced)
 			structure.feature_execution_requested.connect(_on_structure_feature_execution_requested)
-			structure.selfdestruction_requested.connect(_on_structure_selfdestruction_requested)
+			structure.destruction_requested.connect(_on_structure_destruction_requested)
 		Component.VISUAL:
 			pass
 		Component.VISUAL:
 			pass
 
-func setVisualByStructure():
+func set_visual_by_structure():
 	var new_visual = Node2D.new()
 	
 	var circle = Circle2D.new()
@@ -93,9 +100,42 @@ func setVisualByStructure():
 	
 	visual = new_visual
 	
-func setShapeByStructure():
+func set_shape_by_structure():
 	var new_shape = CollisionShape2D.new()
 	var circle = CircleShape2D.new()
 	circle.radius = radius
 	new_shape.shape = circle
 	shape = new_shape
+	
+func produce_damage():
+	return structure.get_attribute(Structure.Attribute.DAMAGE)
+	
+func handle_income_damages(damages: Array[ConstructionDamage]):
+	var targeting_protection = structure.get_attribute(Structure.Attribute.DAMAGE_TARGETING_PROTECTION)
+	var untargetedDamage: float = 0
+	var targetedDamage = {}
+	
+	for damage in damages:
+		var group = damage.target_group
+		if group == null or damage.targeting_power <= targeting_protection:
+			untargetedDamage += damage.power
+		else:
+			if targetedDamage[group] == null:
+				targetedDamage[group] = 0
+			targetedDamage[group] += damage.power
+	
+	structure.apply_damage(untargetedDamage)
+	if not is_alive: return
+	for target_group in targetedDamage.keys():
+		structure.apply_damage(targetedDamage[target_group], target_group)
+		if not is_alive: return
+	
+func handleConstructionCollision(partner: Construction):
+	var self_damage = produce_damage()
+	var partner_damage = partner.produce_damage()
+	
+	if not partner_damage.is_empty():
+		handle_income_damages(partner_damage)
+	
+	if not self_damage.is_empty():
+		partner.handle_income_damages(self_damage)

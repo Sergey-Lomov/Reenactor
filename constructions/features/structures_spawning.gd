@@ -5,6 +5,9 @@ enum Direction {
 	BY_SPAWNER,		#Spawned construction direction will be related to mother construction direction
 }
 
+#TODO: Try to found more glance way to prevent parent and spwaned construiction collision at spawn position
+const gap: float = 2 #Additional gap between parent and spwaned construictions to avoid collision at spawn point
+
 var structure: Structure
 var direction_mode: Direction = Direction.BY_TARGET
 var additional_angle: float = 0 #Angle relative to direction specified by direction mode
@@ -27,7 +30,7 @@ func execute(context: StructureFeatureContext):
 	rotation += additional_angle
 	
 	var construction = Construction.new(structure, StructureFeatureContext.new())
-	var position = parent.position + Vector2(cos(rotation), sin(rotation)) * (parent.radius + construction.radius + 1)
+	var position = parent.position + Vector2(cos(rotation), sin(rotation)) * (parent.radius + construction.radius + gap)
 	construction.position = position
 	construction.rotation = rotation
 	

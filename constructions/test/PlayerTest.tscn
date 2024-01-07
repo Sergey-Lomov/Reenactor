@@ -35,4 +35,6 @@ radius = 10
 [node name="Shape" parent="Construction" index="3"]
 shape = SubResource("CircleShape2D_nrp2s")
 
+[connection signal="destruction_requested" from="Construction/Structure" to="Construction" method="_on_structure_destruction_requested"]
+
 [editable path="Construction"]

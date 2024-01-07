@@ -3,6 +3,7 @@ class_name SN_StructuresSpawner extends SN_FeatureProvider
 var blueprint: Structure
 
 func _init(_blueprint: Structure = null):
+	super._init()
 	blueprint = _blueprint
 
 func _enter_tree():	
@@ -19,6 +20,9 @@ func _enter_tree():
 	
 	var engine = SN_BulletEngine.new()
 	blueprint.add_child(engine)
+	
+	var demager = SN_ConstantDemager.new(10)
+	blueprint.add_child(demager)
 
 func _process(_delta):
 	if Input.is_action_just_pressed("ui_accept"):

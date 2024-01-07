@@ -1,3 +1,5 @@
-class_name StructureCore extends StructureNode
+class_name SN_Core extends StructureNode
 
-var durability: float
+func _init(_durability: float = 0):
+	super._init(_durability)
+	group = StructureNodeGroup.CORE
