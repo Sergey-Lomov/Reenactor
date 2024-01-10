@@ -1,0 +1,59 @@
+[gd_scene load_steps=3 format=3 uid="uid://da6cdgjo4t7vh"]
+
+[ext_resource type="Script" path="res://constructions/visual/construction_visual_editor.gd" id="1_ttw77"]
+[ext_resource type="Script" path="res://constructions/visual/gui/cve_preview.gd" id="2_lrnp6"]
+
+[node name="ConstructionVisualEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ttw77")
+grid_path = NodePath("VBoxContainer/HBoxContainer/Grid")
+preview_path = NodePath("VBoxContainer/HBoxContainer/Preview")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -41.5
+offset_top = -57.0
+offset_right = 41.5
+offset_bottom = 57.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Grid" type="GridContainer" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/h_separation = 2
+theme_override_constants/v_separation = 2
+columns = 3
+
+[node name="Preview" type="Control" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+script = ExtResource("2_lrnp6")
+
+[node name="Generate" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Generate"
+
+[node name="StepForward" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Step forward"
+
+[connection signal="pressed" from="VBoxContainer/Generate" to="." method="_on_generate_pressed"]
+[connection signal="pressed" from="VBoxContainer/StepForward" to="." method="_on_step_forward_pressed"]
