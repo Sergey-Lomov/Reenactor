@@ -36,8 +36,8 @@ func _on_generate_pressed():
 		if cell.is_on:			
 			preview_grid[cell.x][cell.y] = true
 		
-	preview.updateContent(preview_grid, grid_size)
+	preview.update_content(preview_grid, grid_size)
 
 
 func _on_step_forward_pressed():
-	preview.stepForward()
+	preview.step_forward()

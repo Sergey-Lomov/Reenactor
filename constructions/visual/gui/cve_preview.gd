@@ -6,36 +6,42 @@ var grid: Array = []
 var cell_size: float = 20
 
 var keypoints: Array[CVE_Keypoint] = []
-var debug_step = 1
-const angle_delta = 0.01
+var debug_step: int = 1
+const show_keypoints := true
+const angle_delta := 0.01
+const keypoints_scale := 0.5
 
-var patterns: Array[CVE_VisualPattern] = [CVE_VisualPattern.base()]
+var patterns: Dictionary = {}
+var patterns_library: Array[CVE_VisualPattern] = [CVE_VisualPattern.base()]
 
 func _draw():
-	"""if not line_points.is_empty():
-		#var packed = PackedVector2Array(line_points)
-		#draw_polyline(packed, Color.DARK_OLIVE_GREEN, 1, true)
-		for index in line_points.size():
-			if index == 0: continue
-			if index > debug_step: continue
-			draw_line(line_points[index-1], line_points[index], Color.DARK_OLIVE_GREEN, 1, true)"""
+	if keypoints.is_empty(): return
+		
 	var curve = Curve2D.new()
+	curve.add_point(keypoints[0].position)
+	for keypoint in patterns:
+		patterns[keypoint].apply(curve, keypoint.direction, cell_size * keypoints_scale)
+	
+	if curve.point_count >= 2:
+		draw_polyline(curve.get_baked_points(), Color.CORNFLOWER_BLUE, 1, true)
 
-	for keypoint in keypoints:
-		var color = Color.RED if keypoint == keypoints[0] else Color.CHARTREUSE
-		draw_circle(keypoint.position, 2, color)
-		var to = keypoint.position + 3 * Vector2.from_angle(keypoint.direction)
-		draw_line(keypoint.position, to, color, 1, true)
+	if show_keypoints:
+		for keypoint in keypoints:
+			var color = Color.CHARTREUSE
+			draw_circle(keypoint.position, 2, color)
+			var to = keypoint.position + 3 * Vector2.from_angle(keypoint.direction)
+			draw_line(keypoint.position, to, color, 1, true)
 
-func updateContent(_grid: Array, _size: int):
+func update_content(_grid: Array, _size: int):
 	grid = _grid
 	grid_size = _size
 	debug_step = 0
-	updateKeypoints()
+	update_keypoints()
+	apply_patterns()
 		
 	queue_redraw()
 
-func updateKeypoints():
+func update_keypoints():
 	var keypoints_coords: Array[Vector2] = []
 	for x in grid_size:
 		for y in grid_size:
@@ -72,57 +78,75 @@ func updateKeypoints():
 			if bottom_left: keypoints_coords.append(Vector2(x+0.25, y+0.75) * cell_size)
 			if bottom_right: keypoints_coords.append(Vector2(x+0.75, y+0.75) * cell_size)
 			
-	setupKeypoints(keypoints_coords)
+	setup_keypoints(keypoints_coords)
 
 func grid_value(x: int, y: int):
 	if x < 0 or y < 0 or x > grid_size - 1 or y > grid_size - 1: return false
 	return grid[x][y]
 
-func setupKeypoints(coords: Array[Vector2]):
+func setup_keypoints(coords: Array[Vector2]):
 	keypoints = []
 	if coords.is_empty(): return
 	
 	coords.sort_custom(func(c1, c2): return c1.y < c2.y if c1.x == c2.x else c1.x < c2.x)
 	var first_point = coords[0]
-	var keypoints_iterator: CVE_Keypoint
 	var coords_iterator: Vector2 = first_point
-	keypoints.append(CVE_Keypoint.new(coords_iterator, 0))
-	coords.erase(coords_iterator)
 	var direction: float = 0
 	var max_gap = cell_size * 0.5
 	
-	var iterations = 0
+#	var iterations = 0
 	while not coords.is_empty():
+		coords.erase(coords_iterator)
+		
+		#TODO: Try to remove duplicate()
 		var nearest = coords.duplicate().filter(func(p): return coords_iterator.distance_to(p) <= max_gap)
-		if nearest.is_empty(): break
+		if nearest.is_empty(): 
+			if not coords_iterator.is_equal_approx(first_point) and coords_iterator.distance_to(first_point) <= max_gap:
+				nearest = [first_point]
+			else:
+				break
+			
 		nearest.sort_custom(func(p1, p2):
-			var out_direction = normalizedAngle(direction - PI/2)
-			var fa1: float = normalizedAngle((p1 - coords_iterator).angle())
-			var fa2: float = normalizedAngle((p2 - coords_iterator).angle())
-			var a1: float = normalizedAngle(fa1 - out_direction + angle_delta)
-			var a2: float = normalizedAngle(fa2 - out_direction + angle_delta)
+			var out_direction = normalized_angle(direction - PI/2)
+			var fa1: float = normalized_angle((p1 - coords_iterator).angle())
+			var fa2: float = normalized_angle((p2 - coords_iterator).angle())
+			var a1: float = normalized_angle(fa1 - out_direction + angle_delta)
+			var a2: float = normalized_angle(fa2 - out_direction + angle_delta)
 			var d1: float = coords_iterator.distance_to(p1)
 			var d2: float = coords_iterator.distance_to(p2)
-			print("Iteration: ", iterations, " out_dir: ", out_direction, " fa1: ", fa1, " fa2: ", fa2, " a1: ", a1, " a2: ", a2, " d1: ", d1, " d2: ", d2)
+#			print("Iteration: ", iterations, " out_dir: ", out_direction, " fa1: ", fa1, " fa2: ", fa2, " a1: ", a1, " a2: ", a2, " d1: ", d1, " d2: ", d2)
 			return d1 < d2 if abs(a1 - a2) <= angle_delta else a1 < a2)
 		
+		#TODO: Change to angle_to and retest
 		direction = (nearest[0] - coords_iterator).angle()
 		direction = direction if direction >= 0 else direction + 2*PI
-		keypoints_iterator = CVE_Keypoint.new(coords_iterator, direction)
+		var keypoint = CVE_Keypoint.new(coords_iterator, direction)
+		keypoints.append(keypoint)
 		coords_iterator = nearest[0]
-		keypoints.append(keypoints_iterator)
-		coords.erase(coords_iterator)
-		iterations += 1
-		
-		if first_point != null:
-			coords.append(first_point)
-			first_point = null
-		
-	print("Iterations ", iterations)
+#		iterations += 1
+#	print("Iterations ", iterations)
 
-func normalizedAngle(value: float):
-	return value if value >= 0 else value + 2 * PI
+func apply_patterns():
+	patterns = {}
+	var index = 0
+	var library = patterns_library.duplicate()
+	while index < keypoints.size():
+		randomize()
+		library.shuffle()
+		print("Direction: ", keypoints[index].direction)
+		for pattern in library:
+			if pattern.check(keypoints, index, cell_size * keypoints_scale):
+				patterns[keypoints[index]] = pattern
+				index += pattern.requirement.size() - 1
+				break
+		index += 1
 
-func stepForward():
+func normalized_angle(value: float, zero_to_full: bool = false):
+	var result = value if value >= 0 else value + 2 * PI
+	if zero_to_full:
+		result = result if abs(result) > angle_delta else 2 * PI
+	return result
+
+func step_forward():
 	debug_step += 1
 	queue_redraw()
