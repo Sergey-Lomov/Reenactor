@@ -7,12 +7,14 @@ var cell_size: float = 20
 
 var keypoints: Array[CVE_Keypoint] = []
 var debug_step: int = 1
-const show_keypoints := true
+const show_keypoints := false
 const angle_delta := 0.01
 const keypoints_scale := 0.5
 
 var patterns: Dictionary = {}
-var patterns_library: Array[CVE_VisualPattern] = [CVE_VisualPattern.base()]
+var patterns_library: Array[CVE_VisualPattern] = [
+	CVE_VisualPattern.demo1(),
+	]
 
 func _draw():
 	if keypoints.is_empty(): return
@@ -133,13 +135,19 @@ func apply_patterns():
 	while index < keypoints.size():
 		randomize()
 		library.shuffle()
-		print("Direction: ", keypoints[index].direction)
+		
+		var success := false
 		for pattern in library:
 			if pattern.check(keypoints, index, cell_size * keypoints_scale):
 				patterns[keypoints[index]] = pattern
-				index += pattern.requirement.size() - 1
+				index += pattern.requirement.size()
+				success = true
 				break
-		index += 1
+				
+		if not success:
+			var pattern = CVE_VisualPattern.base()
+			patterns[keypoints[index]] = pattern
+			index += pattern.requirement.size()
 
 func normalized_angle(value: float, zero_to_full: bool = false):
 	var result = value if value >= 0 else value + 2 * PI

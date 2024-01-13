@@ -1,0 +1,96 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1duo1c825on"]
+
+[ext_resource type="Script" path="res://constructions/visual/patterns_library/pattern_inspector.gd" id="1_f1w1f"]
+[ext_resource type="PackedScene" uid="uid://bnsq7rnerkcgq" path="res://constructions/visual/patterns_library/preview/PatternPreview.tscn" id="1_f7sdj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_50rmw"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0.0392157, 0.0392157, 0.0392157, 1)
+
+[node name="PatternInspector" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_f1w1f")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_50rmw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "filename"
+
+[node name="Button" type="Button" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(90, 0)
+layout_mode = 2
+text = "Open
+"
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Title"
+
+[node name="GridContainer" type="GridContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
+columns = 4
+
+[node name="PatternPreview" parent="PanelContainer/VBoxContainer/GridContainer" instance=ExtResource("1_f7sdj")]
+layout_mode = 2
+
+[node name="PatternPreview2" parent="PanelContainer/VBoxContainer/GridContainer" instance=ExtResource("1_f7sdj")]
+layout_mode = 2
+sequence_path = NodePath("../PatternPreview/PointsSequence")
+grid_path = NodePath("../PatternPreview/SquareGrid")
+curve_layer_path = NodePath("../PatternPreview/CurveLayer")
+
+[node name="PatternPreview3" parent="PanelContainer/VBoxContainer/GridContainer" instance=ExtResource("1_f7sdj")]
+layout_mode = 2
+
+[node name="PatternPreview4" parent="PanelContainer/VBoxContainer/GridContainer" instance=ExtResource("1_f7sdj")]
+layout_mode = 2
+sequence_path = NodePath("../PatternPreview/PointsSequence")
+grid_path = NodePath("../PatternPreview/SquareGrid")
+curve_layer_path = NodePath("../PatternPreview/CurveLayer")
+
+[node name="PatternPreview5" parent="PanelContainer/VBoxContainer/GridContainer" instance=ExtResource("1_f7sdj")]
+layout_mode = 2
+
+[node name="PatternPreview6" parent="PanelContainer/VBoxContainer/GridContainer" instance=ExtResource("1_f7sdj")]
+layout_mode = 2
+sequence_path = NodePath("../PatternPreview/PointsSequence")
+grid_path = NodePath("../PatternPreview/SquareGrid")
+curve_layer_path = NodePath("../PatternPreview/CurveLayer")
+
+[node name="PatternPreview7" parent="PanelContainer/VBoxContainer/GridContainer" instance=ExtResource("1_f7sdj")]
+layout_mode = 2
+
+[node name="PatternPreview8" parent="PanelContainer/VBoxContainer/GridContainer" instance=ExtResource("1_f7sdj")]
+layout_mode = 2
+sequence_path = NodePath("../PatternPreview/PointsSequence")
+grid_path = NodePath("../PatternPreview/SquareGrid")
+curve_layer_path = NodePath("../PatternPreview/CurveLayer")
+
+[connection signal="resized" from="." to="." method="_on_resized"]

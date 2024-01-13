@@ -1,0 +1,23 @@
+{
+	"title": "Rounded inner corner 1x1",
+	"pre_requirement": [],
+	"requirement": [
+		{"x": 0, "y": 0},
+		{"x": 1, "y": 0}
+	],
+	"post_requirement": [
+		{"x": 1, "y": -1}
+	],
+	"curve": [
+		{
+			"p": {"x": 0, "y": 0},
+			"in": {"x": 0, "y": 0},
+			"out": {"x": 1, "y": 0},
+		},
+		{
+			"p": {"x": 1, "y": -1},
+			"in": {"x": 0, "y": 0.5},
+			"out": {"x": 1, "y": 0},
+		}
+	]
+}

@@ -2,18 +2,24 @@ class_name CVE_VisualPattern extends RefCounted
 
 enum Direction {FORWARD, LEFT, RIGHT}
 
+var title: String = "Unnamed"
 var pre_requirement: Array[Vector2] = []
 var requirement: Array[Vector2] = []
 var post_requirement: Array[Vector2] = []
 var curve: Curve2D
 
-func _init(_requirement: Array[Vector2], _curve: Curve2D, _pre_requirement: Array[Vector2] = [], _post_requirement: Array[Vector2] = []):
+var full_requirements: Array[Vector2]:
+	get:
+		return pre_requirement + requirement + post_requirement
+
+func _init(_pre_requirement: Array[Vector2], _requirement: Array[Vector2], _post_requirement: Array[Vector2], _curve: Curve2D, _title: String = ""):
 	requirement = _requirement
 	pre_requirement = _pre_requirement
 	post_requirement = _post_requirement
 	curve = _curve
+	if _title != "": title = _title
 	
-func check(keypoints: Array[CVE_Keypoint], keypoint_index: int, scale: float):
+func check(keypoints: Array[CVE_Keypoint], keypoint_index: int, scale: float):	
 	var main_point = keypoints[keypoint_index]
 	var sequence = pre_requirement.duplicate()
 	sequence.append_array(requirement)
@@ -46,13 +52,13 @@ static func base():
 	var base_curve = Curve2D.new()
 	base_curve.add_point(Vector2.ZERO)
 	base_curve.add_point(Vector2(1, 0))
-	return CVE_VisualPattern.new([Vector2.ZERO], base_curve)
+	return CVE_VisualPattern.new([], [Vector2.ZERO], [], base_curve, "Base")
 
 #TODO: Remove test patterns
 static func demo1():
-	var demo_pre_requirement = [Vector2(-1, 0)]
-	var demo_requirement = [Vector2.ZERO, Vector2(0, 1)]
+	var demo_requirement: Array[Vector2] = [Vector2.ZERO, Vector2(1, 0)]
+	var demo_post_requirement: Array[Vector2] = [Vector2(1, -1)]
 	var demo_curve = Curve2D.new()
-	demo_curve.add_point(Vector2.ZERO, Vector2.ZERO, Vector2(1, 0))
-	demo_curve.add_point(Vector2(1, -1), Vector2(0, 1))
-	return CVE_VisualPattern.new(demo_requirement, demo_curve, demo_pre_requirement)
+	demo_curve.add_point(Vector2(0, 0), Vector2.ZERO, Vector2(0.5, 0))
+	demo_curve.add_point(Vector2(1, -1), Vector2(0, 0.5))
+	return CVE_VisualPattern.new([], demo_requirement, demo_post_requirement, demo_curve, "Demo 1")
