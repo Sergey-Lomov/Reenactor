@@ -7,7 +7,7 @@ class_name CVE_PatternPreview extends Control
 @export var curve_layer_path: NodePath
 @onready var curve_layer := get_node(curve_layer_path) as CVE_PatternPreviewCurveLayer
 
-var pattern: CVE_VisualPattern = CVE_VisualPattern.demo1():
+var pattern: CVE_VisualPattern = CVE_VisualPattern.base():
 	set(value):
 		pattern = value
 		handle_pattern_update()
@@ -27,8 +27,12 @@ func _ready():
 	handle_pattern_update()
 
 func handle_pattern_update():
+	var center = pattern.center
 	curve_layer.curve = pattern.curve
+	curve_layer.coords_translate = -center
 	sequence.points = pattern.full_requirements
+	sequence.translate = -center
+	grid.translate = -center
 	
 	var pre_size = pattern.pre_requirement.size()
 	var main_size = pattern.requirement.size()

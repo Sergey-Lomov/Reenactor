@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CVE_VisualPattern" load_steps=3 format=3 uid="uid://cd6flku3qqig"]
+
+[ext_resource type="Script" path="res://constructions/visual/data/visual_pattern.gd" id="1_qdfvq"]
+
+[sub_resource type="Curve2D" id="Curve2D_fxk7t"]
+_data = {
+"points": PackedVector2Array(0, 0, 0.75, 0, 0, 0, -0.75, 0, 0, 0, 2, -1)
+}
+point_count = 2
+
+[resource]
+script = ExtResource("1_qdfvq")
+title = "Rounded: FFLR"
+pre_requirement = Array[Vector2]([])
+requirement = Array[Vector2]([Vector2(0, 0), Vector2(1, 0), Vector2(2, 0), Vector2(2, -1)])
+post_requirement = Array[Vector2]([Vector2(3, -1)])
+curve = SubResource("Curve2D_fxk7t")

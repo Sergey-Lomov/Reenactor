@@ -44,7 +44,7 @@ var direction_arrow_angle: float = PI / 3:					#Should be less than PI / 2
 func _draw():
 	for index in points.size():
 		var point = points[index]
-		var adapted_point = point * coords_scale + size / 2
+		var adapted_point = (point + translate) * coords_scale + get_parent_area_size() / 2
 		var point_color = custom_colors[index] if custom_colors.has(index) else color
 		draw_circle(adapted_point, point_radius, point_color)
 		

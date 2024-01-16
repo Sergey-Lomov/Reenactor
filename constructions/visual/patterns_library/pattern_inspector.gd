@@ -10,26 +10,31 @@ class_name CVE_PatternInspector extends Control
 
 func _ready():
 	update_previews_size()
+	set_pattern(CVE_VisualPattern.base())
 
 func _on_grid_resized():
-	if not is_node_ready(): return
-	update_previews_size()
+	if is_node_ready():
+		if grid.is_node_ready():
+			update_previews_size()
 
 func _on_open_pressed():
-	set_pattern(CVE_VisualPattern.demo1())
+	var path = "res://constructions/visual/patterns/%s.tres" % file_line.text
+	var pattern :=  load(path)
+	if pattern: 
+		set_pattern(pattern)
 	
 func update_previews_size():
-	print("Grid size: ", grid.size)
-	var separation = 20#grid.get_theme_constant("hseparation")
+	var separation = grid.get_theme_constant("h_separation")
 	var preview_size = (grid.size.x - (grid.columns - 1) * separation) / grid.columns
-	for child in grid.get_children():
-		var preview = child as CVE_PatternPreview
+	for index in grid.get_child_count():
+		var preview = grid.get_child(index) as CVE_PatternPreview
 		if not preview: continue
-		preview.size = Vector2(preview_size, preview_size)
+		preview.custom_minimum_size = Vector2(preview_size, preview_size)
 		
 func set_pattern(pattern: CVE_VisualPattern):
 	title.text = pattern.title
-	for child in grid.get_children():
-		var preview = child as CVE_PatternPreview
+	for index in grid.get_child_count():
+		var preview = grid.get_child(index) as CVE_PatternPreview
 		if not preview: continue
-		preview.pattern = pattern
+		var version: CVE_VisualPattern = pattern if index < 4 else pattern.mirrored()
+		preview.pattern = version.rotated(index * PI / 2)

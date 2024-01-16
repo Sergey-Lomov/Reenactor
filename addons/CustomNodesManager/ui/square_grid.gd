@@ -17,19 +17,24 @@ class_name SquareGrid extends Control
 		queue_redraw()
 		
 func _draw():
-	var center = size / 2 + translate
+	var parent_size = get_parent_area_size()
+	var center = parent_size / 2 + translate * step
 	var h_left_count = floor(center.x / step)
 	var v_top_count = floor(center.y / step)
 	var left = center.x - h_left_count * step
 	var top = center.y - v_top_count * step
 	
-	for index in floor(size.x / step + 1):
-		var x = left + index * step
-		if x <= size.x:
-			draw_line(Vector2(x, 0), Vector2(x, size.y), color, true)
+	var v_lines = floor(parent_size.y / step + 1)
+	if v_lines > 0 and v_lines < INF:
+		for index in v_lines:
+			var x = left + index * step
+			if x <= parent_size.x:
+				draw_line(Vector2(x, 0), Vector2(x, parent_size.y), color, true)
 	
-	for index in floor(size.y / step + 1):
-		var y = top + index * step
-		if y <= size.y:
-			draw_line(Vector2(0, y), Vector2(size.x, y), color, true)
+	var h_lines = floor(parent_size.y / step + 1)
+	if h_lines > 0 and h_lines < INF:
+		for index in h_lines:
+			var y = top + index * step
+			if y <= parent_size.y:
+				draw_line(Vector2(0, y), Vector2(size.x, y), color, true)
 	

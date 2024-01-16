@@ -11,9 +11,17 @@ config_version=5
 [application]
 
 config/name="TIA"
-run/main_scene="res://constructions/visual/patterns_library/PatternInspector.tscn"
+run/main_scene="res://constructions/visual/patterns_library/PatternsLibrary.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+CVE_PatternsManager="*res://constructions/visual/patterns_library/patterns_manager.gd"
+
+[display]
+
+window/size/viewport_height=750
 
 [dotnet]
 

@@ -40,7 +40,7 @@ func update_content(_grid: Array, _size: int):
 	debug_step = 0
 	update_keypoints()
 	apply_patterns()
-		
+
 	queue_redraw()
 
 func update_keypoints():
@@ -140,14 +140,14 @@ func apply_patterns():
 		for pattern in library:
 			if pattern.check(keypoints, index, cell_size * keypoints_scale):
 				patterns[keypoints[index]] = pattern
-				index += pattern.requirement.size()
+				index += pattern.requirement.size() - 1
 				success = true
 				break
 				
 		if not success:
 			var pattern = CVE_VisualPattern.base()
 			patterns[keypoints[index]] = pattern
-			index += pattern.requirement.size()
+			index += pattern.requirement.size() - 1
 
 func normalized_angle(value: float, zero_to_full: bool = false):
 	var result = value if value >= 0 else value + 2 * PI
