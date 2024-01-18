@@ -1,3 +1,12 @@
-[gd_scene format=3 uid="uid://dyvxs6ibspf15"]
+[gd_scene load_steps=2 format=3 uid="uid://dyvxs6ibspf15"]
+
+[sub_resource type="Curve2D" id="Curve2D_j2vkj"]
+_data = {
+"points": PackedVector2Array(0, 0, 75, 0, 0, 100, 0, 25, 0, -50, 75, 50, 0, 50, 0, 0, 0, 0)
+}
+point_count = 3
 
 [node name="StructureEmotion" type="Node2D"]
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_j2vkj")

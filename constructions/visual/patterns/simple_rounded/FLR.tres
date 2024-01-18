@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="CVE_VisualPattern" load_steps=3 format=3 uid="uid://cyrn2cjptf7of"]
+[gd_resource type="Resource" script_class="CVE_VisualPattern" load_steps=3 format=3 uid="uid://c5p57v0cv1mmy"]
 
-[ext_resource type="Script" path="res://constructions/visual/data/visual_pattern.gd" id="1_ogxv4"]
+[ext_resource type="Script" path="res://constructions/visual/data/visual_pattern.gd" id="1_1y5kn"]
 
 [sub_resource type="Curve2D" id="Curve2D_fxk7t"]
 _data = {
@@ -9,7 +9,7 @@ _data = {
 point_count = 2
 
 [resource]
-script = ExtResource("1_ogxv4")
+script = ExtResource("1_1y5kn")
 title = "FLR"
 pre_requirement = Array[Vector2]([])
 requirement = Array[Vector2]([Vector2(0, 0), Vector2(1, 0), Vector2(1, -1)])

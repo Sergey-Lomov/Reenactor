@@ -12,6 +12,7 @@ class_name ContructionVisualEditor extends Control
 func _ready():
 	grid.columns = grid_size
 	preview.custom_minimum_size = Vector2(grid_size * cell_size, grid_size * cell_size)
+	preview.cell_size = cell_size
 	for y in grid_size: 
 		for x in grid_size:
 			var cell = CVE_GridCell.new()
@@ -39,5 +40,8 @@ func _on_generate_pressed():
 	preview.update_content(preview_grid, grid_size)
 
 
-func _on_step_forward_pressed():
-	preview.step_forward()
+func _on_debug_pressed():
+	preview.switch_debug()
+
+func _on_cve_patterns_style_button_style_selected(style):
+	preview.available_patterns = CVE_PatternsManager.get_patterns(style)

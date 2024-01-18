@@ -7,6 +7,9 @@ class_name CVE_PatternsLibraryRow extends Control
 @onready var previews_box := get_node(previews_box_path) as HBoxContainer
 
 const title_stub := "Missed"
+const preview_size := Vector2(100, 100)
+const points_radius := 2
+const curve_width := 1
 
 var pattern: CVE_VisualPattern:
 	set(value):
@@ -17,6 +20,13 @@ var pattern: CVE_VisualPattern:
 func _ready():
 	if pattern:
 		handle_pattern_update()
+	
+	for child in previews_box.get_children():
+		var preview = child as CVE_PatternPreview
+		if not preview: continue
+		preview.custom_minimum_size = preview_size
+		preview.sequence.point_radius = points_radius
+		preview.curve_layer.width = curve_width
 
 func handle_pattern_update():
 	if not pattern:

@@ -12,6 +12,10 @@ var full_requirements: Array[Vector2]:
 	get:
 		return pre_requirement + requirement + post_requirement
 		
+var points_usage: int:
+	get:
+		return requirement.size() - 1
+		
 var center: Vector2:
 	get:
 		var points = full_requirements
@@ -28,25 +32,29 @@ func _init(_pre_requirement: Array[Vector2] = [], _requirement: Array[Vector2] =
 	curve = _curve
 	if _title != "": title = _title
 	
-func check(keypoints: Array[CVE_Keypoint], keypoint_index: int, scale: float) -> bool:	
+func check(keypoints: Array[CVE_Keypoint], keypoint_index: int, used_points: Array[CVE_Keypoint], scale: float) -> bool:	
 	var main_point = keypoints[keypoint_index]
 	var sequence = pre_requirement.duplicate()
 	sequence.append_array(requirement)
 	sequence.append_array(post_requirement)
 	sequence = sequence.map(func(r): return r * scale)
-	sequence = sequence.map(func(r): return (r as Vector2).rotated(main_point.direction))
+	sequence = sequence.map(func(r): return r.rotated(main_point.direction))
 	sequence = sequence.map(func(r): return r + main_point.position)
-		
+	
 	keypoint_index -= pre_requirement.size()
 	keypoint_index = keypoint_index if keypoint_index >= 0 else keypoints.size() + keypoint_index
 	if keypoint_index < 0: return false	
-		
-	for required_coords in sequence:
-		var keypoint_coords = keypoints[keypoint_index].position
-		if not keypoint_coords.is_equal_approx(required_coords): 
-			return false		
+	
+	for iter in sequence.size():
+		var required_coords = sequence[iter]
+		var keypoint = keypoints[keypoint_index]
+		if not keypoint.position.is_equal_approx(required_coords): 
+			return false
+		var will_be_used = iter >= pre_requirement.size() and iter < pre_requirement.size() + points_usage
+		if will_be_used and used_points.has(keypoint):
+			return false
 		keypoint_index = keypoint_index + 1 if keypoint_index < keypoints.size() - 1 else 0
-		
+	
 	return true
 
 func apply(out_curve: Curve2D, direction: float, scale: float):
@@ -63,67 +71,38 @@ func duplcate() -> CVE_VisualPattern:
 	return new
 
 func rotated(angle: float) -> CVE_VisualPattern:
-	var new_requirement: Array[Vector2] = []
-	new_requirement.assign(requirement.map(func(p): return p.rotated(angle)))
-	var new_pre_requirement: Array[Vector2] = []
-	new_pre_requirement.assign(pre_requirement.map(func(p): return p.rotated(angle)))
-	var new_post_requirement: Array[Vector2] = []
-	new_post_requirement.assign(post_requirement.map(func(p): return p.rotated(angle)))
+	var new_requirement := AdditionalMath.rotated_points(requirement, angle)
+	var new_pre_requirement := AdditionalMath.rotated_points(pre_requirement, angle)
+	var new_post_requirement := AdditionalMath.rotated_points(post_requirement, angle)
+	var new_curve := AdditionalMath.rotated_curve(curve, angle)
+	var new_title = title + " rotated"
 	
-	var new_curve = Curve2D.new()
-	for index in curve.point_count:
-		var point = curve.get_point_position(index).rotated(angle)
-		var point_in = curve.get_point_in(index).rotated(angle)
-		var point_out = curve.get_point_out(index).rotated(angle)
-		new_curve.add_point(point, point_in, point_out)
-	
-	return CVE_VisualPattern.new(new_pre_requirement, new_requirement, new_post_requirement, new_curve)
+	return CVE_VisualPattern.new(new_pre_requirement, new_requirement, new_post_requirement, new_curve, new_title)
 
 func mirrored() -> CVE_VisualPattern:
-	var new_requirement: Array[Vector2] = []
-	new_requirement.assign(requirement.map(func(p): return Vector2(p.x, -p.y)))
-	var new_pre_requirement: Array[Vector2] = []
-	new_pre_requirement.assign(pre_requirement.map(func(p): return Vector2(p.x, -p.y)))
-	var new_post_requirement: Array[Vector2] = []
-	new_post_requirement.assign(post_requirement.map(func(p): return Vector2(p.x, -p.y)))
+	var new_requirement := AdditionalMath.scaled_points(requirement, 1, -1)
+	var new_pre_requirement := AdditionalMath.scaled_points(pre_requirement, 1, -1)
+	var new_post_requirement := AdditionalMath.scaled_points(post_requirement, 1, -1)
+	var new_curve := AdditionalMath.scaled_curve(curve, 1, -1)
+	var new_title = title + " mirrored"
 	
-	var new_curve = Curve2D.new()
-	for index in curve.point_count:
-		var point = curve.get_point_position(index)
-		point.y = -point.y
-		var point_in = curve.get_point_in(index)
-		point_in.y = -point_in.y
-		var point_out = curve.get_point_out(index)
-		point_out.y = -point_out.y
-		new_curve.add_point(point, point_in, point_out)
-		
-	return CVE_VisualPattern.new(new_pre_requirement, new_requirement, new_post_requirement, new_curve)
-"""
-func inverted() -> CVE_VisualPattern:
-	var new_requirement = requirement.duplicate()
+	return CVE_VisualPattern.new(new_pre_requirement, new_requirement, new_post_requirement, new_curve, new_title)
+
+#Return pattern with inverted directions, but only with main requirement. Post and pre requirements will be removed.
+func inverted_main() -> CVE_VisualPattern:
+	var new_requirement := AdditionalMath.translated_points(requirement, -requirement.back())
 	new_requirement.reverse()
-	var new_pre_requirement = post_requirement.duplicate()
-	new_pre_requirement.reverse()
-	var new_post_requirement = pre_requirement.duplicate()
-	new_post_requirement.reverse()
+	var angle = -new_requirement[1].angle()
 	
-	if not new_pre_requirement.is_empty():
-		var last_new_pre_requirement = new_pre_requirement[new_pre_requirement.size() - 1]
-		new_pre_requirement.remove_at(new_pre_requirement.size() - 1)
-		new_requirement.insert(0, last_new_pre_requirement)
-		
-	var last_new_requirement = new_requirement[new_requirement.size() - 1]
-	new_requirement.remove_at(new_requirement.size() - 1)
-	new_post_requirement.insert(0, last_new_requirement)
+	new_requirement = AdditionalMath.rotated_points(new_requirement, angle)
 	
-	var new_curve = Curve2D.new()
-	var index = curve.point_count - 1
-	while index >= 0:
-		new_curve.add_point(curve.get_point_position(index), curve.get_point_out(index), curve.get_point_in(index))
-		index -= 1
-		
-	return CVE_VisualPattern.new(new_pre_requirement, new_requirement, new_post_requirement, new_curve)
-"""
+	var last_position = curve.get_point_position(curve.point_count - 1)
+	var new_curve := AdditionalMath.translated_curve(curve, -last_position)
+	new_curve = AdditionalMath.reversed_curve(new_curve)
+	new_curve = AdditionalMath.rotated_curve(new_curve, angle)
+	
+	var new_title = title + " inverted_main"
+	return CVE_VisualPattern.new([], new_requirement, [], new_curve, new_title)
 
 static func base() -> CVE_VisualPattern:
 	var base_curve = Curve2D.new()

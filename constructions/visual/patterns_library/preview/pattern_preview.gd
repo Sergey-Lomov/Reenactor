@@ -19,8 +19,8 @@ var curve_color: Color = Color.BISQUE:
 	get: return curve_layer.color
 	set (value): curve_layer.color = value
 
-const border_space: float = 0.5
-const min_halfsize: float = 2
+const border_space: float = 0
+const min_halfsize: float = 2.5
 
 func _ready():	
 	update_scale()
@@ -51,8 +51,8 @@ func update_scale():
 	
 	if not requirements.is_empty(): 
 		var max_x = requirements.map(func(p): return p.x).max()
-		var max_y = requirements.map(func(p): return p.y).min()
-		var min_x = requirements.map(func(p): return p.x).max()
+		var max_y = requirements.map(func(p): return p.y).max()
+		var min_x = requirements.map(func(p): return p.x).min()
 		var min_y = requirements.map(func(p): return p.y).min()
 		halfsize = [absf(max_x), absf(max_y), absf(min_x), absf(min_y), min_halfsize].max()
 	
