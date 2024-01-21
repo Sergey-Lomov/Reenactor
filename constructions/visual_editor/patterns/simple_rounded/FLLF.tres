@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CVE_VisualPattern" load_steps=3 format=3 uid="uid://pu0nqmoxoohw"]
+
+[ext_resource type="Script" path="res://constructions/visual_editor/data/visual_pattern.gd" id="1_pj7sf"]
+
+[sub_resource type="Curve2D" id="Curve2D_fxk7t"]
+_data = {
+"points": PackedVector2Array(0, 0, 1, 0, 0, 0, 1, 0, 0, -0.75, 0, -1)
+}
+point_count = 2
+
+[resource]
+script = ExtResource("1_pj7sf")
+title = "FLLF"
+pre_requirement = Array[Vector2]([])
+requirement = Array[Vector2]([Vector2(0, 0), Vector2(1, 0), Vector2(1, -1), Vector2(0, -1)])
+post_requirement = Array[Vector2]([Vector2(-1, -1)])
+curve = SubResource("Curve2D_fxk7t")

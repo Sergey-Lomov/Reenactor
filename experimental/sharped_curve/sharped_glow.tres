@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://tjo21t1hi810"]
+
+[ext_resource type="Shader" path="res://experimental/sharped_curve/sharped_glow.gdshader" id="1_xa6w3"]
+
+[resource]
+shader = ExtResource("1_xa6w3")
+shader_parameter/search_step = 1
+shader_parameter/glow_radius = 10

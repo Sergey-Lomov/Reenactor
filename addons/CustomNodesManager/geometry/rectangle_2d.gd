@@ -19,3 +19,7 @@ extends Node2D
 # Called when the node enters the scene tree for the first time.
 func _draw():
 	draw_rect(Rect2(center - size * 0.5, size), color)
+	
+func _process(delta):
+	if Engine.is_editor_hint():
+		queue_redraw()

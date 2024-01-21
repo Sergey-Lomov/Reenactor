@@ -19,3 +19,7 @@ class_name Circle2D extends Node2D
 # Called when the node enters the scene tree for the first time.
 func _draw():
 	draw_circle(center, radius, color)
+	
+func _process(delta):
+	if Engine.is_editor_hint():
+		queue_redraw()

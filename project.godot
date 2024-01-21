@@ -11,13 +11,13 @@ config_version=5
 [application]
 
 config/name="TIA"
-run/main_scene="res://constructions/visual/ConstructionVisualEditor.tscn"
+run/main_scene="res://constructions/visual_editor/ConstructionVisualEditor.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
-CVE_PatternsManager="*res://constructions/visual/patterns_library/patterns_manager.gd"
+CVE_PatternsManager="*res://constructions/visual_editor/patterns_library/patterns_manager.gd"
 AdditionalMath="*res://utils/additional_math.gd"
 
 [display]

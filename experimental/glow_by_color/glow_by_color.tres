@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bdlj1jyc5vgsp"]
+
+[ext_resource type="Shader" path="res://experimental/glow_by_color/glow_by_color.gdshader" id="1_gyn4y"]
+
+[resource]
+shader = ExtResource("1_gyn4y")

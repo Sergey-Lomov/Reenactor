@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://d2runuquv7rfe"]
+
+[ext_resource type="Shader" path="res://constructions/monocolor_glow.gdshader" id="1_6pdut"]
+
+[resource]
+shader = ExtResource("1_6pdut")
+shader_parameter/search_step = 1
+shader_parameter/glow_radius = 25

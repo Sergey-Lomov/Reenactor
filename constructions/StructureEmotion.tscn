@@ -1,12 +1,59 @@
-[gd_scene load_steps=2 format=3 uid="uid://dyvxs6ibspf15"]
+[gd_scene load_steps=6 format=3 uid="uid://dyvxs6ibspf15"]
 
-[sub_resource type="Curve2D" id="Curve2D_j2vkj"]
-_data = {
-"points": PackedVector2Array(0, 0, 75, 0, 0, 100, 0, 25, 0, -50, 75, 50, 0, 50, 0, 0, 0, 0)
-}
-point_count = 3
+[ext_resource type="Material" uid="uid://6ln7hj8262ws" path="res://experimental/costruction_background/construction_background.tres" id="1_flygh"]
+[ext_resource type="Script" path="res://experimental/DemoCurve.gd" id="2_abn50"]
+[ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/circle_2d.gd" id="3_s7ibe"]
+[ext_resource type="Script" path="res://constructions/visual/construction_background.gd" id="4_3bhvx"]
+[ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/rectangle_2d.gd" id="5_kjchk"]
 
 [node name="StructureEmotion" type="Node2D"]
 
-[node name="Path2D" type="Path2D" parent="."]
-curve = SubResource("Curve2D_j2vkj")
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+visible = false
+material = ExtResource("1_flygh")
+offset_right = 300.0
+offset_bottom = 300.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+mesh_lod_threshold = 0.0
+size = Vector2i(300, 300)
+render_target_update_mode = 0
+
+[node name="Line2D" type="Line2D" parent="SubViewportContainer/SubViewport"]
+visible = false
+position = Vector2(14, 11)
+points = PackedVector2Array(0, 1, 24, 5, 8, 35, 39, 31, 58, 54, 75, 17)
+width = 5.0
+default_color = Color(0, 0.623529, 0.623529, 1)
+
+[node name="DemoCurve" type="Node2D" parent="SubViewportContainer/SubViewport"]
+visible = false
+position = Vector2(0, 200)
+script = ExtResource("2_abn50")
+
+[node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Circle2D" type="Node2D" parent="SubViewportContainer/SubViewport"]
+visible = false
+script = ExtResource("3_s7ibe")
+center = Vector2(50, 50)
+radius = 3
+
+[node name="Node2D" type="Node2D" parent="."]
+visible = false
+material = ExtResource("1_flygh")
+script = ExtResource("4_3bhvx")
+
+[node name="Rectangle2D" type="Node2D" parent="."]
+material = ExtResource("1_flygh")
+script = ExtResource("5_kjchk")
+center = Vector2(150, 150)
+size = Vector2(300, 300)
