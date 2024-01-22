@@ -93,6 +93,23 @@ text = "Generate"
 layout_mode = 2
 text = "Debug"
 
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="SaveShader" type="Button" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save shader"
+
+[node name="Test" type="Button" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Test"
+
+[connection signal="resized" from="VBoxContainer/HBoxContainer/Preview" to="VBoxContainer/HBoxContainer/Preview" method="_on_resized"]
 [connection signal="style_selected" from="VBoxContainer/CVE_PatternsStyleButton" to="." method="_on_cve_patterns_style_button_style_selected"]
 [connection signal="pressed" from="VBoxContainer/Generate" to="." method="_on_generate_pressed"]
 [connection signal="pressed" from="VBoxContainer/Debug" to="." method="_on_debug_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/SaveShader" to="VBoxContainer/HBoxContainer/Preview" method="_on_save_shader_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer2/Test" to="." method="_on_test_pressed"]

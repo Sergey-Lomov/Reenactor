@@ -7,6 +7,8 @@ enum Symmetry {NONE, VERTICAL, HORIZONTAL, VERTICAL_AND_HORIZONTAL, RADIAL}
 @export var back_path: NodePath = NodePath("ConstructionBackground")
 @onready var back := get_node(back_path) as ConstructionBackground
 
+const material_export_path = "res://experimental/costruction_background/construction_background_test.tres"
+
 var show_grid: bool = false
 var grid_size: int = 0
 var grid: Array = []
@@ -369,3 +371,10 @@ func normalized_angle(value: float, zero_to_full: bool = false):
 	if zero_to_full:
 		result = result if abs(result) > angle_delta else 2 * PI
 	return result
+
+func _on_resized():
+	if is_node_ready():
+		back.size = size
+
+func _on_save_shader_pressed():
+	ResourceSaver.save(back.material, material_export_path)

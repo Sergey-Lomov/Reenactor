@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://bb7s8ek83dose"]
+[gd_scene load_steps=7 format=3 uid="uid://bb7s8ek83dose"]
 
 [ext_resource type="Script" path="res://constructions/construction.gd" id="1_1nqft"]
 [ext_resource type="Script" path="res://constructions/features/structure_feature_context.gd" id="2_t6tl6"]
 [ext_resource type="Script" path="res://constructions/structure.gd" id="3_kqi5g"]
-[ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/circle_2d.gd" id="4_1tf8q"]
+[ext_resource type="Script" path="res://constructions/visual/construction_visual.gd" id="4_g3x4g"]
+[ext_resource type="Material" uid="uid://cym60p7600qh2" path="res://experimental/costruction_background/construction_background_test1.tres" id="5_0o1v5"]
+[ext_resource type="Script" path="res://constructions/visual/construction_background.gd" id="5_kuyk3"]
 
 [node name="Construction" type="CharacterBody2D"]
 script = ExtResource("1_1nqft")
@@ -15,8 +17,13 @@ script = ExtResource("2_t6tl6")
 script = ExtResource("3_kqi5g")
 
 [node name="Visual" type="Node2D" parent="."]
-script = ExtResource("4_1tf8q")
-radius = 5
+script = ExtResource("4_g3x4g")
+backPath = NodePath("ConstructionBackground")
+
+[node name="ConstructionBackground" type="Node2D" parent="Visual"]
+material = ExtResource("5_0o1v5")
+script = ExtResource("5_kuyk3")
+material_resource = ExtResource("5_0o1v5")
 
 [connection signal="destruction_requested" from="Structure" to="." method="_on_structure_destruction_requested"]
 [connection signal="feature_execution_requested" from="Structure" to="." method="_on_structure_feature_execution_requested"]

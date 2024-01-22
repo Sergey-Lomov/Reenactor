@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://dyvxs6ibspf15"]
+[gd_scene load_steps=7 format=3 uid="uid://dyvxs6ibspf15"]
 
 [ext_resource type="Material" uid="uid://6ln7hj8262ws" path="res://experimental/costruction_background/construction_background.tres" id="1_flygh"]
 [ext_resource type="Script" path="res://experimental/DemoCurve.gd" id="2_abn50"]
 [ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/circle_2d.gd" id="3_s7ibe"]
 [ext_resource type="Script" path="res://constructions/visual/construction_background.gd" id="4_3bhvx"]
 [ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/rectangle_2d.gd" id="5_kjchk"]
+[ext_resource type="Material" uid="uid://cym60p7600qh2" path="res://experimental/costruction_background/construction_background_test1.tres" id="5_tdwfn"]
 
 [node name="StructureEmotion" type="Node2D"]
 
@@ -53,7 +54,7 @@ material = ExtResource("1_flygh")
 script = ExtResource("4_3bhvx")
 
 [node name="Rectangle2D" type="Node2D" parent="."]
-material = ExtResource("1_flygh")
+material = ExtResource("5_tdwfn")
 script = ExtResource("5_kjchk")
-center = Vector2(150, 150)
-size = Vector2(300, 300)
+center = Vector2(240, 240)
+size = Vector2(480, 480)

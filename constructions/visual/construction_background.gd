@@ -1,7 +1,12 @@
 @tool
 class_name ConstructionBackground extends Node2D
 
-const material_resource = preload("res://experimental/costruction_background/construction_background.tres")
+@export var material_resource: Material:
+	set(value):
+		material_resource = value
+		if is_node_ready():
+			material = material_resource
+
 var size: Vector2 = Vector2(400, 400)
 
 var curve: Curve2D:
@@ -11,7 +16,8 @@ var curve: Curve2D:
 			handle_curve_update()
 
 func _ready():
-	material = material_resource
+	if material_resource:
+		material = material_resource
 	handle_curve_update()
 
 func handle_curve_update():

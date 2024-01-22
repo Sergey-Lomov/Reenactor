@@ -45,3 +45,7 @@ func _on_debug_pressed():
 
 func _on_cve_patterns_style_button_style_selected(style):
 	preview.available_patterns = CVE_PatternsManager.get_patterns(style)
+
+
+func _on_test_pressed():
+	get_tree().change_scene_to_file("res://constructions/visual_editor/ConstructionTest.tscn")

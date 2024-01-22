@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://cpkntcyiafrfk"]
+
+[ext_resource type="PackedScene" uid="uid://bb7s8ek83dose" path="res://constructions/Construction.tscn" id="1_6q0ls"]
+[ext_resource type="Script" path="res://constructions/nodes/navigation/player_controller.gd" id="2_hd3n4"]
+[ext_resource type="Script" path="res://constructions/nodes/engines/base_engine.gd" id="3_77vtb"]
+
+[node name="ConstructionTest" type="Node2D"]
+
+[node name="Construction" parent="." instance=ExtResource("1_6q0ls")]
+
+[node name="SN_PlayerController" type="Node" parent="Construction/Structure" index="0"]
+script = ExtResource("2_hd3n4")
+
+[node name="SN_BaseEngine" type="Node" parent="Construction/Structure" index="1"]
+script = ExtResource("3_77vtb")
+
+[editable path="Construction"]
