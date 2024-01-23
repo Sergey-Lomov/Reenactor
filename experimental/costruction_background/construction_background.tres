@@ -5,5 +5,7 @@
 [resource]
 shader = ExtResource("1_q5wrc")
 shader_parameter/color = Color(0, 0.403922, 0.647059, 1)
+shader_parameter/line_width = 4.0
+shader_parameter/texture_size = 400
 shader_parameter/points_count = 0
 shader_parameter/points = PackedVector2Array()

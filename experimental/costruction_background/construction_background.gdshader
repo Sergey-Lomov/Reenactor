@@ -1,9 +1,15 @@
+//Should be used for square textures only
 shader_type canvas_item;
 
 #define MAX_POINTS 		4000
 #define sfract(x)  		min( fract(x)/(1.-fwidth(x)), fract(-(x))/fwidth(x) )
 
 uniform vec3 color: source_color;
+uniform float line_width;	//In pixels
+uniform int texture_size = 400;	//In pixels. Only 1 size, because texture should be square.
+uniform float glow_radius = 0.003;
+uniform float glow_intensity = 0.95;
+
 uniform int points_count;
 uniform vec2 points[MAX_POINTS];
 
@@ -22,7 +28,7 @@ float line_segment(in vec2 p, in vec2 a, in vec2 b) {
 	return length(pa - h * ba);
 }
 
-float poly_distance(vec2 p) {
+float poly_distance(vec2 p) {	
 	float d = dot(p-points[0],p-points[0]);
     float s = 1.0;
     for( int i=0, j=points_count-1; i<points_count; j=i, i++ )
@@ -38,20 +44,50 @@ float poly_distance(vec2 p) {
 	return s*sqrt(d);
 }
 
-float getGlow(float dist, float radius, float intensity){
+float getGlow(float dist, float radius, float intensity) {
     return pow(radius/abs(dist), intensity);
 }
 
+float energyCloud(vec2 point) {
+	vec2 st = point * 6.0; //Scaling
+	vec2 i_st = floor(st);
+    vec2 f_st = fract(st);
+	float m_dist = 0.8;
+	float t = TIME * 0.5;
+	
+	for (int y= -1; y <= 1; y++) {
+        for (int x= -1; x <= 1; x++) {
+            vec2 neighbor = vec2(float(x),float(y)); // Neighbor place in the grid
+            vec2 point = random2(i_st + neighbor); // Random position from current + neighbor place in the grid
+            point = 0.5 + 0.5 * sin(t + 6.9*point); // Animate the point
+            vec2 diff = neighbor + point - f_st; // Vector between the pixel and the point
+            float dist = length(diff); // Distance to the point
+            m_dist = min(m_dist, dist); // Keep the closer distance
+        }
+    }
+	
+	return m_dist;
+}
+
 void fragment() {
+	float act_line_width = line_width / float(texture_size);
+	
 	//Polygon draw implementation
 	float dist = poly_distance(UV);
-	vec3 result_color = color * smoothstep(-0.005, 0.0, dist);
-	float result_alpha = smoothstep(0.005, 0.0, dist);
+	float line_in = smoothstep(act_line_width / -2.0, 0.0, dist);
+	float line_out = smoothstep(act_line_width / 2.0, 0.0, dist);
+	vec3 result_color = color * smoothstep(act_line_width / -2.0, 0.0, dist);
+	float result_alpha = smoothstep(act_line_width / 2.0, 0.0, dist);
 
 	//Add glow
-	float glow = getGlow(dist, 0.003, 0.95);
-	result_color += glow * color * smoothstep(-0.015, 0.001, dist);
-	result_alpha += glow * smoothstep(-0.015, 0.001, dist) * smoothstep(0.025, 0.05, glow);
+	float out_glow = getGlow(dist, glow_radius, glow_intensity);
+	float line_glow = getGlow(0.0, glow_radius, glow_intensity);
+	float line_glow_mult = step(act_line_width / -2.0, dist) * step(dist, act_line_width / 2.0);
+	float glow = out_glow;//out_glow * (1.0 - line_glow_mult) + line_glow * line_glow_mult;
+	//result_color += max(result_color, line_glow * color * line_in * line_out);
+	result_color += out_glow * color * smoothstep(act_line_width * -0.5, act_line_width * 0.75, dist);
+	//result_alpha += glow * smoothstep(act_line_width * -1.5, act_line_width * 0.1, dist) * smoothstep(act_line_width * 2.5, act_line_width * 5.0, glow);
+	result_alpha += 1.0;//glow * smoothstep(act_line_width * -1.5, act_line_width * 0.1, dist) * smoothstep(0.025, 0.05, glow);
 
 	//TODO: Check is really necessary to use sfract insted fract.
 	//This may produce unnecessary calculations when result_color will be animated
@@ -92,27 +128,12 @@ void fragment() {
 	
 	
 	//Core-like clouds
-	vec2 st = UV * 6.0; //Scaling
-	vec2 i_st = floor(st);
-    vec2 f_st = fract(st);
-	float m_dist = 0.8;
-	float t = TIME * 0.5;
-	
-	for (int y= -1; y <= 1; y++) {
-        for (int x= -1; x <= 1; x++) {
-            vec2 neighbor = vec2(float(x),float(y)); // Neighbor place in the grid
-            vec2 point = random2(i_st + neighbor); // Random position from current + neighbor place in the grid
-            point = 0.5 + 0.5 * sin(t + 6.9*point); // Animate the point
-            vec2 diff = neighbor + point - f_st; // Vector between the pixel and the point
-            float dist = length(diff); // Distance to the point
-            m_dist = min(m_dist, dist); // Keep the closer distance
-        }
-    }
-	
+	float cloud = energyCloud(UV);
 	vec3 cloud_color = color * 0.7;
-	cloud_color = mix(cloud_color * 0.3, cloud_color * 1.5, pow(m_dist, 2.0) * 1.5);
+	cloud_color = mix(cloud_color * 0.3, cloud_color * 1.5, pow(cloud, 2.0) * 1.5);
 	cloud_color *= step(dist, -0.001);
 	result_color = max(cloud_color, result_color); 
+	//result_color = mix(result_color, cloud_color, cloud);
 	
 	COLOR = vec4(result_color, result_alpha);
 }

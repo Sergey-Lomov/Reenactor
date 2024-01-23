@@ -7,7 +7,11 @@ class_name ConstructionBackground extends Node2D
 		if is_node_ready():
 			material = material_resource
 
-var size: Vector2 = Vector2(400, 400)
+var size: Vector2 = Vector2(400, 400):
+	set(value):
+		size = value
+		if is_node_ready():
+			handle_size_update()
 
 var curve: Curve2D:
 	set (value):
@@ -19,6 +23,14 @@ func _ready():
 	if material_resource:
 		material = material_resource
 	handle_curve_update()
+	handle_size_update()
+
+func _draw():
+	draw_rect(Rect2(Vector2.ZERO, size), Color.WHITE)
+	
+func _process(_delta):
+	if Engine.is_editor_hint():
+		queue_redraw()
 
 func handle_curve_update():
 	pass
@@ -31,9 +43,9 @@ func handle_curve_update():
 			act_points.append(point / size)
 		material.set_shader_parameter("points", act_points)
 
-func _draw():
-	draw_rect(Rect2(Vector2.ZERO, size), Color.WHITE)
-	
-func _process(_delta):
-	if Engine.is_editor_hint():
-		queue_redraw()
+func handle_size_update():
+	if size.x != size.y:
+		printerr("Construction background size should be square")
+		return
+		
+	material.set_shader_parameter("texture_size", size.x)

@@ -14,4 +14,13 @@ script = ExtResource("2_hd3n4")
 [node name="SN_BaseEngine" type="Node" parent="Construction/Structure" index="1"]
 script = ExtResource("3_77vtb")
 
+[node name="SN_BaseEngine4" type="Node" parent="Construction/Structure" index="2"]
+script = ExtResource("3_77vtb")
+
+[node name="SN_BaseEngine2" type="Node" parent="Construction/Structure" index="3"]
+script = ExtResource("3_77vtb")
+
+[node name="SN_BaseEngine3" type="Node" parent="Construction/Structure" index="4"]
+script = ExtResource("3_77vtb")
+
 [editable path="Construction"]

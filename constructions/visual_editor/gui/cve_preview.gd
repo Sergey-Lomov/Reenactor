@@ -374,7 +374,8 @@ func normalized_angle(value: float, zero_to_full: bool = false):
 
 func _on_resized():
 	if is_node_ready():
-		back.size = size
+		var min_size = min(size.x, size.y)
+		back.size = Vector2(min_size, min_size)
 
 func _on_save_shader_pressed():
 	ResourceSaver.save(back.material, material_export_path)
