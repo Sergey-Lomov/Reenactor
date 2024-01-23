@@ -10,6 +10,7 @@ var back_material: Material:
 var contruction_size: Vector2 = Vector2(165, 165):
 	set(value):
 		contruction_size = value
+		position = value * -0.5
 		if is_node_ready():
 			back.size = value
 			back.queue_redraw()

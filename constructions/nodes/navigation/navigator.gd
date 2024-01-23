@@ -5,12 +5,18 @@ func affected_absolute_vector(vector: Vector2):
 	
 func affected_relative_vector(vector: Vector2):
 	return vector
+	
+func affected_rotation(rotation: float):
+	return rotation
 
 func affect_priority(attribute: Structure.Attribute):
 	if attribute == Structure.Attribute.MOVEMENT_ABSOLUTE_VECTOR:
 		return 1
 	
 	if attribute == Structure.Attribute.MOVEMENT_RELATIVE_VECTOR:
+		return 1
+		
+	if attribute == Structure.Attribute.ROTATION:
 		return 1
 		
 	return 0
@@ -21,5 +27,8 @@ func affected_value(attribute: Structure.Attribute, value: Variant):
 	
 	if attribute == Structure.Attribute.MOVEMENT_RELATIVE_VECTOR:
 		return affected_relative_vector(value)
+		
+	if attribute == Structure.Attribute.ROTATION:
+		return affected_rotation(value)
 		
 	return value

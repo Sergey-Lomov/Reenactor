@@ -1,4 +1,3 @@
-@tool
 class_name Construction extends CharacterBody2D
 
 enum Component {FEATURES_CONTEXT, STRUCTURE, VISUAL, SHAPE}
@@ -47,6 +46,9 @@ func _enter_tree():
 		set_shape_by_structure()
 	elif shape.shape == null:
 		set_shape_by_structure()
+
+func _process(_delta):
+	rotation = structure.get_attribute(Structure.Attribute.ROTATION) + PI / 2
 
 func _on_structure_move_produced(absolute, relative, distance):
 	var adapted_relative = relative.rotated(rotation)

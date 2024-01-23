@@ -10,6 +10,7 @@ enum Attribute {
 	MOVEMENT_ABSOLUTE_VECTOR,	#Vector2
 	MOVEMENT_RELATIVE_VECTOR,	#Vector2
 	SPEED,						#float
+	ROTATION,					#float
 	DAMAGE,						#Array[ConstructionDamage]
 	DAMAGE_TARGETING_PROTECTION	#float
 }
@@ -17,9 +18,10 @@ enum Attribute {
 var attributes_init_builders := {
 	Attribute.MOVEMENT_ABSOLUTE_VECTOR: func(): return Vector2.ZERO,
 	Attribute.MOVEMENT_RELATIVE_VECTOR: func(): return Vector2.ZERO,
-	Attribute.SPEED: func(): return 0,
+	Attribute.SPEED: func(): return 0.0,
+	Attribute.ROTATION: func(): return 0.0,
 	Attribute.DAMAGE: func(): return [] as Array[ConstructionDamage],
-	Attribute.DAMAGE_TARGETING_PROTECTION: func(): return 0,
+	Attribute.DAMAGE_TARGETING_PROTECTION: func(): return 0.0,
 }
 
 var nodes: Array:
@@ -80,7 +82,7 @@ func _on_node_broken(node: StructureNode):
 func _on_node_feature_execution_requested(feature: StructureFeature):
 	feature_execution_requested.emit(feature)
 
-func copy():
+func copy() -> Structure:
 	var new = Structure.new()
 	
 	for child in get_children():
@@ -94,7 +96,7 @@ func copy():
 func request_destruction(reason: Construction.DestructionReason):
 	destruction_requested.emit(reason)
 	
-func get_attribute(attribute: Attribute, initial_value: Variant = null):
+func get_attribute(attribute: Attribute, initial_value: Variant = null) -> Variant:
 	if not initial_value:
 		initial_value = attributes_init_builders[attribute].call()
 		
