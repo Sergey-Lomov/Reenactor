@@ -4,7 +4,7 @@ class_name ConstructionVisual extends Node2D
 @onready var back := get_node(backPath) as ConstructionBackground
 
 var back_material: Material:
-	set(value): back.material
+	set(value): back.material = value
 	get: return back.material
 
 var contruction_size: Vector2 = Vector2(165, 165):

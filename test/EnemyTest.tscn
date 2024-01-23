@@ -11,8 +11,4 @@ team = "test_enemy"
 [node name="SN_StaticCore" type="Node" parent="Construction/Structure" index="0"]
 script = ExtResource("2_u73ax")
 
-[node name="Visual" parent="Construction" index="2"]
-radius = 6
-color = Color(0, 0.407843, 0.113725, 1)
-
 [editable path="Construction"]

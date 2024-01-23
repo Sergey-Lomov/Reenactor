@@ -18,7 +18,7 @@ func _on_grid_resized():
 			update_previews_size()
 
 func _on_open_pressed():
-	var path = "res://constructions/visual/patterns/%s.tres" % file_line.text
+	var path = "res://constructions/visual_editor/patterns/%s.tres" % file_line.text
 	var pattern :=  load(path)
 	if pattern: 
 		set_pattern(pattern)

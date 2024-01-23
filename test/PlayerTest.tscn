@@ -32,7 +32,4 @@ script = ExtResource("4_gyqt4")
 [node name="SN_StaticCore" type="Node" parent="Construction/Structure" index="6"]
 script = ExtResource("5_ykymg")
 
-[node name="Visual" parent="Construction" index="2"]
-radius = 10
-
 [editable path="Construction"]

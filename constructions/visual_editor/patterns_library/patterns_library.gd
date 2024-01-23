@@ -6,7 +6,7 @@ class_name CVE_PatternsLibrary extends Control
 @export var rows_box_path: NodePath
 @onready var rows_box := get_node(rows_box_path) as VBoxContainer
 
-var row_scene := preload("res://constructions/visual/patterns_library/PatternsLibraryRow.tscn")
+var row_scene := preload("res://constructions/visual_editor/patterns_library/PatternsLibraryRow.tscn")
 
 func _on_styles_button_style_selected(style):
 	for row in rows_box.get_children():
