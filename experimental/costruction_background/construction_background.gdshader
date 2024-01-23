@@ -7,8 +7,8 @@ shader_type canvas_item;
 uniform vec3 color: source_color;
 uniform float line_width;	//In pixels
 uniform int texture_size = 400;	//In pixels. Only 1 size, because texture should be square.
-uniform float glow_radius = 0.003;
-uniform float glow_intensity = 0.95;
+uniform float glow_radius = 0.0075;
+uniform float glow_intensity = 1.2;
 
 uniform int points_count;
 uniform vec2 points[MAX_POINTS];
@@ -87,7 +87,7 @@ void fragment() {
 	//result_color += max(result_color, line_glow * color * line_in * line_out);
 	result_color += out_glow * color * smoothstep(act_line_width * -0.5, act_line_width * 0.75, dist);
 	//result_alpha += glow * smoothstep(act_line_width * -1.5, act_line_width * 0.1, dist) * smoothstep(act_line_width * 2.5, act_line_width * 5.0, glow);
-	result_alpha += 1.0;//glow * smoothstep(act_line_width * -1.5, act_line_width * 0.1, dist) * smoothstep(0.025, 0.05, glow);
+	result_alpha += glow * smoothstep(act_line_width * -1.5, act_line_width * 0.1, dist) * smoothstep(0.025, 0.05, glow);
 
 	//TODO: Check is really necessary to use sfract insted fract.
 	//This may produce unnecessary calculations when result_color will be animated
@@ -134,6 +134,9 @@ void fragment() {
 	cloud_color *= step(dist, -0.001);
 	result_color = max(cloud_color, result_color); 
 	//result_color = mix(result_color, cloud_color, cloud);
+	
+	result_color += vec3(1.0) * (step(UV.x, 0.05) + step(0.95, UV.x) + step(UV.y, 0.05) + + step(0.95, UV.y));
+	result_alpha += (step(UV.x, 0.05) + step(0.95, UV.x) + step(UV.y, 0.05) + + step(0.95, UV.y));
 	
 	COLOR = vec4(result_color, result_alpha);
 }

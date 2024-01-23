@@ -17,8 +17,8 @@ var features_context: StructureFeatureContext:
 	get: return get_component(Component.FEATURES_CONTEXT) as StructureFeatureContext
 	set(value): set_component(value, Component.FEATURES_CONTEXT)
 	
-var visual: Node2D:
-	get: return get_component(Component.VISUAL) as Node2D
+var visual: ConstructionVisual:
+	get: return get_component(Component.VISUAL) as ConstructionVisual
 	set(value): set_component(value, Component.VISUAL)
 	
 var shape: CollisionShape2D:

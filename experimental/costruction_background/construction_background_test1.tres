@@ -4,7 +4,7 @@
 
 [resource]
 shader = ExtResource("1_impqq")
-shader_parameter/color = Color(0.270588, 0.239216, 1, 1)
+shader_parameter/color = Color(0.843137, 0, 0.552941, 1)
 shader_parameter/line_width = 4.0
 shader_parameter/texture_size = 400
 shader_parameter/glow_radius = 0.003

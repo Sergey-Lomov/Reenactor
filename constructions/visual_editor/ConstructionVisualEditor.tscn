@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://da6cdgjo4t7vh"]
+[gd_scene load_steps=6 format=3 uid="uid://da6cdgjo4t7vh"]
 
 [ext_resource type="Script" path="res://constructions/visual_editor/construction_visual_editor.gd" id="1_ttw77"]
 [ext_resource type="Material" uid="uid://d2runuquv7rfe" path="res://constructions/monocolor_glow.tres" id="2_fmgxt"]
 [ext_resource type="Script" path="res://constructions/visual_editor/gui/cve_preview.gd" id="2_lrnp6"]
 [ext_resource type="Script" path="res://constructions/visual_editor/gui/cve_patterns_styles_button.gd" id="3_v2ya0"]
-[ext_resource type="Material" uid="uid://6ln7hj8262ws" path="res://experimental/costruction_background/construction_background.tres" id="4_cl4px"]
-[ext_resource type="Script" path="res://constructions/visual/construction_background.gd" id="5_vo2kk"]
+[ext_resource type="PackedScene" uid="uid://bfpa6v3wv2q3g" path="res://constructions/visual/ConstructionVisual.tscn" id="4_0jxse"]
 
 [node name="ConstructionVisualEditor" type="Control"]
 layout_mode = 3
@@ -54,9 +53,7 @@ custom_minimum_size = Vector2(440, 440)
 layout_mode = 2
 script = ExtResource("2_lrnp6")
 
-[node name="ConstructionBackground" type="Node2D" parent="VBoxContainer/HBoxContainer/Preview"]
-material = ExtResource("4_cl4px")
-script = ExtResource("5_vo2kk")
+[node name="Visual" parent="VBoxContainer/HBoxContainer/Preview" instance=ExtResource("4_0jxse")]
 
 [node name="Control" type="Control" parent="VBoxContainer/HBoxContainer"]
 visible = false
@@ -107,7 +104,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Test"
 
-[connection signal="resized" from="VBoxContainer/HBoxContainer/Preview" to="VBoxContainer/HBoxContainer/Preview" method="_on_resized"]
 [connection signal="style_selected" from="VBoxContainer/CVE_PatternsStyleButton" to="." method="_on_cve_patterns_style_button_style_selected"]
 [connection signal="pressed" from="VBoxContainer/Generate" to="." method="_on_generate_pressed"]
 [connection signal="pressed" from="VBoxContainer/Debug" to="." method="_on_debug_pressed"]

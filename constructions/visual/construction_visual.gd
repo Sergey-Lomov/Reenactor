@@ -2,19 +2,39 @@ class_name ConstructionVisual extends Node2D
 
 @export var backPath: NodePath
 @onready var back := get_node(backPath) as ConstructionBackground
+@export var edgePath: NodePath
+@onready var edge := get_node(edgePath) as GradientPath2D
 
-var back_material: Material:
-	set(value): back.material = value
-	get: return back.material
+var zero_centrate := true
+var glow := true
+var glow_mult: float = 2.0
 
-var contruction_size: Vector2 = Vector2(165, 165):
+var config: ConstructionVisualConfiguration:
 	set(value):
-		contruction_size = value
-		position = value * -0.5
-		if is_node_ready():
-			back.size = value
-			back.queue_redraw()
+		config = value
+		handle_config_update()
 
 func _ready():
-	back.size = contruction_size
-	back.queue_redraw()	
+	handle_config_update()
+
+func handle_config_update():
+	if not is_node_ready(): return
+	if not config:
+		printerr("Construction visual have no config")
+		return
+	
+	if zero_centrate:
+		position = config.size * Vector2(-0.5, -0.5)
+	
+	edge.curve = config.edge
+	var color = config.color * glow_mult if glow else config.color
+	color = color.clamp()
+	
+	edge.fromColor = color
+	edge.toColor = color
+	edge.width = config.edge_width
+	edge.queue_redraw()
+	
+	back.material = config.back_material
+	back.size = config.size
+	back.queue_redraw()

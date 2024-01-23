@@ -4,8 +4,8 @@ class_name CVE_Preview extends Control
 enum KeypointsPositioning {VERTEX, VERTEX_AND_EDGES, DEEPED}
 enum Symmetry {NONE, VERTICAL, HORIZONTAL, VERTICAL_AND_HORIZONTAL, RADIAL}
 
-@export var back_path: NodePath = NodePath("ConstructionBackground")
-@onready var back := get_node(back_path) as ConstructionBackground
+@export var visual_path: NodePath = NodePath("Visual")
+@onready var visual := get_node(visual_path) as ConstructionVisual
 
 const material_export_path = "res://experimental/costruction_background/construction_background_test.tres"
 
@@ -18,11 +18,36 @@ var keypoints: Array[CVE_Keypoint] = []
 var keypoints_positioning := KeypointsPositioning.VERTEX_AND_EDGES	#Algoraithm not ready to use undeeped keypoints
 const angle_delta := 0.01
 
+const edge_width: float = 1
+const construction_color := Color.AQUA
+
 var patterns: Dictionary = {}
 var available_patterns: Array[CVE_VisualPattern] = []
 var h_symmetry := false
 var v_symmetry := false
 var r_symmetry := false
+
+var visual_config: ConstructionVisualConfiguration:
+	get:
+		var config := ConstructionVisualConfiguration.new()
+		config.edge_width = edge_width
+		config.color = construction_color
+		config.cell_size = cell_size
+		config.cells_count = grid_size
+		config.edge = edge_curve
+		return config
+
+var edge_curve: Curve2D:
+	get:
+		var curve = Curve2D.new()
+		
+		if not keypoints.is_empty():
+			curve.add_point(keypoints.front().position)
+			for keypoint in keypoints:
+				if patterns.has(keypoint):
+					patterns[keypoint].apply(curve, keypoint.direction, cell_size * keypoints_scale)
+					
+		return curve
 
 var keypoints_scale: float: #Ratio between inter-keypoints space and cell_size
 	get:
@@ -55,21 +80,15 @@ var show_patterns_edges := true
 var show_symmetries := true
 
 func _ready():
-	back.size = custom_minimum_size
+	visual.zero_centrate = false
+	visual.config = visual_config
 
 func _draw():
 	if keypoints.is_empty(): return
 	
-	var curve = Curve2D.new()
-	curve.add_point(keypoints[0].position)
-	for keypoint in keypoints:
-		if patterns.has(keypoint):
-			patterns[keypoint].apply(curve, keypoint.direction, cell_size * keypoints_scale)
-	
-	if curve.point_count >= 2:
-		back.curve = curve
-		#print(curve.get_baked_points().size())
-		#draw_polyline(curve.get_baked_points(), Color.CORNFLOWER_BLUE, 1, true)
+	#if edge_curve.point_count >= 2:
+		#var test = AdditionalMath.translated_curve(edge_curve, Vector2(0, -100))
+		#draw_polyline(test.get_baked_points(), construction_color, edge_width, true)
 
 	if show_keypoints:
 		for keypoint in keypoints:
@@ -112,6 +131,7 @@ func update_content(_grid: Array, _size: int):
 	update_keypoints()
 	update_patterns()
 
+	visual.config = visual_config
 	queue_redraw()
 
 func update_keypoints():
@@ -372,10 +392,11 @@ func normalized_angle(value: float, zero_to_full: bool = false):
 		result = result if abs(result) > angle_delta else 2 * PI
 	return result
 
-func _on_resized():
-	if is_node_ready():
-		var min_size = min(size.x, size.y)
-		back.size = Vector2(min_size, min_size)
+#func _on_resized():
+	#if is_node_ready():
+		#var min_size = min(size.x, size.y)
+		#visual.config = visual_config
 
 func _on_save_shader_pressed():
-	ResourceSaver.save(back.material, material_export_path)
+	pass
+	#ResourceSaver.save(back.material, material_export_path)

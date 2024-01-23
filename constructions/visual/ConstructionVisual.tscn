@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://bfpa6v3wv2q3g"]
+
+[ext_resource type="Script" path="res://constructions/visual/construction_visual.gd" id="1_hjr1o"]
+[ext_resource type="Script" path="res://constructions/visual/construction_background.gd" id="2_5bvnu"]
+[ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/gradient_path_2d.gd" id="3_3muoi"]
+
+[sub_resource type="Curve2D" id="Curve2D_weei5"]
+
+[node name="ConstructionVisual" type="Node2D"]
+script = ExtResource("1_hjr1o")
+backPath = NodePath("ConstructionBackground")
+edgePath = NodePath("GradientPath2D")
+
+[node name="ConstructionBackground" type="Node2D" parent="."]
+script = ExtResource("2_5bvnu")
+
+[node name="GradientPath2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_weei5")
+script = ExtResource("3_3muoi")
+width = 5.0

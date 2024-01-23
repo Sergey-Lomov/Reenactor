@@ -8,6 +8,7 @@ class_name ContructionVisualEditor extends Control
 
 @onready var grid := get_node(grid_path) as GridContainer
 @onready var preview := get_node(preview_path) as CVE_Preview
+@onready var test_scene_resource := preload("res://constructions/visual_editor/ConstructionTest.tscn")
 
 func _ready():
 	grid.columns = grid_size
@@ -39,13 +40,16 @@ func _on_generate_pressed():
 		
 	preview.update_content(preview_grid, grid_size)
 
-
 func _on_debug_pressed():
 	preview.switch_debug()
 
 func _on_cve_patterns_style_button_style_selected(style):
 	preview.available_patterns = CVE_PatternsManager.get_patterns(style)
 
-
 func _on_test_pressed():
-	get_tree().change_scene_to_file("res://constructions/visual_editor/ConstructionTest.tscn")
+	var test_scene := test_scene_resource.instantiate() as ConstructionTest
+	test_scene.back_scene = self
+	var visual := test_scene.construction.visual as ConstructionVisual
+	visual.config = preview.visual_config.resized(20)
+	get_tree().root.add_child(test_scene)
+	get_tree().root.remove_child(self)

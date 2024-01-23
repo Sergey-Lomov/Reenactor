@@ -1,10 +1,27 @@
-[gd_scene load_steps=4 format=3 uid="uid://cpkntcyiafrfk"]
+[gd_scene load_steps=7 format=3 uid="uid://cpkntcyiafrfk"]
 
 [ext_resource type="PackedScene" uid="uid://bb7s8ek83dose" path="res://constructions/Construction.tscn" id="1_6q0ls"]
+[ext_resource type="Script" path="res://constructions/visual_editor/construction_test.gd" id="1_odu7s"]
 [ext_resource type="Script" path="res://constructions/nodes/navigation/player_controller.gd" id="2_hd3n4"]
 [ext_resource type="Script" path="res://constructions/nodes/engines/base_engine.gd" id="3_77vtb"]
+[ext_resource type="Material" uid="uid://6ln7hj8262ws" path="res://experimental/costruction_background/construction_background.tres" id="5_f185t"]
+
+[sub_resource type="Curve2D" id="Curve2D_if5qd"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 100)
+}
+point_count = 2
 
 [node name="ConstructionTest" type="Node2D"]
+script = ExtResource("1_odu7s")
+
+[node name="Back" type="Button" parent="."]
+custom_minimum_size = Vector2(60, 32)
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 70.0
+offset_bottom = 42.0
+text = "Back"
 
 [node name="Construction" parent="." instance=ExtResource("1_6q0ls")]
 
@@ -22,5 +39,16 @@ script = ExtResource("3_77vtb")
 
 [node name="SN_BaseEngine3" type="Node" parent="Construction/Structure" index="4"]
 script = ExtResource("3_77vtb")
+
+[node name="Visual" parent="Construction" index="2"]
+position = Vector2(0, 0)
+
+[node name="ConstructionBackground" parent="Construction/Visual" index="0"]
+material = ExtResource("5_f185t")
+
+[node name="Edge" parent="Construction/Visual" index="1"]
+curve = SubResource("Curve2D_if5qd")
+
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
 
 [editable path="Construction"]

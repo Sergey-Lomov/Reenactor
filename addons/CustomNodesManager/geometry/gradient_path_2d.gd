@@ -1,11 +1,14 @@
 @tool
-extends Path2D
+class_name GradientPath2D extends Path2D
 
 @export var fromColor: Color = Color.WHITE
 @export var toColor: Color = Color.WHITE
-@export var width: float = 5
+@export var width: float = 2
 
 func _draw():
+	if not curve: return
+	if curve.get_baked_points().size() < 2: return
+	
 	if fromColor.is_equal_approx(toColor):
 		draw_polyline(curve.get_baked_points(), fromColor, width, true)
 		return
