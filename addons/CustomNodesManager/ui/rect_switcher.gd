@@ -8,10 +8,11 @@ var rect: ColorRect
 
 func _enter_tree():
 	super._enter_tree()
-	rect = ColorRect.new()
-	rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(rect)
-	move_child(rect, 0)
+	if not rect:
+		rect = ColorRect.new()
+		rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		add_child(rect)
+		move_child(rect, 0)
 
 func switch_to_on(_is_initial: bool = false):
 	rect.color = on_color

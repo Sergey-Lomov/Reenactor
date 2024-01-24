@@ -10,10 +10,11 @@ class_name Switcher extends Control
 var handler: ColorRect
 
 func _enter_tree():
-	handler = ColorRect.new()
-	handler.color = Color(Color.WHITE, 0)
-	handler.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	add_child(handler)
+	if not handler:
+		handler = ColorRect.new()
+		handler.color = Color(Color.WHITE, 0)
+		handler.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		add_child(handler)
 
 func _ready():
 	update(true)

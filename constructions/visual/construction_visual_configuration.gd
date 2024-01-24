@@ -71,7 +71,5 @@ func trimmed() -> ConstructionVisualConfiguration:
 		result.edge = AdditionalMath.translated_curve(edge, Vector2(-left_space, -top_space))
 		result.cells_count = wrapper.size
 		result.gap = default_gap + Vector2(max_size - wrapper.size.x, max_size - wrapper.size.y) * 0.5
-		print("Result gap: ", result.gap)
-		print("Result cell_size: ", result.cell_size)
 		
 	return result

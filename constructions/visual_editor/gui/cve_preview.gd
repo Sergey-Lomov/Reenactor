@@ -14,13 +14,12 @@ var grid_size: int = 0
 var grid: Array = []
 var cell_size: float = 20
 
-
 var keypoints: Array[CVE_Keypoint] = []
 var keypoints_positioning := KeypointsPositioning.VERTEX_AND_EDGES	#Algoraithm not ready to use undeeped keypoints
 const angle_delta := 0.01
 
 const edge_width: float = 1
-const construction_color := Color.AQUA
+const construction_color := Color.DARK_ORANGE
 
 var patterns: Dictionary = {}
 var available_patterns: Array[CVE_VisualPattern] = []
@@ -372,7 +371,6 @@ func update_patterns():
 			var half2 := patterns_sequence + adapted_quarter2
 			if symmetry == Symmetry.VERTICAL_AND_HORIZONTAL: half2.reverse()
 			apply_patterns_sequence(half2, index, unavailable_points, pattern_scale, adaptation)
-			
 
 func apply_pattern(pattern: CVE_VisualPattern, index: Variant, unavailable_points: Array[CVE_Keypoint]):
 	patterns[keypoints[index]] = pattern
@@ -397,13 +395,6 @@ func normalized_angle(value: float, zero_to_full: bool = false):
 	if zero_to_full:
 		result = result if abs(result) > angle_delta else 2 * PI
 	return result
-
-#func _on_resized():
-	#if is_node_ready():
-		#visual.config = visual.config.adapted_to_size(size)
-		#var displacement = -visual.config.gap_displacement
-		#print("Displacement: ", displacement)
-		#visual.position = Vector2(displacement, displacement)
 
 func _on_save_shader_pressed():
 	pass
