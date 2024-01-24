@@ -55,7 +55,8 @@ func duplicate_config() -> ConstructionVisualConfiguration:
 
 func resized(target_cell_size: float) -> ConstructionVisualConfiguration:
 	var new_config = duplicate_config()
-	var scale = target_cell_size / cell_size;
+	var scale = target_cell_size / cell_size
+	new_config.cell_size = target_cell_size
 	new_config.edge = AdditionalMath.scaled_curve(edge, scale, scale)
 	return new_config
 	

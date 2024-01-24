@@ -135,8 +135,9 @@ void fragment() {
 	result_color = max(cloud_color, result_color); 
 	//result_color = mix(result_color, cloud_color, cloud);
 	
-	result_color += vec3(1.0) * (step(UV.x, 0.05) + step(0.95, UV.x) + step(UV.y, 0.05) + + step(0.95, UV.y));
-	result_alpha += (step(UV.x, 0.05) + step(0.95, UV.x) + step(UV.y, 0.05) + + step(0.95, UV.y));
+	//White corder
+	//result_color += vec3(1.0) * (step(UV.x, 0.05) + step(0.95, UV.x) + step(UV.y, 0.05) + + step(0.95, UV.y));
+	//result_alpha += (step(UV.x, 0.05) + step(0.95, UV.x) + step(UV.y, 0.05) + + step(0.95, UV.y));
 	
 	COLOR = vec4(result_color, result_alpha);
 }
