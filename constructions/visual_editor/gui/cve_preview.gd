@@ -14,6 +14,7 @@ var grid_size: int = 0
 var grid: Array = []
 var cell_size: float = 20
 
+
 var keypoints: Array[CVE_Keypoint] = []
 var keypoints_positioning := KeypointsPositioning.VERTEX_AND_EDGES	#Algoraithm not ready to use undeeped keypoints
 const angle_delta := 0.01
@@ -33,8 +34,8 @@ var visual_config: ConstructionVisualConfiguration:
 		config.edge_width = edge_width
 		config.color = construction_color
 		config.cell_size = cell_size
-		config.cells_count = grid_size
-		config.edge = edge_curve
+		config.cells_count = Vector2(grid_size, grid_size)
+		config.edge = AdditionalMath.scaled_curve(edge_curve, 1.0/cell_size, 1.0/cell_size)
 		return config
 
 var edge_curve: Curve2D:
@@ -80,8 +81,10 @@ var show_patterns_edges := true
 var show_symmetries := true
 
 func _ready():
+	visual.hide()
 	visual.zero_centrate = false
 	visual.config = visual_config
+	visual.position = -visual.config.gap_displacement
 
 func _draw():
 	if keypoints.is_empty(): return
@@ -132,6 +135,9 @@ func update_content(_grid: Array, _size: int):
 	update_patterns()
 
 	visual.config = visual_config
+	visual.position = -visual.config.gap_displacement
+	visual.show()
+	
 	queue_redraw()
 
 func update_keypoints():
@@ -394,8 +400,10 @@ func normalized_angle(value: float, zero_to_full: bool = false):
 
 #func _on_resized():
 	#if is_node_ready():
-		#var min_size = min(size.x, size.y)
-		#visual.config = visual_config
+		#visual.config = visual.config.adapted_to_size(size)
+		#var displacement = -visual.config.gap_displacement
+		#print("Displacement: ", displacement)
+		#visual.position = Vector2(displacement, displacement)
 
 func _on_save_shader_pressed():
 	pass

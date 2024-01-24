@@ -54,7 +54,6 @@ layout_mode = 2
 script = ExtResource("2_lrnp6")
 
 [node name="Visual" parent="VBoxContainer/HBoxContainer/Preview" instance=ExtResource("4_0jxse")]
-visible = false
 
 [node name="Control" type="Control" parent="VBoxContainer/HBoxContainer"]
 visible = false

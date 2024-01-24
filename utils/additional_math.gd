@@ -3,6 +3,8 @@ extends Node
 
 #Points array routine
 func points_wrapp_rect(points: Array[Vector2]) -> Rect2:
+	if points.is_empty(): return Rect2(0, 0, 0, 0)
+	
 	var max_x = points.map(func(p): return p.x).max()
 	var max_y = points.map(func(p): return p.y).max()
 	var min_x = points.map(func(p): return p.x).min()
@@ -61,3 +63,9 @@ func reversed_curve(curve: Curve2D) -> Curve2D:
 		var index = curve.point_count - iterator - 1
 		new_curve.add_point(curve.get_point_position(index), curve.get_point_out(index), curve.get_point_in(index))
 	return new_curve
+
+func curve_points_wrapp_rect(curve: Curve2D) -> Rect2:
+	var points: Array[Vector2] = []
+	for index in curve.point_count - 1:
+		points.append(curve.get_point_position(index))
+	return points_wrapp_rect(points)

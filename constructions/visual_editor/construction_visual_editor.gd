@@ -50,6 +50,6 @@ func _on_test_pressed():
 	var test_scene := test_scene_resource.instantiate() as ConstructionTest
 	test_scene.back_scene = self
 	var visual := test_scene.construction.visual as ConstructionVisual
-	visual.config = preview.visual_config.resized(20)
+	visual.config = preview.visual_config.resized(20).trimmed()
 	get_tree().root.add_child(test_scene)
 	get_tree().root.remove_child(self)

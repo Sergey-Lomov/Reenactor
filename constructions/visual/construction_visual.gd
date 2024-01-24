@@ -26,15 +26,14 @@ func handle_config_update():
 	if zero_centrate:
 		position = config.size * Vector2(-0.5, -0.5)
 	
-	edge.curve = config.edge
 	var color = config.color * glow_mult if glow else config.color
 	color = color.clamp()
-	
 	edge.fromColor = color
 	edge.toColor = color
+	edge.curve = config.adapted_edge
 	edge.width = config.edge_width
 	edge.queue_redraw()
 	
 	back.material = config.back_material
-	back.size = config.size
+	back.size = maxf(config.size.x, config.size.y)
 	back.queue_redraw()
