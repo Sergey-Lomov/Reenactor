@@ -7,7 +7,7 @@ class_name ConstructionVisualConfiguration extends Resource
 @export var color: Color
 @export var gap: Vector2 = default_gap #Gap which will be added around edge curve in cell_sizes
 
-const back_shader = preload("res://experimental/costruction_background/construction_background.gdshader")
+const back_shader = preload("res://constructions/visual/construction_background.gdshader")
 const default_gap: Vector2 = Vector2(2.0, 2.0)
 
 var size: Vector2:

@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://t3xi70hfj8ts"]
+
+[ext_resource type="Script" path="res://constructions/visual/effects/trail/TrailsTest.gd" id="1_nwj47"]
+[ext_resource type="Script" path="res://constructions/visual/effects/trail/plasma_trail.gd" id="2_b0j8v"]
+[ext_resource type="Shader" path="res://constructions/visual/effects/trail/plasma_trail.gdshader" id="3_t0kk6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ccke0"]
+shader = ExtResource("3_t0kk6")
+shader_parameter/color = Color(0, 0.545098, 0.117647, 1)
+shader_parameter/width = 10.0
+shader_parameter/texture_size = Vector2(500, 300)
+shader_parameter/radius = 0.0
+shader_parameter/points_count = 4
+shader_parameter/points = PackedVector2Array(50, 50, 300, 150, 320, 80, 80, 90)
+shader_parameter/lifetimes = PackedFloat32Array(0, 1.6, 2.6, 7)
+shader_parameter/disappearing = 1.0
+
+[node name="TrailsTest" type="Node2D"]
+script = ExtResource("1_nwj47")
+
+[node name="VE_PlasmaTrail" type="Node2D" parent="."]
+script = ExtResource("2_b0j8v")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_ccke0")
+offset_right = 500.0
+offset_bottom = 300.0

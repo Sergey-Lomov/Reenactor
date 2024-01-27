@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://constructions/visual_editor/construction_test.gd" id="1_odu7s"]
 [ext_resource type="Script" path="res://constructions/nodes/navigation/player_controller.gd" id="2_hd3n4"]
 [ext_resource type="Script" path="res://constructions/nodes/engines/base_engine.gd" id="3_77vtb"]
-[ext_resource type="Material" uid="uid://6ln7hj8262ws" path="res://experimental/costruction_background/construction_background.tres" id="5_f185t"]
+[ext_resource type="Material" uid="uid://6ln7hj8262ws" path="res://constructions/visual/construction_background.tres" id="5_8oiub"]
 
 [sub_resource type="Curve2D" id="Curve2D_if5qd"]
 _data = {
@@ -44,7 +44,7 @@ script = ExtResource("3_77vtb")
 position = Vector2(0, 0)
 
 [node name="ConstructionBackground" parent="Construction/Visual" index="0"]
-material = ExtResource("5_f185t")
+material = ExtResource("5_8oiub")
 
 [node name="Edge" parent="Construction/Visual" index="1"]
 curve = SubResource("Curve2D_if5qd")
