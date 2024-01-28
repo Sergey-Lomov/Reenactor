@@ -20,7 +20,7 @@ var parent_structure: Structure:
 				return get_parent()
 			cursor = cursor.get_parent()
 			
-		push_error("Construction node out of construction")
+		printerr("Construction node out of construction")
 		return null
 
 func _init(_durability: float = default_durability(), _group: StructureNodeGroup = default_group()):

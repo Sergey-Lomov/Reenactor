@@ -1,5 +1,5 @@
 @tool
-class_name ConstructionBackground extends Node2D
+class_name ConstructionBackground extends ConstructionVisualComponent
 
 var size: float:
 	set(value):

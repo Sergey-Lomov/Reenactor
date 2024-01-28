@@ -11,6 +11,9 @@ class PointLifetime:
 
 var points: Array[PointLifetime] = []
 
+#Point life time
+var lifetime: float = 1.0
+
 #Disappearing animation duration. Is part of point lifetime.
 var disappearing_duration: float = 0.0:	
 	set(value):
@@ -70,7 +73,7 @@ func _process(delta):
 	
 	queue_redraw()
 		
-func add_point(coord: Vector2, lifetime: float):
+func add_point(coord: Vector2):
 	var point = PointLifetime.new(coord, lifetime)
 	points.push_back(point)
 	

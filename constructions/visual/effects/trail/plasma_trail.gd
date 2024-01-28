@@ -2,8 +2,8 @@ class_name VE_PlasmaTrail extends VE_Trail
 
 const shader = preload("res://constructions/visual/effects/trail/plasma_trail.gdshader")
 
-var color := Color.AQUAMARINE
-var width := 20.0
+var color := Color.DARK_ORANGE
+var width := 10.0
 
 #Should be overrided in dervied classes.
 func get_shader() -> Shader:
@@ -19,6 +19,7 @@ func get_max_points() -> int:
 	
 func _ready():
 	super._ready()
+	lifetime = 3.0
 	material.set_shader_parameter("color", color)
 	material.set_shader_parameter("width", width)
 	material.set_shader_parameter("disappearing", 2.0)

@@ -4,6 +4,8 @@ class_name ConstructionVisual extends Node2D
 @onready var back := get_node(backPath) as ConstructionBackground
 @export var edgePath: NodePath
 @onready var edge := get_node(edgePath) as GradientPath2D
+@export var veManagerPath: NodePath
+@onready var ve_manager := get_node(veManagerPath) as VE_Manager
 
 var zero_centrate := true
 var glow := true
@@ -33,6 +35,9 @@ func handle_config_update():
 	edge.curve = config.adapted_edge
 	edge.width = config.edge_width
 	edge.queue_redraw()
+	
+	#TODO: Remove test code
+	if $TrailSource: $TrailSource.position = config.size * 0.5
 	
 	back.material = config.back_material
 	back.size = maxf(config.size.x, config.size.y)
