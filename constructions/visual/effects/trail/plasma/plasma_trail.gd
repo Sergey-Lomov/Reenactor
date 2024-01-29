@@ -1,6 +1,6 @@
 class_name CVE_PlasmaTrail extends CVE_Trail
 
-const shader = preload("res://constructions/visual/effects/trail/plasma_trail.gdshader")
+const shader = preload("res://constructions/visual/effects/trail/plasma/plasma_trail.gdshader")
 
 var color: Color:	
 	set(value): material.set_shader_parameter("color", value)

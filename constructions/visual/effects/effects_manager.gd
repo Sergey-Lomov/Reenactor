@@ -57,6 +57,8 @@ func instantiate_trail(source_config: CVE_EffectConfiguration) -> CVE_Trail:
 	match trail_config.get_trail_type():
 		CVE_TrailConfiguration.TrailType.PLASMA:
 			trail = CVE_PlasmaTrail.new()
+		CVE_TrailConfiguration.TrailType.SPIRAL_SPARKS:
+			trail = CVE_SpiralSparksTrail.new()
 	
 	trail.setup(trail_config)
 	return trail 

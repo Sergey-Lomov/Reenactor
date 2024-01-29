@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CVE_SpiralSparksTrailConfiguration" load_steps=2 format=3 uid="uid://c1rroiojropha"]
+
+[ext_resource type="Script" path="res://constructions/visual/effects/trail/spiral_sparks/spiral_sparks_trail_configuration.gd" id="1_eyuc5"]
+
+[resource]
+script = ExtResource("1_eyuc5")
+color = Color(0.894118, 0.894118, 0, 1)
+width = 6.0
+lifeatime = 1.0
+disappearing = 0.25

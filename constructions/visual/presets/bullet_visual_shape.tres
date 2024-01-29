@@ -1,22 +1,26 @@
-[gd_resource type="Resource" script_class="ConstructionVisualConfiguration" load_steps=6 format=3 uid="uid://c0hgnenqjadcm"]
+[gd_resource type="Resource" script_class="ConstructionVisualConfiguration" load_steps=6 format=3 uid="uid://q8mgmw1l2bsv"]
 
 [ext_resource type="Script" path="res://constructions/visual/effects/trail/trail_source_configuration.gd" id="1_0d52x"]
 [ext_resource type="Script" path="res://constructions/visual/construction_visual_configuration.gd" id="1_glxxn"]
-[ext_resource type="Resource" uid="uid://c1rroiojropha" path="res://constructions/visual/presets/bullet_spiral_sparks_trail.tres" id="2_nuu62"]
+[ext_resource type="Resource" uid="uid://cwijokpjda1xc" path="res://constructions/visual/presets/bullet_plasma_trail.tres" id="2_3ey1k"]
 
 [sub_resource type="Curve2D" id="Curve2D_edas7"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0.5, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0)
+}
+point_count = 4
 
 [sub_resource type="Resource" id="Resource_0mk4f"]
 script = ExtResource("1_0d52x")
 cell = Vector2i(0, 0)
-trail = ExtResource("2_nuu62")
+trail = ExtResource("2_3ey1k")
 
 [resource]
 script = ExtResource("1_glxxn")
 cells_count = Vector2(1, 1)
 cell_size = 7.0
 edge = SubResource("Curve2D_edas7")
-edge_width = 0.0
+edge_width = 1.0
 color = Color(0, 0.682353, 0, 1)
 gap = Vector2(1, 1)
 effects = Array[Resource("res://constructions/visual/effects/effect_source_configuration.gd")]([SubResource("Resource_0mk4f")])

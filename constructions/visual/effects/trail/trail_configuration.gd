@@ -3,6 +3,7 @@ class_name CVE_TrailConfiguration extends CVE_EffectConfiguration
 enum TrailType {
 	UNDEFINED,
 	PLASMA,
+	SPIRAL_SPARKS,
 }
 
 @export var lifeatime: float

@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="VE_PlasmaTrailConfiguration" load_steps=2 format=3 uid="uid://cwijokpjda1xc"]
 
-[ext_resource type="Script" path="res://constructions/visual/effects/trail/plasma_trail_configuration.gd" id="1_mxge7"]
+[ext_resource type="Script" path="res://constructions/visual/effects/trail/plasma/plasma_trail_configuration.gd" id="1_mxge7"]
 
 [resource]
 script = ExtResource("1_mxge7")

@@ -5,7 +5,6 @@ shader_type canvas_item;
 uniform vec3 color: source_color;
 uniform float width;				//In pixels
 uniform vec2 texture_size;			//In pixels
-uniform float radius;				//In pixels
 
 uniform int points_count;
 uniform vec2 points[MAX_POINTS];		//Points coords in pixels
@@ -30,16 +29,10 @@ void fragment() {
 		float dist = line_params.x;
 		float l_coord = line_params.y;
 		float lifetime = mix(lifetimes[i] - disappearing, lifetimes[i+1] - disappearing, l_coord);
-		lifetime = clamp(lifetime, 0.0, 1.0);
 		result_color = max(result_color, color * step(0, dist));
-		float act_width = mix(width * 2.0, width, lifetime);
+		float act_width = mix(width * 2.0, width, clamp(lifetime, 0.0, 1.0));
 		float alpha = smoothstep(act_width, act_width / 4.0, dist) * lifetime;
-		alpha = clamp(alpha, 0.0, 1.0);
-		float max_alpha = max(result_alpha, alpha);
-		float sum_alpha = result_alpha + alpha;
-		float r_width = width / length(points[i] - points[i + 1]);
-		result_alpha = max_alpha;//mix(max_alpha, sum_alpha, smoothstep(0, r_width, abs(l_coord)));
-		//result_alpha = result_alpha * step(alpha, 0) + alpha * step(0, alpha);
+		result_alpha = max(result_alpha, alpha);
 	}
 	
 	COLOR = vec4(result_color, result_alpha);
