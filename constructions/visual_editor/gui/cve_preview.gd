@@ -81,7 +81,7 @@ var show_symmetries := true
 
 func _enter_tree():
 	visual = get_node(visual_path) as ConstructionVisual
-	visual.editor_mode = false
+	visual.editor_mode = true
 
 func _ready():
 	visual.hide()

@@ -22,6 +22,7 @@ var disappearing: float = 0.0:
 #Points wrapping rectangle
 var rect: Rect2:
 	set(value):
+		#TODO: remove test code
 		rect = Rect2(0, 0, 1000, 800)#value
 		if material: material.set_shader_parameter("texture_size", full_size)
 		position = rect.position - get_gap()
@@ -47,10 +48,6 @@ func get_max_points() -> int:
 func _init():
 	material = ShaderMaterial.new()
 	material.shader = get_shader()
-	
-	#TODO: remove test code
-	#rect = Rect2(get_gap(), Vector2(1000, 800))
-	#position = Vector2.ZERO
 
 func _draw():
 	draw_rect(Rect2(Vector2.ZERO, full_size), Color.WHITE)

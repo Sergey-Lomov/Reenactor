@@ -54,6 +54,7 @@ script = ExtResource("6_um55j")
 position = Vector2(0, 0)
 back_path = NodePath("ConstructionBackground")
 edge_path = NodePath("Edge")
+cve_manager_path = NodePath("../../VE_Manager")
 
 [node name="ConstructionBackground" parent="World/Construction/Visual" index="0"]
 material = ExtResource("6_1yna4")

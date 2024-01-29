@@ -51,7 +51,8 @@ func _ready():
 func handle_config_update():
 	if not is_node_ready(): return
 	if not config:
-		printerr("Construction visual have no config")
+		if not editor_mode: 
+			printerr("Construction visual have no config")
 		return
 	
 	if zero_centrate:
