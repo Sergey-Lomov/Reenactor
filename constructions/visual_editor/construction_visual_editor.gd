@@ -24,7 +24,6 @@ func _ready():
 			cell.y = y
 			grid.add_child(cell)
 
-
 func _on_generate_pressed():
 	var preview_grid: Array = []
 	for x in grid_size:
@@ -50,6 +49,6 @@ func _on_test_pressed():
 	var test_scene := test_scene_resource.instantiate() as ConstructionTest
 	test_scene.back_scene = self
 	var visual := test_scene.construction.visual as ConstructionVisual
-	visual.config = preview.visual_config.resized(20).trimmed()
+	visual.config = preview.visual_config.resized(20).trimmed().editor_to_ingame()
 	get_tree().root.add_child(test_scene)
 	get_tree().root.remove_child(self)

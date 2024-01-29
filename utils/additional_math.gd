@@ -38,10 +38,10 @@ func translated_curve(curve: Curve2D, delta: Vector2) -> Curve2D:
 		new_curve.add_point(point, curve.get_point_in(index), curve.get_point_out(index))
 	return new_curve
 
-func rotated_curve(curve: Curve2D, angle: float) -> Curve2D:
+func rotated_curve(curve: Curve2D, angle: float, anchor: Vector2 = Vector2.ZERO) -> Curve2D:
 	var new_curve = Curve2D.new()
 	for index in curve.point_count:
-		var point = curve.get_point_position(index).rotated(angle)
+		var point = (curve.get_point_position(index) - anchor).rotated(angle) + anchor
 		var point_in = curve.get_point_in(index).rotated(angle)
 		var point_out = curve.get_point_out(index).rotated(angle)
 		new_curve.add_point(point, point_in, point_out)

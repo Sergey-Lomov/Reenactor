@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://t3xi70hfj8ts"]
 
-[ext_resource type="Script" path="res://constructions/visual/effects/trail/TrailsTest.gd" id="1_nwj47"]
+[ext_resource type="Script" path="res://constructions/visual/effects/trail/trails_test.gd" id="1_nwj47"]
 [ext_resource type="Script" path="res://constructions/visual/effects/trail/plasma_trail.gd" id="2_b0j8v"]
 [ext_resource type="Shader" path="res://constructions/visual/effects/trail/plasma_trail.gdshader" id="3_t0kk6"]
 

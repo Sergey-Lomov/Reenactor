@@ -5,7 +5,7 @@ enum KeypointsPositioning {VERTEX, VERTEX_AND_EDGES, DEEPED}
 enum Symmetry {NONE, VERTICAL, HORIZONTAL, VERTICAL_AND_HORIZONTAL, RADIAL}
 
 @export var visual_path: NodePath = NodePath("Visual")
-@onready var visual := get_node(visual_path) as ConstructionVisual
+var visual :ConstructionVisual
 
 const material_export_path = "res://experimental/costruction_background/construction_background_test.tres"
 
@@ -79,9 +79,12 @@ var show_keypoints_directions := true
 var show_patterns_edges := true
 var show_symmetries := true
 
+func _enter_tree():
+	visual = get_node(visual_path) as ConstructionVisual
+	visual.editor_mode = false
+
 func _ready():
 	visual.hide()
-	visual.zero_centrate = false
 	visual.config = visual_config
 	visual.position = -visual.config.gap_displacement
 

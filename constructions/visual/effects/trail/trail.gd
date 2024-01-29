@@ -1,4 +1,4 @@
-class_name VE_Trail extends Node2D
+class_name CVE_Trail extends CVE_Effect
 
 #Class described trail point - coords and lifetime
 class PointLifetime:
@@ -15,10 +15,9 @@ var points: Array[PointLifetime] = []
 var lifetime: float = 1.0
 
 #Disappearing animation duration. Is part of point lifetime.
-var disappearing_duration: float = 0.0:	
-	set(value):
-		disappearing_duration = value
-		if material: material.set_shader_parameter("disappearing", value)
+var disappearing: float = 0.0:	
+	set(value): material.set_shader_parameter("disappearing", value)
+	get: return material.get_shader_parameter("disappearing")
 
 #Points wrapping rectangle
 var rect: Rect2:
@@ -45,7 +44,7 @@ func get_gap() -> Vector2:
 func get_max_points() -> int:
 	return 1
 
-func _ready():
+func _init():
 	material = ShaderMaterial.new()
 	material.shader = get_shader()
 	
@@ -72,6 +71,11 @@ func _process(delta):
 	material.set_shader_parameter("lifetimes", lifetimes)
 	
 	queue_redraw()
+		
+#Should be overrided by derived class
+func setup(config: CVE_TrailConfiguration):
+	lifetime = config.lifeatime
+	disappearing = config.disappearing
 		
 func add_point(coord: Vector2):
 	var point = PointLifetime.new(coord, lifetime)

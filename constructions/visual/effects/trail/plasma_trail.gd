@@ -1,9 +1,14 @@
-class_name VE_PlasmaTrail extends VE_Trail
+class_name CVE_PlasmaTrail extends CVE_Trail
 
 const shader = preload("res://constructions/visual/effects/trail/plasma_trail.gdshader")
 
-var color := Color.DARK_ORANGE
-var width := 10.0
+var color: Color:	
+	set(value): material.set_shader_parameter("color", value)
+	get: return material.get_shader_parameter("color")
+	
+var width: float:	
+	set(value): material.set_shader_parameter("width", value)
+	get: return material.get_shader_parameter("width")
 
 #Should be overrided in dervied classes.
 func get_shader() -> Shader:
@@ -16,10 +21,10 @@ func get_gap() -> Vector2:
 #Return value should be equal same value specified in shader. Should be overrided in derived classes.
 func get_max_points() -> int:
 	return 300
-	
-func _ready():
-	super._ready()
-	lifetime = 3.0
-	material.set_shader_parameter("color", color)
-	material.set_shader_parameter("width", width)
-	material.set_shader_parameter("disappearing", 2.0)
+
+func setup(config: CVE_TrailConfiguration):
+	super.setup(config)	
+	var plasma_config = config as CVE_PlasmaTrailConfiguration
+	if not plasma_config: return
+	color = plasma_config.color
+	width = plasma_config.width

@@ -1,6 +1,7 @@
 class_name SN_StructuresSpawner extends SN_FeatureProvider
 
 var blueprint: Structure
+var visual: ConstructionVisualConfiguration
 var custom_team: Variant
 
 func default_blueprint(): return null
@@ -28,9 +29,11 @@ func _enter_tree():
 	
 	var demager = SN_ConstantDamager.new(10)
 	blueprint.add_child(demager)
+	
+	visual = load("res://constructions/visual/presets/bullet_visual.tres") as ConstructionVisualConfiguration
 
 func _process(_delta):
 	if Input.is_action_just_pressed("ui_accept"):
 		var instance = blueprint.copy()
-		var feature = SF_StructuresSpawning.new(instance, custom_team)
+		var feature = SF_StructuresSpawning.new(instance, visual, custom_team)
 		feature_execution_requested.emit(feature)

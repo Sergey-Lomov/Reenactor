@@ -6,8 +6,9 @@ class_name ConstructionVisualConfiguration extends Resource
 @export var edge_width: float
 @export var color: Color
 @export var gap: Vector2 = default_gap #Gap which will be added around edge curve in cell_sizes
+@export var effects: Array[CVE_SourceConfiguration] = [] #Resources for instantiate effects sources
 
-const back_shader = preload("res://constructions/visual/construction_background.gdshader")
+const back_shader = preload("res://constructions/visual/back/construction_background.gdshader")
 const default_gap: Vector2 = Vector2(2.0, 2.0)
 
 var size: Vector2:
@@ -22,7 +23,6 @@ var adapted_edge: Curve2D:
 		var adapted = AdditionalMath.scaled_curve(edge, cell_size, cell_size)
 		adapted = AdditionalMath.translated_curve(adapted, gap_displacement)
 		return adapted
-		
 
 var back_material: Material:
 	get:
@@ -42,6 +42,9 @@ var back_material: Material:
 		material.set_shader_parameter("points", act_points)
 				
 		return material
+
+func cell_center(x: int, y: int) -> Vector2:
+	return gap_displacement + Vector2(x + 0.5, y + 0.5) * cell_size
 
 func duplicate_config() -> ConstructionVisualConfiguration:
 	var new_config = ConstructionVisualConfiguration.new()
@@ -72,4 +75,10 @@ func trimmed() -> ConstructionVisualConfiguration:
 		result.cells_count = wrapper.size
 		result.gap = default_gap + Vector2(max_size - wrapper.size.x, max_size - wrapper.size.y) * 0.5
 		
+	return result
+
+#Convert from editor to ingame version. For now it is only rotation.
+func editor_to_ingame() -> ConstructionVisualConfiguration:
+	var result = duplicate_config()
+	result.edge = AdditionalMath.rotated_curve(edge, PI / 2, cells_count * 0.5)	
 	return result

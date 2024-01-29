@@ -12,16 +12,9 @@ func default_durability(): return 1
 func default_group(): return StructureNodeGroup.UNSPEC
 
 var parent_structure: Structure:
-	get:
-		var cursor = self
-		
-		while cursor.get_parent() != null:
-			if cursor.get_parent() is Structure:
-				return get_parent()
-			cursor = cursor.get_parent()
-			
-		printerr("Construction node out of construction")
-		return null
+	get: 
+		var message = "Construction node out of construction"
+		return NodeUtils.parent_by_type(self, Structure, message) as Structure
 
 func _init(_durability: float = default_durability(), _group: StructureNodeGroup = default_group()):
 	group = _group

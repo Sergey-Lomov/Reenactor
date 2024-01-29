@@ -2,6 +2,7 @@ class_name Construction extends CharacterBody2D
 
 enum Component {FEATURES_CONTEXT, STRUCTURE, VISUAL, SHAPE}
 enum DestructionReason {UNSTABILITY, CORE_BROKEN}
+
 const component_name = {
 	Component.FEATURES_CONTEXT: "FeaturesContext",
 	Component.STRUCTURE: "Structure",
@@ -34,21 +35,20 @@ var unstability: float:
 var radius: float:
 	get: return structure.get_child_count() + 2
 
-func _init(_structure: Structure = null, _feature_context: StructureFeatureContext = null, _visual: Node2D = null, _shape: CollisionShape2D = null):	
+func _init(_structure: Structure = null, _features_context: StructureFeatureContext = null, _visual: ConstructionVisual = null, _shape: CollisionShape2D = null):	
 	if _structure != null: structure = _structure	
-	if _feature_context != null: features_context = _feature_context
-	if _visual != null: visual = _visual
+	features_context = _features_context if _features_context else StructureFeatureContext.new()
+	visual = _visual if _visual else ConstructionVisual.new()
 	if _shape != null: shape = _shape
 
 func _enter_tree():
-	if visual == null: set_visual_by_structure()
 	if shape == null: 
 		set_shape_by_structure()
 	elif shape.shape == null:
 		set_shape_by_structure()
 
 func _process(_delta):
-	rotation = structure.get_attribute(Structure.Attribute.ROTATION) + PI / 2
+	rotation = structure.get_attribute(Structure.Attribute.ROTATION, rotation)
 
 func _on_structure_move_produced(absolute, relative, distance):
 	var adapted_relative = relative.rotated(rotation)
@@ -81,6 +81,7 @@ func set_component(node: Node, component: Component):
 	var old_node = get_node_or_null(NodePath(node.name))
 	if old_node: 
 		remove_child(old_node)
+		old_node.queue_free()
 	
 	add_child(node)
 	connect_component(component)

@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://dyvxs6ibspf15"]
 
-[ext_resource type="Material" uid="uid://6ln7hj8262ws" path="res://constructions/visual/construction_background.tres" id="1_flygh"]
+[ext_resource type="Material" uid="uid://6ln7hj8262ws" path="res://constructions/visual/back/construction_background.tres" id="1_flygh"]
 [ext_resource type="Script" path="res://experimental/DemoCurve.gd" id="2_abn50"]
 [ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/circle_2d.gd" id="3_s7ibe"]
-[ext_resource type="Script" path="res://constructions/visual/construction_background.gd" id="4_3bhvx"]
+[ext_resource type="Script" path="res://constructions/visual/back/construction_background.gd" id="4_3bhvx"]
 [ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/rectangle_2d.gd" id="5_kjchk"]
 [ext_resource type="Material" uid="uid://cym60p7600qh2" path="res://experimental/costruction_background/construction_background_test1.tres" id="5_tdwfn"]
 
