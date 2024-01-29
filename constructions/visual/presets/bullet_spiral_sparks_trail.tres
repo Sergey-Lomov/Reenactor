@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_eyuc5")
-color = Color(0.894118, 0.894118, 0, 1)
+color = Color(0, 0.682353, 0, 1)
 width = 6.0
 lifeatime = 1.0
 disappearing = 0.25

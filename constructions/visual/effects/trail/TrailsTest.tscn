@@ -6,12 +6,13 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8pasg"]
 shader = ExtResource("3_kfn7d")
-shader_parameter/color = Color(0.866667, 0.796078, 0, 1)
+shader_parameter/color = Color(0, 0.619608, 0, 1)
 shader_parameter/width = 10.0
 shader_parameter/texture_size = Vector2(500, 300)
-shader_parameter/points_count = 4
-shader_parameter/points = PackedVector2Array(20, 20, 50, 50, 80, 80, 110, 110)
-shader_parameter/lifetimes = PackedFloat32Array(1.5, 1.6, 1.7, 1.8)
+shader_parameter/points_count = 3
+shader_parameter/points = PackedVector2Array(30, 30, 60, 60, 90, 90)
+shader_parameter/lifetimes = PackedFloat32Array(1, 2, 3)
+shader_parameter/full_lifetime = 3.0
 shader_parameter/disappearing = 1.0
 
 [node name="TrailsTest" type="Node2D"]
