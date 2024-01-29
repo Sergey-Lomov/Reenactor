@@ -22,7 +22,7 @@ var disappearing: float = 0.0:
 #Points wrapping rectangle
 var rect: Rect2:
 	set(value):
-		rect = value
+		rect = Rect2(0, 0, 1000, 800)#value
 		if material: material.set_shader_parameter("texture_size", full_size)
 		position = rect.position - get_gap()
 
@@ -57,10 +57,13 @@ func _draw():
 
 func _process(delta):
 	var dead_point: PointLifetime
-	for index in points.size() - 1:
+	for index in points.size():
 		points[index].lifetime -= delta
-		if points[index].lifetime <= 0 and index > 0: 
-			dead_point = points[index - 1]
+		if points[index].lifetime <= 0:
+			if index > 0: 
+				dead_point = points[index - 1]
+			elif points.size() == 1:
+				dead_point = points[index]
 	
 	if dead_point: remove_point(dead_point)
 	
@@ -86,10 +89,12 @@ func add_point(coord: Vector2):
 		points.pop_front()	
 		
 	rect = AdditionalMath.points_wrapp_rect(get_coords())
+	is_finished = false
 	
 func remove_point(point: PointLifetime):
 	points.erase(point)
 	rect = AdditionalMath.points_wrapp_rect(get_coords())
+	if points.is_empty(): is_finished = true
 
 func get_coords(relative: bool = false) -> Array[Vector2]:
 	var result: Array[Vector2] = []

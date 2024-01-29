@@ -9,7 +9,7 @@ class_name CVE_Manager extends Node
 var protectors: Dictionary = {}
 
 func add_protector(effect: CVE_Effect, protector: Node):
-	protector.tree_exited.connect(_on_protector_exited_tree)
+	protector.tree_exited.connect(_on_protector_exited_tree.bind(protector))
 	if protectors.has(effect):
 		protectors[effect].append(protector)
 	else:
@@ -27,18 +27,17 @@ func remove_effect_if_necessary(effect: CVE_Effect):
 	
 func remove_effect(effect: CVE_Effect):
 	protectors.erase(effect)
-	remove_child(effect)
+	container.remove_child(effect)
 	effect.queue_free()
-	
-func _on_protector_exited_tree(protector: Node):
-	for effect in protectors.keys():
-		protectors[effect].erase(protector)
-		remove_effect_if_necessary(effect)
 
 func add_effect(config: CVE_EffectConfiguration) -> CVE_Effect:
 	if not container: return null
 	var effect = instantiate_effect(config)
-	if effect: container.add_child(effect)
+	
+	if effect: 
+		container.add_child(effect)
+		effect.finished.connect(_on_effect_finished.bind(effect))
+		
 	return effect
 
 func instantiate_effect(config: CVE_EffectConfiguration) -> CVE_Effect:
@@ -61,3 +60,17 @@ func instantiate_trail(source_config: CVE_EffectConfiguration) -> CVE_Trail:
 	
 	trail.setup(trail_config)
 	return trail 
+
+func _on_protector_exited_tree(protector: Node):
+	for effect in protectors.keys():
+		protectors[effect].erase(protector)
+		remove_effect_if_necessary(effect) 
+		
+func _on_effect_finished(effect: CVE_Effect):
+	if protectors.has(effect):
+		if not protectors[effect].is_empty():
+			return
+	
+	protectors.erase(effect)
+	container.remove_child(effect)
+	effect.queue_free()
