@@ -85,12 +85,12 @@ func add_point(coord: Vector2):
 	if points.size() > get_max_points(): 
 		points.pop_front()	
 		
-	rect = AdditionalMath.points_wrapp_rect(get_coords())
+	rect = AdMath.points_wrapp_rect(get_coords())
 	is_finished = false
 	
 func remove_point(point: PointLifetime):
 	points.erase(point)
-	rect = AdditionalMath.points_wrapp_rect(get_coords())
+	rect = AdMath.points_wrapp_rect(get_coords())
 	if points.is_empty(): is_finished = true
 
 func get_coords(relative: bool = false) -> Array[Vector2]:

@@ -16,7 +16,6 @@ var cell_size: float = 20
 
 var keypoints: Array[CVE_Keypoint] = []
 var keypoints_positioning := KeypointsPositioning.VERTEX_AND_EDGES	#Algoraithm not ready to use undeeped keypoints
-const angle_delta := 0.01
 
 const edge_width: float = 1
 const construction_color := Color.DARK_ORANGE
@@ -34,7 +33,7 @@ var visual_config: ConstructionVisualConfiguration:
 		config.color = construction_color
 		config.cell_size = cell_size
 		config.cells_count = Vector2(grid_size, grid_size)
-		config.edge = AdditionalMath.scaled_curve(edge_curve, 1.0/cell_size, 1.0/cell_size)
+		config.edge = AdMath.scaled_curve(edge_curve, 1.0/cell_size, 1.0/cell_size)
 		return config
 
 var edge_curve: Curve2D:
@@ -92,7 +91,7 @@ func _draw():
 	if keypoints.is_empty(): return
 	
 	#if edge_curve.point_count >= 2:
-		#var test = AdditionalMath.translated_curve(edge_curve, Vector2(0, -100))
+		#var test = AdMath.translated_curve(edge_curve, Vector2(0, -100))
 		#draw_polyline(test.get_baked_points(), construction_color, edge_width, true)
 
 	if show_keypoints:
@@ -206,23 +205,23 @@ func analyze_symmetry(coords: Array[Vector2]):
 	h_symmetry = true
 	r_symmetry = true
 	
-	var rect = AdditionalMath.points_wrapp_rect(coords)
+	var rect = AdMath.points_wrapp_rect(coords)
 	var center = rect.get_center()
 	
 	for coord in coords:
 		if v_symmetry:
 			var sym = Vector2(2 * center.x - coord.x, coord.y)
-			if not AdditionalMath.points_has_approx(coords, sym):
+			if not AdMath.points_has_approx(coords, sym):
 				v_symmetry = false
 				
 		if h_symmetry:
 			var sym = Vector2(coord.x, 2 * center.y - coord.y)
-			if not AdditionalMath.points_has_approx(coords, sym):
+			if not AdMath.points_has_approx(coords, sym):
 				h_symmetry = false
 				
 		if r_symmetry:
 			var sym = Vector2(2 * center.x - coord.x, 2 * center.y - coord.y)
-			if not AdditionalMath.points_has_approx(coords, sym):
+			if not AdMath.points_has_approx(coords, sym):
 				r_symmetry = false
 
 func setup_keypoints(coords: Array[Vector2]):
@@ -248,15 +247,15 @@ func setup_keypoints(coords: Array[Vector2]):
 				break
 			
 		nearest.sort_custom(func(p1, p2):
-			var out_direction = normalized_angle(direction - PI/2)
-			var fa1: float = normalized_angle((p1 - coords_iterator).angle())
-			var fa2: float = normalized_angle((p2 - coords_iterator).angle())
-			var a1: float = normalized_angle(fa1 - out_direction + angle_delta)
-			var a2: float = normalized_angle(fa2 - out_direction + angle_delta)
+			var out_direction = AdMath.normalized_angle(direction - PI/2)
+			var fa1: float = AdMath.normalized_points_angle(p1, coords_iterator)
+			var fa2: float = AdMath.normalized_points_angle(p2, coords_iterator)
+			var a1: float = AdMath.normalized_angle(fa1 - out_direction)
+			var a2: float = AdMath.normalized_angle(fa2 - out_direction)
 			var d1: float = coords_iterator.distance_to(p1)
 			var d2: float = coords_iterator.distance_to(p2)
 #			print("Iteration: ", iterations, " out_dir: ", out_direction, " fa1: ", fa1, " fa2: ", fa2, " a1: ", a1, " a2: ", a2, " d1: ", d1, " d2: ", d2)
-			return d1 < d2 if abs(a1 - a2) <= angle_delta else a1 < a2)
+			return d1 < d2 if is_equal_approx(a1, a2) else a1 < a2)
 		
 		#TODO: Change to angle_to and retest
 		direction = (nearest[0] - coords_iterator).angle()
@@ -295,7 +294,7 @@ func initial_direction() -> float:
 		_: return 0
 
 func sort_coords(coords: Array[Vector2]):
-	var center = AdditionalMath.points_wrapp_rect(coords).get_center()
+	var center = AdMath.points_wrapp_rect(coords).get_center()
 	match symmetry:
 		Symmetry.NONE:
 			coords.sort_custom(func(c1, c2): return c1.y < c2.y if c1.x == c2.x else c1.x < c2.x)
@@ -392,12 +391,6 @@ func apply_patterns_sequence(sequence: Array[CVE_VisualPattern], index: int, una
 			printerr("Can't apply: ", adapted.title, " requirements: ",  adapted.requirement)
 	
 	return adapted_sequence
-
-func normalized_angle(value: float, zero_to_full: bool = false):
-	var result = value if value >= 0 else value + 2 * PI
-	if zero_to_full:
-		result = result if abs(result) > angle_delta else 2 * PI
-	return result
 
 func _on_save_shader_pressed():
 	pass

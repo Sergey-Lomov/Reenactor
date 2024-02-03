@@ -30,6 +30,11 @@ func scaled_points(points: Array[Vector2], x_scale: float, y_scale: float) -> Ar
 	new_points.assign(points.map(func(p): return p * Vector2(x_scale, y_scale)))
 	return new_points
 
+func first_near(points: Array[Vector2], target: Vector2, tolerance: float) -> Variant:
+	var filter = func(p): return (p - target).length() <= tolerance
+	var filtered = points.filter(filter)
+	return null if filtered.is_empty() else filtered.front()
+
 #Curve routine
 func translated_curve(curve: Curve2D, delta: Vector2) -> Curve2D:
 	var new_curve = Curve2D.new()
@@ -69,3 +74,13 @@ func curve_points_wrapp_rect(curve: Curve2D) -> Rect2:
 	for index in curve.point_count - 1:
 		points.append(curve.get_point_position(index))
 	return points_wrapp_rect(points)
+
+#Angles routine
+func normalized_angle(value: float, zero_to_full: bool = false):
+	var result = value if value >= 0 else value + 2 * PI
+	if zero_to_full and is_equal_approx(result, 0.0):
+		result = 2 * PI
+	return result
+	
+func normalized_points_angle(point1: Vector2, point2: Vector2, zero_to_full: bool = false):
+	return normalized_angle(point1.angle_to_point(point2), zero_to_full)
