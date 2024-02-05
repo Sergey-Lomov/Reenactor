@@ -66,14 +66,30 @@ script = ExtResource("2_m2uwh")
 layout_mode = 2
 text = "Add point"
 
-[node name="Controls" type="Button" parent="Panel/VBoxContainer"]
+[node name="Visibility" type="HBoxContainer" parent="Panel/VBoxContainer"]
 layout_mode = 2
-text = "Show/hide controls"
+theme_override_constants/separation = 20
 
-[node name="Marking" type="Button" parent="Panel/VBoxContainer"]
+[node name="Controls" type="Button" parent="Panel/VBoxContainer/Visibility"]
 layout_mode = 2
-text = "Show/hide marking"
+size_flags_horizontal = 3
+text = "Controls"
+
+[node name="Marking" type="Button" parent="Panel/VBoxContainer/Visibility"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Marking"
+
+[node name="Intersections" type="Button" parent="Panel/VBoxContainer/Visibility"]
+layout_mode = 2
+text = "Intersections"
+
+[node name="Randomize" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Randomize"
 
 [connection signal="pressed" from="Panel/VBoxContainer/AddPoint" to="." method="_on_add_point_pressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/Controls" to="." method="_on_controls_pressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/Marking" to="." method="_on_marking_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Visibility/Controls" to="." method="_on_controls_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Visibility/Marking" to="." method="_on_marking_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Visibility/Intersections" to="." method="_on_intersections_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Randomize" to="." method="_on_randomize_pressed"]

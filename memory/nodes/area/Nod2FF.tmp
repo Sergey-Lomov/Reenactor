@@ -1,0 +1,102 @@
+[gd_scene load_steps=5 format=3 uid="uid://dgdy4vh3lnbkb"]
+
+[ext_resource type="Script" path="res://memory/nodes/area/node_area_editor.gd" id="1_mmey2"]
+[ext_resource type="Script" path="res://memory/nodes/area/node_area_editor_preview.gd" id="2_m2uwh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e718f"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+draw_center = false
+expand_margin_left = 20.0
+expand_margin_top = 20.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jbt5w"]
+draw_center = false
+
+[node name="NodeAreaEditor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mmey2")
+preview_path = NodePath("Panel/VBoxContainer/Panel/Preview")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_e718f")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -225.5
+offset_right = 200.0
+offset_bottom = 225.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Panel" type="Panel" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jbt5w")
+
+[node name="Preview" type="Control" parent="Panel/VBoxContainer/Panel"]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_m2uwh")
+
+[node name="AddPoint" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Add point"
+
+[node name="Visibility" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Controls" type="Button" parent="Panel/VBoxContainer/Visibility"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Controls"
+
+[node name="Marking" type="Button" parent="Panel/VBoxContainer/Visibility"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Marking"
+
+[node name="Intersections" type="Button" parent="Panel/VBoxContainer/Visibility"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Intersections"
+
+[node name="Curves" type="Button" parent="Panel/VBoxContainer/Visibility"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mandala"
+
+[node name="Randomize" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Randomize"
+
+[connection signal="pressed" from="Panel/VBoxContainer/AddPoint" to="." method="_on_add_point_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Visibility/Controls" to="." method="_on_controls_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Visibility/Marking" to="." method="_on_marking_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Visibility/Intersections" to="." method="_on_intersections_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Visibility/Curves" to="." method="_on_curves_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Randomize" to="." method="_on_randomize_pressed"]
