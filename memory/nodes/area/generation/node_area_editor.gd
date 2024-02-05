@@ -45,6 +45,10 @@ func _on_add_point_pressed():
 	points.append(preview.size * 0.5)
 	update_view()
 
+func _on_remove_point_pressed():
+	points.pop_back()
+	update_view()
+
 func _on_controls_pressed():
 	preview.show_controls = not preview.show_controls
 
@@ -70,6 +74,14 @@ func _on_metrics_pressed():
 	metrics_wrapper.visible = not metrics_wrapper.visible
 	if metrics_wrapper.visible: recalculate()
 
+func _on_add_sector_pressed():
+	sectors += 1
+	update_view()
+	
+func _on_remove_sector_pressed():
+	sectors = max(1, sectors-1)
+	update_view()
+	
 func recalculate():
 	var manager = MandalaManager.new(sectors, mirroring, preview.size)
 	var curves = manager.curves_for_points(points)
