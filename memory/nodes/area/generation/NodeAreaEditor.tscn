@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dgdy4vh3lnbkb"]
+[gd_scene load_steps=9 format=3 uid="uid://dgdy4vh3lnbkb"]
 
 [ext_resource type="Script" path="res://memory/nodes/area/generation/node_area_editor.gd" id="1_mmey2"]
 [ext_resource type="Script" path="res://memory/nodes/area/generation/node_area_editor_preview.gd" id="2_m2uwh"]
@@ -11,6 +11,9 @@ content_margin_top = 20.0
 draw_center = false
 expand_margin_left = 20.0
 expand_margin_top = 20.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_f5vg5"]
+font_size = 18
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jbt5w"]
 draw_center = false
@@ -26,8 +29,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_mmey2")
-preview_path = NodePath("Panel/VBoxContainer/HBoxContainer/Panel/Preview")
-metrics_path = NodePath("Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer")
+preview_path = NodePath("Panel/VBoxContainer/Main/Panel/Preview")
+metrics_path = NodePath("Panel/VBoxContainer/Main/CenterContainer/MetricsContainer")
+history_info_path = NodePath("Panel/VBoxContainer/Navigation/HistoryInfo")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -39,7 +43,7 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_e718f")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
-custom_minimum_size = Vector2(850, 0)
+custom_minimum_size = Vector2(880, 0)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -54,17 +58,43 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+[node name="Navigation" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Back" type="Button" parent="Panel/VBoxContainer/Navigation"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "<-"
+
+[node name="HistoryInfo" type="Label" parent="Panel/VBoxContainer/Navigation"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "No history yet"
+label_settings = SubResource("LabelSettings_f5vg5")
+horizontal_alignment = 1
+
+[node name="Next" type="Button" parent="Panel/VBoxContainer/Navigation"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "->"
+
+[node name="Save" type="Button" parent="Panel/VBoxContainer/Navigation"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Save"
+
+[node name="Main" type="HBoxContainer" parent="Panel/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 50
 
-[node name="Panel" type="Panel" parent="Panel/VBoxContainer/HBoxContainer"]
+[node name="Panel" type="Panel" parent="Panel/VBoxContainer/Main"]
 custom_minimum_size = Vector2(500, 500)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_jbt5w")
 
-[node name="Preview" type="Control" parent="Panel/VBoxContainer/HBoxContainer/Panel"]
+[node name="Preview" type="Control" parent="Panel/VBoxContainer/Main/Panel"]
 custom_minimum_size = Vector2(500, 500)
 layout_mode = 1
 anchors_preset = 8
@@ -80,178 +110,178 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_m2uwh")
 
-[node name="CenterContainer" type="CenterContainer" parent="Panel/VBoxContainer/HBoxContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="Panel/VBoxContainer/Main"]
 layout_mode = 2
 
-[node name="MetricsContainer" type="VBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer"]
-custom_minimum_size = Vector2(300, 0)
+[node name="MetricsContainer" type="VBoxContainer" parent="Panel/VBoxContainer/Main/CenterContainer"]
+custom_minimum_size = Vector2(330, 0)
 layout_mode = 2
 theme_override_constants/separation = 10
 script = ExtResource("3_ub4tf")
 
-[node name="Title" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer"]
+[node name="Title" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer"]
 layout_mode = 2
 text = "Metrics"
 label_settings = SubResource("LabelSettings_0oltd")
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer"]
+[node name="Title" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Sectors"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="Value" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer"]
+[node name="Value" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer"]
 layout_mode = 2
 text = "-
 "
 label_settings = ExtResource("4_lgc6u")
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer2"]
+[node name="Title" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Mirroring"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="Value" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer2"]
+[node name="Value" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer2"]
 layout_mode = 2
 text = "-
 "
 label_settings = ExtResource("4_lgc6u")
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer3"]
+[node name="Title" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Baked count"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="Value" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer3"]
+[node name="Value" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer3"]
 layout_mode = 2
 text = "-"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer4"]
+[node name="Title" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer4"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Baked length"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="Value" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer4"]
+[node name="Value" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer4"]
 layout_mode = 2
 text = "-"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer5"]
+[node name="Title" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer5"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Baked interval"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="Value" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer5"]
+[node name="Value" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer5"]
 layout_mode = 2
 text = "-"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer6"]
+[node name="Title" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer6"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Intersect. count"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="Value" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer6"]
+[node name="Value" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer6"]
 layout_mode = 2
 text = "-"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="HBoxContainer7" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer"]
+[node name="HBoxContainer7" type="HBoxContainer" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer7"]
+[node name="Title" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer7"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Intersect. per sector"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="Value" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer7"]
+[node name="Value" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer7"]
 layout_mode = 2
 text = "-"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="HBoxContainer8" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer"]
+[node name="HBoxContainer8" type="HBoxContainer" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer8"]
+[node name="Title" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer8"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Intersect. min distance"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="Value" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer8"]
+[node name="Value" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer8"]
 layout_mode = 2
 text = "-"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="HBoxContainer9" type="HBoxContainer" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer"]
+[node name="HBoxContainer9" type="HBoxContainer" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Title" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer9"]
+[node name="Title" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer9"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Intersect. max density"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="Value" type="Label" parent="Panel/VBoxContainer/HBoxContainer/CenterContainer/MetricsContainer/HBoxContainer9"]
+[node name="Value" type="Label" parent="Panel/VBoxContainer/Main/CenterContainer/MetricsContainer/HBoxContainer9"]
 layout_mode = 2
 text = "-"
 label_settings = ExtResource("4_lgc6u")
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="Panel/VBoxContainer"]
+[node name="Manual" type="HBoxContainer" parent="Panel/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="AddPoint" type="Button" parent="Panel/VBoxContainer/HBoxContainer3"]
+[node name="AddPoint" type="Button" parent="Panel/VBoxContainer/Manual"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Add point"
 
-[node name="RemovePoint" type="Button" parent="Panel/VBoxContainer/HBoxContainer3"]
+[node name="RemovePoint" type="Button" parent="Panel/VBoxContainer/Manual"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Remove point"
 
-[node name="AddSector" type="Button" parent="Panel/VBoxContainer/HBoxContainer3"]
+[node name="AddSector" type="Button" parent="Panel/VBoxContainer/Manual"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Add sector"
 
-[node name="RemoveSector" type="Button" parent="Panel/VBoxContainer/HBoxContainer3"]
+[node name="RemoveSector" type="Button" parent="Panel/VBoxContainer/Manual"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Remove sector"
@@ -285,28 +315,31 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Metrics"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Panel/VBoxContainer"]
+[node name="Features" type="HBoxContainer" parent="Panel/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
 
-[node name="Randomize" type="Button" parent="Panel/VBoxContainer/HBoxContainer2"]
+[node name="Randomize" type="Button" parent="Panel/VBoxContainer/Features"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Randomize"
 
-[node name="Recalculate" type="Button" parent="Panel/VBoxContainer/HBoxContainer2"]
+[node name="Recalculate" type="Button" parent="Panel/VBoxContainer/Features"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Re-analyze"
 
-[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer3/AddPoint" to="." method="_on_add_point_pressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer3/RemovePoint" to="." method="_on_remove_point_pressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer3/AddSector" to="." method="_on_add_sector_pressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer3/RemoveSector" to="." method="_on_remove_sector_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Navigation/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Navigation/Next" to="." method="_on_next_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Navigation/Save" to="." method="_on_save_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Manual/AddPoint" to="." method="_on_add_point_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Manual/RemovePoint" to="." method="_on_remove_point_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Manual/AddSector" to="." method="_on_add_sector_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Manual/RemoveSector" to="." method="_on_remove_sector_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Visibility/Controls" to="." method="_on_controls_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Visibility/Marking" to="." method="_on_marking_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Visibility/Intersections" to="." method="_on_intersections_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Visibility/Curves" to="." method="_on_curves_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Visibility/Metrics" to="." method="_on_metrics_pressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer2/Randomize" to="." method="_on_randomize_pressed"]
-[connection signal="pressed" from="Panel/VBoxContainer/HBoxContainer2/Recalculate" to="." method="_on_recalculate_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Features/Randomize" to="." method="_on_randomize_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Features/Recalculate" to="." method="_on_recalculate_pressed"]

@@ -20,7 +20,9 @@ func handle_metrics_update():
 			5: rows[i].get_child(1).text = str(metrics.intersections_count)
 			6: rows[i].get_child(1).text = str(metrics.intersections_per_sector)
 			7: 
-				var value = metrics.intersections_min_distance
-				var text = "-" if is_inf(value) else str(value).pad_decimals(4)
-				rows[i].get_child(1).text = text
-			8: rows[i].get_child(1).text = str(metrics.intersections_max_density).pad_decimals(5)
+				var value = "%0.4f" % metrics.intersections_min_distance
+				rows[i].get_child(1).text = value
+			8: 
+				var value = "%0.4f" % metrics.intersections_max_density
+				var adapted = "> 10" if metrics.intersections_max_density > 10 else value
+				rows[i].get_child(1).text = adapted

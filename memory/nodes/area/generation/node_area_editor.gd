@@ -6,6 +6,8 @@ class_name NodeAreaEditor extends Control
 @onready var metrics_wrapper := get_node(metrics_path) as Control
 @export var metrics_path: NodePath
 @onready var metrics_container := get_node(metrics_path) as NAE_MetricsContainer
+@export var history_info_path: NodePath
+@onready var history_info := get_node(history_info_path) as Label
 
 var mirroring: bool = true
 var sectors: int = 6:
@@ -14,6 +16,28 @@ var sectors: int = 6:
 		if is_node_ready(): preview.sectors = sectors
 
 var points: Array[Vector2] = []
+
+class HistoryItem:
+	var points: Array[Vector2]
+	var sectors: int
+	var mirroring: bool
+	
+	func _init(_points: Array[Vector2], _sectors: int, _mirroring: bool):
+		points = _points
+		sectors = _sectors
+		mirroring = _mirroring
+	
+var history: Array[HistoryItem] = []
+var history_index: int = 0:
+	set(value):
+		value = clamp(0, history.size() - 1, value)
+		if history_index < history.size() - 1:
+			history[history_index].points = points.duplicate()
+			history[history_index].sectors = sectors
+			history[history_index].mirroring = mirroring
+		history_index = value
+		hande_history_index_update()
+		
 var dragging_index = null
 
 func _ready():
@@ -41,6 +65,17 @@ func update_view():
 	preview.intersections = intersections
 	metrics_container.metrics = manager.analyze(curves, intersections)
 
+func _on_back_pressed():
+	history_index = max(0, history_index - 1)
+
+func _on_next_pressed():
+	history_index = min(history.size() - 1, history_index + 1)
+
+func _on_save_pressed():
+	var history_item = HistoryItem.new(points, sectors, mirroring)
+	history.append(history_item)
+	history_index = history.size() - 1
+
 func _on_add_point_pressed():
 	points.append(preview.size * 0.5)
 	update_view()
@@ -63,8 +98,11 @@ func _on_curves_pressed():
 
 func _on_randomize_pressed():
 	var manager = MandalaManager.new(sectors, mirroring, preview.size)
-	points = manager.random_points()	
+	var new_points = manager.random_points()	
 	preview.radiuses = manager.random_count
+	var history_item = HistoryItem.new(new_points, sectors, mirroring)
+	history.append(history_item)
+	history_index = history.size() - 1
 	update_view()
 
 func _on_recalculate_pressed():
@@ -82,6 +120,7 @@ func _on_remove_sector_pressed():
 	sectors = max(1, sectors-1)
 	update_view()
 	
+#Uses for debug purposes, so no need to update view
 func recalculate():
 	var manager = MandalaManager.new(sectors, mirroring, preview.size)
 	var curves = manager.curves_for_points(points)
@@ -89,3 +128,13 @@ func recalculate():
 	preview.curves = curves
 	preview.intersections = intersections
 	metrics_container.metrics = manager.analyze(curves, intersections)
+
+func update_history_info():
+	history_info.text = "%d / %d" % [(history_index + 1), history.size()]
+
+func hande_history_index_update():
+	points = history[history_index].points
+	sectors = history[history_index].sectors
+	mirroring = history[history_index].mirroring
+	update_view()
+	update_history_info()
