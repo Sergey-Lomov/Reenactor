@@ -6,7 +6,7 @@ var size: Vector2
 var center: Vector2:
 	get: return size / 2
 var sector_step: float:
-	get: return PI * 2 / sectors
+	get: return TAU / sectors
 
 const control_distance_mult: float = 0.35
 const free_spaces_search_step: float = 0.05
@@ -63,7 +63,7 @@ func get_edges_angles() -> Array[float]:
 #Returns angle of first uniq area (sector or half-sector if mirroringing enabled)
 func uniq_angle() -> float:
 	var mirroringing_mult = 0.5 if mirroring else 1.0
-	return PI * 2 / sectors * mirroringing_mult
+	return TAU / sectors * mirroringing_mult
 
 #Check is point in specified area. Edge value uses asvalid only if mirroringing enabled
 #Fuction uniq_angle() should not be used inside this function to avoid unnecessary recalculations at each call
@@ -97,7 +97,7 @@ func random_point(index: int, points: Array[Vector2], total: int, edges_angles: 
 	if index > 0:
 		var preangle = (points[index-1] - center).angle()
 		var random = (randf() - 0.5) * 2.0
-		var tolerance = PI * 2.0 / sectors * random_angle_tolerance
+		var tolerance = TAU / sectors * random_angle_tolerance
 		angle = preangle + random * tolerance
 	if index == total - 1:
 		edges_angles.sort_custom(func(a1, a2): return absf(a1 - angle) < absf(a2 - angle))
@@ -300,7 +300,7 @@ func get_free_spaces(curves: Array[Curve2D], required_count: int, min_radius: fl
 	var spaces: Array[NodeFreeSpace] = [] 
 	var max_radius = size.x / 2.0
 	
-	var search_angles = [PI * 2 / sectors, PI / sectors]
+	var search_angles = [TAU / sectors, PI / sectors]
 	if mirroring: 
 		search_angles.append(PI * 0.5 / sectors)
 		search_angles.append(PI * 1.5 / sectors)
@@ -360,9 +360,18 @@ func get_free_spaces(curves: Array[Curve2D], required_count: int, min_radius: fl
 	var radius_sum = func(a): return a.reduce(func(sum, space): return sum + space.radius, 0)
 	combinations.sort_custom(func(c1, c2): return radius_sum.call(c1) > radius_sum.call(c2))		
 	combinations = combinations.filter(func(spaces_set): return not spaces_intersects(spaces_set))
-		
+	
+	var angle_step = TAU / sectors
 	var result: Array[NodeFreeSpace] = []
-	result.assign(combinations.front())
+	for sector in sectors:
+		var sector_angle = sector * angle_step
+		for space in combinations.front():
+			var length = (space.position - center).length()
+			var angle = (space.position - center).angle() + sector_angle
+			var rotated_position = Vector2.from_angle(angle) * length + center
+			var rotated_space = NodeFreeSpace.new(rotated_position, space.radius)
+			result.append(rotated_space)
+		
 	return result
 
 func spaces_intersects(spaces: Array) -> bool:

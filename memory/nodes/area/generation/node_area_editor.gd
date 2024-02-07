@@ -9,6 +9,8 @@ class_name NodeAreaEditor extends Control
 @export var history_info_path: NodePath
 @onready var history_info := get_node(history_info_path) as Label
 
+const save_resource_path := "res://memory/nodes/area/generation/saved_config.tres"
+
 var mirroring: bool = true
 var sectors: int = 6:
 	set(value):
@@ -70,13 +72,24 @@ func update_view():
 	var adapted_min_radius = free_space_min_radius * size.x / 2
 	preview.free_spaces = manager.get_free_spaces(curves, free_space_count, adapted_min_radius)
 
+func _on_load_pressed():
+	var config = ResourceLoader.load(save_resource_path) as MandalaGenerationConfig
+	points = config.points
+	sectors = config.sectors
+	mirroring = config.mirroring
+	update_view()
+
+func _on_save_pressed():
+	var config = MandalaGenerationConfig.new(points, sectors, mirroring)
+	ResourceSaver.save(config, save_resource_path)
+
 func _on_back_pressed():
 	history_index = max(0, history_index - 1)
 
 func _on_next_pressed():
 	history_index = min(history.size() - 1, history_index + 1)
 
-func _on_save_pressed():
+func _on_duplicate_pressed():
 	var history_item = HistoryItem.new(points, sectors, mirroring)
 	history.append(history_item)
 	history_index = history.size() - 1

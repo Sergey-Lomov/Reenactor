@@ -52,7 +52,8 @@ var marking_color := Color(0.175, 0.175, 0.175)
 var marking_secondary_color := Color(0.125, 0.125, 0.125)
 var intersections_color := Color.YELLOW
 var curve_color := Color.CORNFLOWER_BLUE
-var spaces_color := Color.ORANGE_RED
+var lead_spaces_color := Color.RED
+var spaces_color := Color.ORANGE
 var control_points_color := Color.WEB_GREEN
 var control_lines_color := Color.DARK_GREEN
 var points_color := Color.ANTIQUE_WHITE
@@ -93,8 +94,11 @@ func draw_curves():
 			draw_polyline(curve.get_baked_points(), curve_color, 2, true)	
 	
 func draw_free_spaces():
-	for space in free_spaces:
-		draw_arc(space.position, space.radius, 0, TAU, 60, spaces_color, -1, false)
+	for i in free_spaces.size():
+		var is_lead = i < free_spaces.size() / float(sectors)
+		var color = lead_spaces_color if is_lead else spaces_color
+		#draw_arc(free_spaces[i].position, free_spaces[i].radius, 0, TAU, 60, color, 2, false)
+		draw_circle(free_spaces[i].position, free_spaces[i].radius, color)
 	
 func draw_controls(curve: Curve2D):
 	for index in curve.point_count:

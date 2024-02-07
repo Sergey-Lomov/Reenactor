@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="MandalaGenerationConfig" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://memory/nodes/area/generation/mandala_generation_config.gd" id="1_8uu0m"]
+
+[resource]
+script = ExtResource("1_8uu0m")
+points = Array[Vector2]([Vector2(324.918, 250), Vector2(319.99, 278.574), Vector2(384.457, 155.694), Vector2(500, 250)])
+sectors = 6
+mirroring = true
