@@ -6,7 +6,7 @@ func greater_or_equal_approx(v1: float ,v2: float) -> bool:
 	return v1 > v2 or is_equal_approx(v1, v2)
 	
 func greater_approx(v1: float ,v2: float) -> bool:
-	return v1 < v2 and not is_equal_approx(v1, v2)
+	return v1 > v2 and not is_equal_approx(v1, v2)
 	
 func less_or_equal_approx(v1: float ,v2: float) -> bool:
 	return v1 < v2 or is_equal_approx(v1, v2)

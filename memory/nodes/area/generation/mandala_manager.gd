@@ -46,6 +46,12 @@ class NodeFreeSpace:
 	func _init(_position: Vector2, _radius: float):
 		position = _position
 		radius = _radius
+		
+	func rotated(angle: float, center: Vector2) -> NodeFreeSpace:
+		var length = (position - center).length()
+		var target_angle = (position - center).angle() + angle
+		var rotated_position = Vector2.from_angle(target_angle) * length + center
+		return NodeFreeSpace.new(rotated_position, radius)
 
 func _init(_sectors: int, _mirroring: bool, _size: Vector2):
 	sectors = _sectors
@@ -332,55 +338,74 @@ func get_free_spaces(curves: Array[Curve2D], required_count: int, min_radius: fl
 				if AdMath.less_approx(valid_radius, min_radius): continue
 				radius = valid_radius
 			
-			var valid_by_intersection = true
-			var overlaped: Array[NodeFreeSpace] = []
-			for space in angle_spaces:
-				var distance = (space.position - position).length()
-				var r_sum = space.radius + radius
-				if distance > r_sum or is_equal_approx(distance, r_sum): continue
-				if space.radius >= radius: 
-					valid_by_intersection = false
-					break
-				else:
-					overlaped.append(space)
-			
-			if valid_by_intersection:
-				for space in overlaped:
-					angle_spaces.erase(space)
-				angle_spaces.append(NodeFreeSpace.new(position, radius))
+			#var valid_by_intersection = true
+			#var overlaped: Array[NodeFreeSpace] = []
+			#for space in angle_spaces:
+				#var distance = (space.position - position).length()
+				#var r_sum = space.radius + radius
+				#if distance > r_sum or is_equal_approx(distance, r_sum): continue
+				#if space.radius >= radius: 
+					#valid_by_intersection = false
+					#break
+				#else:
+					#overlaped.append(space)
+			#
+			#if valid_by_intersection:
+				#for space in overlaped:
+					#angle_spaces.erase(space)
+				#angle_spaces.append(NodeFreeSpace.new(position, radius))
+			angle_spaces.append(NodeFreeSpace.new(position, radius))
 				
 		spaces.append_array(angle_spaces)
 	
 	if spaces.size() < required_count: return spaces
 	
-	spaces.sort_custom(func(s1, s2): return s1.radius > s2.radius)
+	#spaces.sort_custom(func(s1, s2): return s1.radius > s2.radius)
 	var combinations = AdMath.combinations(spaces, required_count)	
-	if combinations.is_empty(): return spaces
-	
+							 	
 	var radius_sum = func(a): return a.reduce(func(sum, space): return sum + space.radius, 0)
-	combinations.sort_custom(func(c1, c2): return radius_sum.call(c1) > radius_sum.call(c2))		
-	combinations = combinations.filter(func(spaces_set): return not spaces_intersects(spaces_set))
+	combinations.sort_custom(func(c1, c2): 
+		var r1 = radius_sum.call(c1)
+		var r2 = radius_sum.call(c2)
+		if is_equal_approx(r1, r2):
+			var w1 = spaces_angles_weight(c1) 
+			var w2 = spaces_angles_weight(c2)
+			return AdMath.greater_approx(w1, w2)
+		else:
+			return AdMath.greater_approx(r1, r2)
+	)
 	
+	combinations = combinations.filter(func(spaces_set): return not spaces_intersects(spaces_set))
+	if combinations.is_empty(): return spaces
+				
 	var angle_step = TAU / sectors
 	var result: Array[NodeFreeSpace] = []
 	for sector in sectors:
 		var sector_angle = sector * angle_step
 		for space in combinations.front():
-			var length = (space.position - center).length()
-			var angle = (space.position - center).angle() + sector_angle
-			var rotated_position = Vector2.from_angle(angle) * length + center
-			var rotated_space = NodeFreeSpace.new(rotated_position, space.radius)
-			result.append(rotated_space)
+			result.append(space.rotated(sector_angle, center))
 		
 	return result
 
 func spaces_intersects(spaces: Array) -> bool:
+	var angles = [0, TAU / sectors]
 	for space in spaces:
 		for co_space in spaces:
 			if space == co_space: continue
-			var distance = (space.position - co_space.position).length()
 			var radius_sum = space.radius + co_space.radius
-			if AdMath.less_approx(distance, radius_sum): return true
+			for angle in angles:
+				var act_space = space.rotated(angle, center)
+				var distance = (act_space.position - co_space.position).length()
+				if AdMath.less_approx(distance, radius_sum): return true
 	
 	return false
-	
+
+func spaces_angles_weight(spaces: Array) -> float:
+	var weight = 0
+	var angle_step = uniq_angle()
+	for space in spaces:
+		var angle = (space.position - center).angle()
+		var is_primary = is_zero_approx((angle / angle_step) - floor(angle / angle_step))
+		weight += 1 if is_primary else 0
+		
+	return weight
