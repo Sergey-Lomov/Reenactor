@@ -9,6 +9,9 @@ var sector_step: float:
 	get: return PI * 2 / sectors
 
 const control_distance_mult: float = 0.35
+const free_spaces_search_step: float = 0.05
+const free_spaces_center_gap: float = 0.2		#Minimal gap between free space area and center. Multiplies by mandala radius.
+const free_spaces_edge_gap: float = 0.1			#Minimal gap between free space area and circle outer edge. Multiplies by mandala radius.
 
 const random_count: int = 4						#Points count at randomization
 const random_angle_tolerance: float = 1.0		#Max angles difference between new point and last approved point. Multiplies to sector angle.
@@ -35,6 +38,14 @@ class Line:
 
 	func rect_itersects(line: Line) -> bool:
 		return rect.intersects(line.rect)
+
+class NodeFreeSpace:
+	var position: Vector2
+	var radius: float
+	
+	func _init(_position: Vector2, _radius: float):
+		position = _position
+		radius = _radius
 
 func _init(_sectors: int, _mirroring: bool, _size: Vector2):
 	sectors = _sectors
@@ -273,3 +284,94 @@ func analyze(curves: Array[Curve2D], intersections: Array[Vector2]) -> MandalaMe
 	
 	metrics.intersections_min_distance = metrics.intersections_min_distance / size.x / 2.0	
 	return metrics
+
+func get_free_spaces(curves: Array[Curve2D], required_count: int, min_radius: float) -> Array[NodeFreeSpace]:
+	if curves[0].point_count < 2: return []
+	var max_angle = uniq_angle() * 3
+
+	var points: Array[Vector2] = []
+	for curve in curves:
+		var backed = curve.get_baked_points()
+		if backed.size() < 2: continue
+		for point in backed:
+			var point_valid = in_angle_area(point - center, max_angle)
+			if point_valid: points.append(point)
+	
+	var spaces: Array[NodeFreeSpace] = [] 
+	var max_radius = size.x / 2.0
+	
+	var search_angles = [PI * 2 / sectors, PI / sectors]
+	if mirroring: 
+		search_angles.append(PI * 0.5 / sectors)
+		search_angles.append(PI * 1.5 / sectors)
+	
+	for search_angle in search_angles:
+		var basic_vector = Vector2.from_angle(search_angle) * max_radius
+		var search_length = free_spaces_search_step
+		var angle_spaces: Array[NodeFreeSpace] = [] 
+		
+		var edge_valid_radius =  (1 - free_spaces_edge_gap) * max_radius
+		var center_valid_raiuds = free_spaces_center_gap * max_radius
+		while AdMath.less_or_equal_approx(search_length, 1.0 - free_spaces_search_step):
+			var position = basic_vector * search_length + center
+			search_length += free_spaces_search_step
+			var radius = points.map(func(p): return (position-p).length()).min()
+			var length = (position - center).length()
+			
+			if AdMath.less_approx(radius, min_radius): continue
+			
+			var valid_by_center = AdMath.greater_or_equal_approx(length - radius, center_valid_raiuds)
+			if not valid_by_center:
+				var valid_radius = length - center_valid_raiuds
+				if AdMath.less_approx(valid_radius, min_radius): continue
+				radius = valid_radius
+			
+			var valid_by_edge = AdMath.less_or_equal_approx(length + radius, edge_valid_radius)
+			if not valid_by_edge:
+				var valid_radius = edge_valid_radius - length
+				if AdMath.less_approx(valid_radius, min_radius): continue
+				radius = valid_radius
+			
+			var valid_by_intersection = true
+			var overlaped: Array[NodeFreeSpace] = []
+			for space in angle_spaces:
+				var distance = (space.position - position).length()
+				var r_sum = space.radius + radius
+				if distance > r_sum or is_equal_approx(distance, r_sum): continue
+				if space.radius >= radius: 
+					valid_by_intersection = false
+					break
+				else:
+					overlaped.append(space)
+			
+			if valid_by_intersection:
+				for space in overlaped:
+					angle_spaces.erase(space)
+				angle_spaces.append(NodeFreeSpace.new(position, radius))
+				
+		spaces.append_array(angle_spaces)
+	
+	if spaces.size() < required_count: return spaces
+	
+	spaces.sort_custom(func(s1, s2): return s1.radius > s2.radius)
+	var combinations = AdMath.combinations(spaces, required_count)	
+	if combinations.is_empty(): return spaces
+	
+	var radius_sum = func(a): return a.reduce(func(sum, space): return sum + space.radius, 0)
+	combinations.sort_custom(func(c1, c2): return radius_sum.call(c1) > radius_sum.call(c2))		
+	combinations = combinations.filter(func(spaces_set): return not spaces_intersects(spaces_set))
+		
+	var result: Array[NodeFreeSpace] = []
+	result.assign(combinations.front())
+	return result
+
+func spaces_intersects(spaces: Array) -> bool:
+	for space in spaces:
+		for co_space in spaces:
+			if space == co_space: continue
+			var distance = (space.position - co_space.position).length()
+			var radius_sum = space.radius + co_space.radius
+			if AdMath.less_approx(distance, radius_sum): return true
+	
+	return false
+	

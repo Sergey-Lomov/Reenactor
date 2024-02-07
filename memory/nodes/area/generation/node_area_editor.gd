@@ -40,6 +40,9 @@ var history_index: int = 0:
 		
 var dragging_index = null
 
+const free_space_count: int = 3
+const free_space_min_radius: float = 0.025
+
 func _ready():
 	preview.sectors = sectors
 	
@@ -64,6 +67,8 @@ func update_view():
 	preview.curves = curves
 	preview.intersections = intersections
 	metrics_container.metrics = manager.analyze(curves, intersections)
+	var adapted_min_radius = free_space_min_radius * size.x / 2
+	preview.free_spaces = manager.get_free_spaces(curves, free_space_count, adapted_min_radius)
 
 func _on_back_pressed():
 	history_index = max(0, history_index - 1)
@@ -120,14 +125,8 @@ func _on_remove_sector_pressed():
 	sectors = max(1, sectors-1)
 	update_view()
 	
-#Uses for debug purposes, so no need to update view
 func recalculate():
-	var manager = MandalaManager.new(sectors, mirroring, preview.size)
-	var curves = manager.curves_for_points(points)
-	var intersections = manager.get_intersections(curves)
-	preview.curves = curves
-	preview.intersections = intersections
-	metrics_container.metrics = manager.analyze(curves, intersections)
+	update_view()
 
 func update_history_info():
 	history_info.text = "%d / %d" % [(history_index + 1), history.size()]

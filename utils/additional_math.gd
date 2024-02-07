@@ -1,6 +1,28 @@
 @tool
 extends Node
 
+#Floats routine
+func greater_or_equal_approx(v1: float ,v2: float) -> bool:
+	return v1 > v2 or is_equal_approx(v1, v2)
+	
+func greater_approx(v1: float ,v2: float) -> bool:
+	return v1 < v2 and not is_equal_approx(v1, v2)
+	
+func less_or_equal_approx(v1: float ,v2: float) -> bool:
+	return v1 < v2 or is_equal_approx(v1, v2)
+	
+func less_approx(v1: float ,v2: float) -> bool:
+	return v1 < v2 and not is_equal_approx(v1, v2)
+
+func normalized_angle(value: float, zero_to_full: bool = false):
+	var result = value if value >= 0 else value + 2 * PI
+	if zero_to_full and is_equal_approx(result, 0.0):
+		result = 2 * PI
+	return result
+	
+func normalized_points_angle(point1: Vector2, point2: Vector2, zero_to_full: bool = false):
+	return normalized_angle(point1.angle_to_point(point2), zero_to_full)
+
 #Points array routine
 func points_wrapp_rect(points: Array[Vector2]) -> Rect2:
 	if points.is_empty(): return Rect2(0, 0, 0, 0)
@@ -75,12 +97,18 @@ func curve_points_wrapp_rect(curve: Curve2D) -> Rect2:
 		points.append(curve.get_point_position(index))
 	return points_wrapp_rect(points)
 
-#Angles routine
-func normalized_angle(value: float, zero_to_full: bool = false):
-	var result = value if value >= 0 else value + 2 * PI
-	if zero_to_full and is_equal_approx(result, 0.0):
-		result = 2 * PI
-	return result
+#Combinations
+func combinations(values: Array, size: int) -> Array:
+	if size > values.size(): return []
+	if size == 1: 
+		return values.duplicate().map(func(v): return [v])
 	
-func normalized_points_angle(point1: Vector2, point2: Vector2, zero_to_full: bool = false):
-	return normalized_angle(point1.angle_to_point(point2), zero_to_full)
+	var result := []
+	var unhandled = values.duplicate()
+	while not unhandled.is_empty():
+		var head = unhandled.pop_back()
+		for sub_combination in combinations(unhandled, size - 1):
+			sub_combination.append(head)
+			result.append(sub_combination)
+			
+	return result

@@ -22,6 +22,11 @@ var show_curves: bool = true:
 	set(value):
 		show_curves = value
 		queue_redraw()
+		
+var show_spaces: bool = true:
+	set(value):
+		show_spaces = value
+		queue_redraw()
 
 var curves: Array[Curve2D] = []:
 	set(value):
@@ -33,6 +38,11 @@ var intersections: Array[Vector2] = []:
 		intersections = value
 		queue_redraw()
 		
+var free_spaces: Array[MandalaManager.NodeFreeSpace] = []:
+	set(value):
+		free_spaces = value
+		queue_redraw()
+		
 var point_radius: float = 3
 var intersection_point_radius: float = 3
 var control_point_radius: float = 3
@@ -42,6 +52,7 @@ var marking_color := Color(0.175, 0.175, 0.175)
 var marking_secondary_color := Color(0.125, 0.125, 0.125)
 var intersections_color := Color.YELLOW
 var curve_color := Color.CORNFLOWER_BLUE
+var spaces_color := Color.ORANGE_RED
 var control_points_color := Color.WEB_GREEN
 var control_lines_color := Color.DARK_GREEN
 var points_color := Color.ANTIQUE_WHITE
@@ -52,6 +63,7 @@ var center: Vector2:
 func _draw():
 	draw_back()
 	if show_marking: draw_marking()
+	if show_spaces: draw_free_spaces()
 	if show_curves: draw_curves()
 	if show_controls and not curves.is_empty(): draw_controls(curves.front())
 	if show_intersections: draw_intersections()
@@ -72,14 +84,17 @@ func draw_marking():
 		var radius_step = size.x / 2 / radiuses
 		for i in radiuses:
 			var radius = (i + 0.5) * radius_step
-			#draw_circle(size * 0.5, radius, marking_color)
-			draw_arc(center, radius, 0, TAU, 10 * sectors, marking_color, -1, false)
+			draw_arc(center, radius, 0, TAU, 120, marking_color, -1, false)
 
 func draw_curves():
 	if curves.is_empty(): return
 	for curve in curves:
 		if curve.point_count >= 2:
 			draw_polyline(curve.get_baked_points(), curve_color, 2, true)	
+	
+func draw_free_spaces():
+	for space in free_spaces:
+		draw_arc(space.position, space.radius, 0, TAU, 60, spaces_color, -1, false)
 	
 func draw_controls(curve: Curve2D):
 	for index in curve.point_count:
