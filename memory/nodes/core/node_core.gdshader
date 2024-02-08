@@ -18,7 +18,6 @@ uniform float ray_border_width;
 
 const float smooth_dist = 1.7;
 
-
 struct dist_info {
 	float dist;
 	float l_coord;

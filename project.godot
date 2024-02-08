@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 CVE_PatternsManager="*res://constructions/visual_editor/patterns_library/patterns_manager.gd"
 AdMath="*res://utils/additional_math.gd"
 NodeUtils="*res://utils/node_utils.gd"
+AdColor="*res://utils/additional_color.gd"
 
 [display]
 
