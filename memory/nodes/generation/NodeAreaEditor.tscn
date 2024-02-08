@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=3 uid="uid://dgdy4vh3lnbkb"]
 
-[ext_resource type="Script" path="res://memory/nodes/area/generation/node_area_editor.gd" id="1_mmey2"]
-[ext_resource type="Script" path="res://memory/nodes/area/generation/node_area_editor_preview.gd" id="2_m2uwh"]
-[ext_resource type="Script" path="res://memory/nodes/area/generation/node_area_editor_metrics.gd" id="3_ub4tf"]
-[ext_resource type="LabelSettings" uid="uid://doeu7qhna2tks" path="res://memory/nodes/area/generation/mandala_metrics_row.tres" id="4_lgc6u"]
+[ext_resource type="Script" path="res://memory/nodes/generation/node_area_editor.gd" id="1_mmey2"]
+[ext_resource type="Script" path="res://memory/nodes/generation/node_area_editor_preview.gd" id="2_m2uwh"]
+[ext_resource type="Script" path="res://memory/nodes/generation/node_area_editor_metrics.gd" id="3_ub4tf"]
+[ext_resource type="LabelSettings" uid="uid://doeu7qhna2tks" path="res://memory/nodes/generation/mandala_metrics_row.tres" id="4_lgc6u"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e718f"]
 content_margin_left = 20.0

@@ -12,6 +12,7 @@ const control_distance_mult: float = 0.35
 const free_spaces_search_step: float = 0.05
 const free_spaces_center_gap: float = 0.2		#Minimal gap between free space area and center. Multiplies by mandala radius.
 const free_spaces_edge_gap: float = 0.1			#Minimal gap between free space area and circle outer edge. Multiplies by mandala radius.
+const optimize_by_intersections: bool = true	#This optimization powerfully increase free area calculation speed but make results unperfect in some cases
 
 const random_count: int = 4						#Points count at randomization
 const random_angle_tolerance: float = 1.0		#Max angles difference between new point and last approved point. Multiplies to sector angle.
@@ -295,6 +296,7 @@ func get_free_spaces(curves: Array[Curve2D], required_count: int, min_radius: fl
 	if curves[0].point_count < 2: return []
 	var max_angle = uniq_angle() * 3
 
+	#Filter points
 	var points: Array[Vector2] = []
 	for curve in curves:
 		var backed = curve.get_baked_points()
@@ -303,6 +305,7 @@ func get_free_spaces(curves: Array[Curve2D], required_count: int, min_radius: fl
 			var point_valid = in_angle_area(point - center, max_angle)
 			if point_valid: points.append(point)
 	
+	#Search available spaces
 	var spaces: Array[NodeFreeSpace] = [] 
 	var max_radius = size.x / 2.0
 	
@@ -337,32 +340,34 @@ func get_free_spaces(curves: Array[Curve2D], required_count: int, min_radius: fl
 				var valid_radius = edge_valid_radius - length
 				if AdMath.less_approx(valid_radius, min_radius): continue
 				radius = valid_radius
-			
-			#var valid_by_intersection = true
-			#var overlaped: Array[NodeFreeSpace] = []
-			#for space in angle_spaces:
-				#var distance = (space.position - position).length()
-				#var r_sum = space.radius + radius
-				#if distance > r_sum or is_equal_approx(distance, r_sum): continue
-				#if space.radius >= radius: 
-					#valid_by_intersection = false
-					#break
-				#else:
-					#overlaped.append(space)
-			#
-			#if valid_by_intersection:
-				#for space in overlaped:
-					#angle_spaces.erase(space)
-				#angle_spaces.append(NodeFreeSpace.new(position, radius))
-			angle_spaces.append(NodeFreeSpace.new(position, radius))
+		
+			if optimize_by_intersections: 
+				var valid_by_intersection = true
+				var overlaped: Array[NodeFreeSpace] = []
+				for space in angle_spaces:
+					var distance = (space.position - position).length()
+					var r_sum = space.radius + radius
+					if distance > r_sum or is_equal_approx(distance, r_sum): continue
+					if space.radius >= radius: 
+						valid_by_intersection = false
+						break
+					else:
+						overlaped.append(space)
+				
+				if valid_by_intersection:
+					for space in overlaped:
+						angle_spaces.erase(space)
+					angle_spaces.append(NodeFreeSpace.new(position, radius))
+			else:
+				angle_spaces.append(NodeFreeSpace.new(position, radius))
 				
 		spaces.append_array(angle_spaces)
 	
 	if spaces.size() < required_count: return spaces
-	
 	#spaces.sort_custom(func(s1, s2): return s1.radius > s2.radius)
-	var combinations = AdMath.combinations(spaces, required_count)	
-							 	
+	
+	#Select spaces combination
+	var combinations = AdMath.combinations(spaces, required_count)							 	
 	var radius_sum = func(a): return a.reduce(func(sum, space): return sum + space.radius, 0)
 	combinations.sort_custom(func(c1, c2): 
 		var r1 = radius_sum.call(c1)
@@ -377,12 +382,31 @@ func get_free_spaces(curves: Array[Curve2D], required_count: int, min_radius: fl
 	
 	combinations = combinations.filter(func(spaces_set): return not spaces_intersects(spaces_set))
 	if combinations.is_empty(): return spaces
-				
+	
+	#Modify selected combination
+	var combination = combinations.front()
+	for space in combination:
+		if on_primary_angle(space): continue
+		
+		var has_symmetry := false
+		var length = (space.position - center).length()
+		var angle = (space.position - center).angle()
+		var symmtry_angle = max_angle * 0.5 + (max_angle * 0.5 - angle)
+		for co_space in combination:
+			var co_length = (space.position - center).length()
+			if not is_equal_approx(length, co_length): continue
+			var co_angle = (co_space.position - center).angle()
+			if is_equal_approx(co_angle, symmtry_angle): has_symmetry = true
+		if has_symmetry: continue
+		
+		modify_space(space, combination, uniq_angle())
+	
+	#Copy spaces into all sectors
 	var angle_step = TAU / sectors
 	var result: Array[NodeFreeSpace] = []
 	for sector in sectors:
 		var sector_angle = sector * angle_step
-		for space in combinations.front():
+		for space in combination:
 			result.append(space.rotated(sector_angle, center))
 		
 	return result
@@ -401,11 +425,24 @@ func spaces_intersects(spaces: Array) -> bool:
 	return false
 
 func spaces_angles_weight(spaces: Array) -> float:
-	var weight = 0
+	var weights = spaces.map(func(s):
+		return 1 if on_primary_angle(s) else 0
+	)
+	return weights.reduce(func(sum, w): return sum + w)
+
+#Primary angles in sectors and mirroring edges
+func on_primary_angle(space: NodeFreeSpace) -> bool:
 	var angle_step = uniq_angle()
-	for space in spaces:
-		var angle = (space.position - center).angle()
-		var is_primary = is_zero_approx((angle / angle_step) - floor(angle / angle_step))
-		weight += 1 if is_primary else 0
-		
-	return weight
+	var angle = (space.position - center).angle()
+	return is_zero_approx((angle / angle_step) - floor(angle / angle_step))
+	
+func modify_space(space: NodeFreeSpace, spaces: Array, center_angle: float):
+	var length = (space.position - center).length()
+	var new_spaces = spaces.duplicate()
+	new_spaces.erase(space)
+	#Try to centrate
+	var new_position = Vector2.from_angle(center_angle) * length + center
+	var new_space = NodeFreeSpace.new(new_position, space.radius)
+	new_spaces.append(new_space)
+	if spaces_intersects(new_spaces): return
+	space.position = new_position
