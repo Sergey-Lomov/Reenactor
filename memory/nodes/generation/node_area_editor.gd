@@ -10,6 +10,7 @@ class_name NodeAreaEditor extends Control
 @onready var history_info := get_node(history_info_path) as Label
 
 const save_resource_path := "res://memory/nodes/generation/saved_config.tres"
+const curves_export_path := "res://memory/nodes/generation/exported_curves.tres"
 
 var mirroring: bool = true
 var sectors: int = 6:
@@ -140,6 +141,15 @@ func _on_add_sector_pressed():
 func _on_remove_sector_pressed():
 	sectors = max(1, sectors-1)
 	update_view()
+	
+func _on_export_curves_pressed():
+	var array = CurvesArray.new()
+	var curve_scale = Vector2.ONE / preview.size
+	for curve in preview.curves:
+		var scaled = AdMath.scaled_curve_g(curve, curve_scale)
+		var translated = AdMath.translated_curve_s(scaled, -0.5, -0.5)
+		array.curves.append(translated)
+	ResourceSaver.save(array, curves_export_path)
 	
 func recalculate():
 	update_view()

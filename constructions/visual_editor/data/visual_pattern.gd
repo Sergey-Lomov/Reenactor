@@ -84,7 +84,7 @@ func mirrored() -> CVE_VisualPattern:
 	var new_requirement := AdMath.scaled_points(requirement, 1, -1)
 	var new_pre_requirement := AdMath.scaled_points(pre_requirement, 1, -1)
 	var new_post_requirement := AdMath.scaled_points(post_requirement, 1, -1)
-	var new_curve := AdMath.scaled_curve(curve, 1, -1)
+	var new_curve := AdMath.scaled_curve_s(curve, 1, -1)
 	var new_title = title + " mirrored"
 	
 	return CVE_VisualPattern.new(new_pre_requirement, new_requirement, new_post_requirement, new_curve, new_title)
@@ -98,7 +98,7 @@ func inverted_main() -> CVE_VisualPattern:
 	new_requirement = AdMath.rotated_points(new_requirement, angle)
 	
 	var last_position = curve.get_point_position(curve.point_count - 1)
-	var new_curve := AdMath.translated_curve(curve, -last_position)
+	var new_curve := AdMath.translated_curve_g(curve, -last_position)
 	new_curve = AdMath.reversed_curve(new_curve)
 	new_curve = AdMath.rotated_curve(new_curve, angle)
 	

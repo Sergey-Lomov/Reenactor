@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="MandalaGenerationConfig" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="MandalaGenerationConfig" load_steps=2 format=3 uid="uid://dy0uk28l747o"]
 
 [ext_resource type="Script" path="res://memory/nodes/generation/mandala_generation_config.gd" id="1_4lavg"]
 

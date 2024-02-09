@@ -33,7 +33,7 @@ var visual_config: ConstructionVisualConfiguration:
 		config.color = construction_color
 		config.cell_size = cell_size
 		config.cells_count = Vector2(grid_size, grid_size)
-		config.edge = AdMath.scaled_curve(edge_curve, 1.0/cell_size, 1.0/cell_size)
+		config.edge = AdMath.scaled_curve_s(edge_curve, 1.0/cell_size, 1.0/cell_size)
 		return config
 
 var edge_curve: Curve2D:
@@ -91,7 +91,7 @@ func _draw():
 	if keypoints.is_empty(): return
 	
 	#if edge_curve.point_count >= 2:
-		#var test = AdMath.translated_curve(edge_curve, Vector2(0, -100))
+		#var test = AdMath.translated_curve_s(edge_curve, 0, -100)
 		#draw_polyline(test.get_baked_points(), construction_color, edge_width, true)
 
 	if show_keypoints:

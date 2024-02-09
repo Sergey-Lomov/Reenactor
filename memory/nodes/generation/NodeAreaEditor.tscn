@@ -345,6 +345,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Re-analyze"
 
+[node name="ExportCurves" type="Button" parent="Panel/VBoxContainer/Features"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Export curves"
+
 [connection signal="pressed" from="Panel/VBoxContainer/Navigation/Save" to="." method="_on_save_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Navigation/Load" to="." method="_on_load_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Navigation/Back" to="." method="_on_back_pressed"]
@@ -362,3 +367,4 @@ text = "Re-analyze"
 [connection signal="pressed" from="Panel/VBoxContainer/Visibility/Spaces" to="." method="_on_spaces_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Features/Randomize" to="." method="_on_randomize_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Features/Recalculate" to="." method="_on_recalculate_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Features/ExportCurves" to="." method="_on_export_curves_pressed"]

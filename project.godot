@@ -18,9 +18,9 @@ config/icon="res://icon.svg"
 [autoload]
 
 CVE_PatternsManager="*res://constructions/visual_editor/patterns_library/patterns_manager.gd"
-AdMath="*res://utils/additional_math.gd"
-NodeUtils="*res://utils/node_utils.gd"
-EmColor="*res://utils/emotions_color.gd"
+AdMath="*res://utils/services/additional_math.gd"
+NodeUtils="*res://utils/services/node_utils.gd"
+EmColor="*res://utils/services/emotions_color.gd"
 
 [display]
 

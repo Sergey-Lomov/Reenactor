@@ -9,3 +9,4 @@ func _enter_tree():
 	memory_node = MemoryNode.new(node_state)
 	memory_node.size = node_size
 	add_child(memory_node)
+	memory_node.position = (Vector2(get_viewport().size) - node_size) / 2

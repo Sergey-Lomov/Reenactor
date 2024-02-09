@@ -21,7 +21,7 @@ var adapted_edge: Curve2D:
 	get:
 		if not edge: return null
 		var adapted = AdMath.scaled_curve(edge, cell_size, cell_size)
-		adapted = AdMath.translated_curve(adapted, gap_displacement)
+		adapted = AdMath.translated_curve_g(adapted, gap_displacement)
 		return adapted
 
 var back_material: Material:
@@ -60,7 +60,7 @@ func resized(target_cell_size: float) -> ConstructionVisualConfiguration:
 	var new_config = duplicate_config()
 	var scale = target_cell_size / cell_size
 	new_config.cell_size = target_cell_size
-	new_config.edge = AdMath.scaled_curve(edge, scale, scale)
+	new_config.edge = AdMath.scaled_curve_s(edge, scale, scale)
 	return new_config
 	
 func trimmed() -> ConstructionVisualConfiguration:
@@ -71,7 +71,7 @@ func trimmed() -> ConstructionVisualConfiguration:
 		var max_size := maxf(wrapper.size.x, wrapper.size.y)
 		var left_space = wrapper.position.x
 		var top_space = wrapper.position.y
-		result.edge = AdMath.translated_curve(edge, Vector2(-left_space, -top_space))
+		result.edge = AdMath.translated_curve_s(edge, -left_space, -top_space)
 		result.cells_count = wrapper.size
 		result.gap = default_gap + Vector2(max_size - wrapper.size.x, max_size - wrapper.size.y) * 0.5
 		

@@ -58,13 +58,6 @@ func first_near(points: Array[Vector2], target: Vector2, tolerance: float) -> Va
 	return null if filtered.is_empty() else filtered.front()
 
 #Curve routine
-func translated_curve(curve: Curve2D, delta: Vector2) -> Curve2D:
-	var new_curve = Curve2D.new()
-	for index in curve.point_count:
-		var point = curve.get_point_position(index) + delta
-		new_curve.add_point(point, curve.get_point_in(index), curve.get_point_out(index))
-	return new_curve
-
 func rotated_curve(curve: Curve2D, angle: float, anchor: Vector2 = Vector2.ZERO) -> Curve2D:
 	var new_curve = Curve2D.new()
 	for index in curve.point_count:
@@ -73,16 +66,28 @@ func rotated_curve(curve: Curve2D, angle: float, anchor: Vector2 = Vector2.ZERO)
 		var point_out = curve.get_point_out(index).rotated(angle)
 		new_curve.add_point(point, point_in, point_out)
 	return new_curve
-	
-func scaled_curve(curve: Curve2D, x_scale: float, y_scale: float) -> Curve2D:
+
+func translated_curve_g(curve: Curve2D, delta: Vector2) -> Curve2D:
 	var new_curve = Curve2D.new()
-	var scale = Vector2(x_scale, y_scale)
+	for index in curve.point_count:
+		var point = curve.get_point_position(index) + delta
+		new_curve.add_point(point, curve.get_point_in(index), curve.get_point_out(index))
+	return new_curve
+
+func translated_curve_s(curve: Curve2D, delta_x: float, delta_y: float) -> Curve2D:
+	return translated_curve_g(curve, Vector2(delta_x, delta_y))
+
+func scaled_curve_g(curve: Curve2D, scale: Vector2) -> Curve2D:
+	var new_curve = Curve2D.new()
 	for index in curve.point_count:
 		var point = curve.get_point_position(index) * scale
 		var point_in = curve.get_point_in(index) * scale
 		var point_out = curve.get_point_out(index) * scale
 		new_curve.add_point(point, point_in, point_out)
-	return new_curve
+	return new_curve 
+	
+func scaled_curve_s(curve: Curve2D, x_scale: float, y_scale: float) -> Curve2D:
+	return scaled_curve_g(curve, Vector2(x_scale, y_scale))
 	
 func reversed_curve(curve: Curve2D) -> Curve2D:
 	var new_curve = Curve2D.new()

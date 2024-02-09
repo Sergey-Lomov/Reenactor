@@ -130,9 +130,9 @@ func validate_new_point(point: Vector2, approved: Array[Vector2], min_distance: 
 
 func curves_for_points(points: Array[Vector2]) -> Array[Curve2D]:
 	var curve := curve_for_points(points)
-	var mirrored = AdMath.translated_curve(curve, -center)
-	mirrored = AdMath.scaled_curve(mirrored, -1, 1)
-	mirrored = AdMath.translated_curve(mirrored, center)
+	var mirrored = AdMath.translated_curve_g(curve, -center)
+	mirrored = AdMath.scaled_curve_s(mirrored, -1, 1)
+	mirrored = AdMath.translated_curve_g(mirrored, center)
 	
 	var curves: Array[Curve2D] = []
 	for i in sectors:
