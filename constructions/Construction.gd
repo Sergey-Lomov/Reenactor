@@ -98,21 +98,6 @@ func connect_component(component: Component):
 			pass
 		Component.SHAPE:
 			pass
-
-func set_visual_by_structure():
-	var new_visual = Node2D.new()
-	
-	var circle = Circle2D.new()
-	circle.radius = radius
-	new_visual.add_child(circle)
-	
-	var cabin = Circle2D.new()
-	cabin.radius = 3
-	cabin.color = Color.RED
-	cabin.position = Vector2(circle.radius, 0)
-	new_visual.add_child(cabin)
-	
-	visual = new_visual
 	
 func set_shape_by_structure():
 	var new_shape = CollisionShape2D.new()

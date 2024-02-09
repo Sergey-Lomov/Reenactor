@@ -1,6 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://dqn2ih740t6ko"]
+[gd_scene load_steps=5 format=3 uid="uid://dqn2ih740t6ko"]
 
 [ext_resource type="Script" path="res://memory/nodes/test/memory_node_test.gd" id="1_x8bt7"]
+[ext_resource type="Shader" path="res://addons/CustomNodesManager/geometry/circle_2d.gdshader" id="2_snj6q"]
+[ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/circle_2d.gd" id="2_wnlla"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xx56j"]
+shader = ExtResource("2_snj6q")
+shader_parameter/texture_size = Vector2(104, 104)
+shader_parameter/radius = null
+shader_parameter/main_color = Color(1, 0.996078, 0.313726, 1)
+shader_parameter/border_color = Color(0.580392, 1, 0.509804, 1)
+shader_parameter/border_width = 10.0
+shader_parameter/zoom = 1.0
 
 [node name="MemoryNodeTest" type="Node2D"]
 script = ExtResource("1_x8bt7")
@@ -8,3 +19,12 @@ script = ExtResource("1_x8bt7")
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_right = 700.0
 offset_bottom = 700.0
+
+[node name="Circle2D" type="Node2D" parent="."]
+material = SubResource("ShaderMaterial_xx56j")
+position = Vector2(844, 283)
+script = ExtResource("2_wnlla")
+radius = 50
+color = Color(1, 0.996078, 0.313726, 1)
+border_width = 10.0
+border_color = Color(0.580392, 1, 0.509804, 1)
