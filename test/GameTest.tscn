@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://c0taucmawc4ar"]
 
 [ext_resource type="PackedScene" uid="uid://dtnsemrwosgnf" path="res://game/Game.tscn" id="1_r2328"]
-[ext_resource type="PackedScene" uid="uid://dqn2ih740t6ko" path="res://memory/nodes/MemoryNodeTest.tscn" id="2_ah3hm"]
+[ext_resource type="PackedScene" uid="uid://dqn2ih740t6ko" path="res://memory/nodes/test/MemoryNodeTest.tscn" id="2_ah3hm"]
 [ext_resource type="PackedScene" uid="uid://d0e4sh1adgeav" path="res://test/PlayerTest.tscn" id="3_oby5u"]
 [ext_resource type="PackedScene" uid="uid://cy2npxy3ys64v" path="res://test/EnemyTest.tscn" id="4_l40b7"]
 

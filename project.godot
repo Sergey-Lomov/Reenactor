@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="TIA"
-run/main_scene="res://memory/nodes/generation/NodeAreaEditor.tscn"
+run/main_scene="res://memory/nodes/test/MemoryNodeTest.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -20,7 +20,7 @@ config/icon="res://icon.svg"
 CVE_PatternsManager="*res://constructions/visual_editor/patterns_library/patterns_manager.gd"
 AdMath="*res://utils/additional_math.gd"
 NodeUtils="*res://utils/node_utils.gd"
-AdColor="*res://utils/additional_color.gd"
+EmColor="*res://utils/emotions_color.gd"
 
 [display]
 

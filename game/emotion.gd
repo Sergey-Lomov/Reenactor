@@ -1,6 +1,6 @@
-class_name EmotionType
+class_name Emotion
 
-enum {
+enum Type {
 	NONE,	#Not really an amotion, but emotion type value that means null
 	JOY,
 	TRUST,

@@ -102,16 +102,16 @@ void fragment() {
 	
 	for (int i = 0; i < ray_count; i++) {
 		float act_i = float(i) + TIME / 4.0;
-		vec4 r = apply_ray(act_i, xy, c1, color, alpha);
+		vec4 r = apply_ray(act_i, xy, c2, color, alpha);
 		color = r.rgb;
 		alpha = r.a;
 	}
 	
 	for (int i = 0; i < ray_count; i++) {
 		float act_i = float(i) + TIME / 4.0;
-		vec4 r2 = apply_ray(act_i - 0.5, xy, c2, color, alpha);
-		color = r2.rgb;
-		alpha = r2.a;
+		vec4 r = apply_ray(act_i - 0.5, xy, c1, color, alpha);
+		color = r.rgb;
+		alpha = r.a;
 	}
 	
 	float core_dist = length(xy);

@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="MN_State" load_steps=9 format=3 uid="uid://cxglxxn0asr2r"]
+
+[ext_resource type="Script" path="res://memory/nodes/core/node_core_state.gd" id="1_5a36i"]
+[ext_resource type="Script" path="res://memory/nodes/memory_node_state.gd" id="1_j1ey5"]
+[ext_resource type="Script" path="res://memory/nodes/core/transmutation_configuration_item.gd" id="2_8wj51"]
+[ext_resource type="Script" path="res://memory/nodes/core/transmutation_configuration.gd" id="3_n8gxu"]
+
+[sub_resource type="Resource" id="Resource_t6vre"]
+script = ExtResource("2_8wj51")
+emotion = 1
+weight = 1.0
+ether_cost = 30.0
+energy_cost = 100.0
+duration = 5.0
+
+[sub_resource type="Resource" id="Resource_7ujf5"]
+script = ExtResource("2_8wj51")
+emotion = 3
+weight = 0.2
+ether_cost = 25.0
+energy_cost = 120.0
+duration = 5.0
+
+[sub_resource type="Resource" id="Resource_j5diq"]
+script = ExtResource("3_n8gxu")
+items = Array[ExtResource("2_8wj51")]([SubResource("Resource_t6vre"), SubResource("Resource_7ujf5")])
+
+[sub_resource type="Resource" id="Resource_tyqgg"]
+script = ExtResource("1_5a36i")
+energy = 500.0
+ether = 20.0
+rays_count = 8
+transmutation = SubResource("Resource_j5diq")
+transmutation_speed = 1.0
+energy_capacity = 5000.0
+ether_capacity = 500.0
+awakening_energy = 500.0
+
+[resource]
+script = ExtResource("1_j1ey5")
+core = SubResource("Resource_tyqgg")
