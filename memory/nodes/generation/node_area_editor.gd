@@ -9,7 +9,7 @@ class_name NodeAreaEditor extends Control
 @export var history_info_path: NodePath
 @onready var history_info := get_node(history_info_path) as Label
 
-const save_resource_path := "res://memory/nodes/area/generation/saved_config.tres"
+const save_resource_path := "res://memory/nodes/generation/saved_config.tres"
 
 var mirroring: bool = true
 var sectors: int = 6:
@@ -113,6 +113,9 @@ func _on_intersections_pressed():
 	
 func _on_curves_pressed():
 	preview.show_curves = not preview.show_curves
+	
+func _on_spaces_pressed():
+	preview.show_spaces = not preview.show_curves
 
 func _on_randomize_pressed():
 	var manager = MandalaManager.new(sectors, mirroring, preview.size)

@@ -326,6 +326,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Metrics"
 
+[node name="Spaces" type="Button" parent="Panel/VBoxContainer/Visibility"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Spaces"
+
 [node name="Features" type="HBoxContainer" parent="Panel/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 20
@@ -354,5 +359,6 @@ text = "Re-analyze"
 [connection signal="pressed" from="Panel/VBoxContainer/Visibility/Intersections" to="." method="_on_intersections_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Visibility/Curves" to="." method="_on_curves_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Visibility/Metrics" to="." method="_on_metrics_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/Visibility/Spaces" to="." method="_on_spaces_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Features/Randomize" to="." method="_on_randomize_pressed"]
 [connection signal="pressed" from="Panel/VBoxContainer/Features/Recalculate" to="." method="_on_recalculate_pressed"]
