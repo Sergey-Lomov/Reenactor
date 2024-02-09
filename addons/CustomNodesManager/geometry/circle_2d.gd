@@ -38,8 +38,9 @@ func _draw():
 	draw_rect(rect, Color.WHITE)
 
 func _enter_tree():
-	material = ShaderMaterial.new()
-	material.shader = shader
+	if not material:
+		material = ShaderMaterial.new()
+		material.shader = shader
 
 func _ready():
 	update_shader_parameters()

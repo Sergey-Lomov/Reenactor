@@ -39,8 +39,8 @@ func update_shader_params():
 	if secondary_emotion == Emotion.Type.NONE:
 		ray2_color = EmColor.additional_ray(primary_emotion)
 	
-	var primary_border_color = EmColor.border(primary_emotion)
-	var secondary_border_color = EmColor.border(secondary_emotion)
+	var primary_border_color = EmColor.core_border(primary_emotion)
+	var secondary_border_color = EmColor.core_border(secondary_emotion)
 	if secondary_emotion == Emotion.Type.NONE:
 		secondary_border_color = primary_border_color
 	

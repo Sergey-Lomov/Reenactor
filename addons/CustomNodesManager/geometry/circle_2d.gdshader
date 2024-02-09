@@ -1,5 +1,7 @@
 shader_type canvas_item;
 
+#include "res://utils/shaders/circle.gdshaderinc"
+
 uniform vec2 texture_size;
 uniform float radius;
 uniform vec3 main_color: source_color;
@@ -12,18 +14,8 @@ const float smooth_dist = 1.7;
 void fragment() {
 	vec2 xy = (UV - 0.5) * texture_size;
 	float act_smooth = smooth_dist / zoom;
+	vec3 color = vec3(0.0);
+	float alpha = 0.0;
 	
-	float dist = length(xy);
-	float alpha = smoothstep(radius + smooth_dist / 2.0, radius - smooth_dist / 2.0, dist);
-	vec3 color = main_color;// * step(radius + smooth_dist / 2.0, dist);
-	
-	float border_dist = abs(dist - radius);
-	float out_border = (border_width + act_smooth) / 2.0;
-	float in_border = (border_width - act_smooth) / 2.0;
-	float border_alpha = smoothstep(out_border, in_border, border_dist);
-	border_alpha *= step(0.01, border_width);
-	color = mix(color, border_color, border_alpha);
-	alpha = max(alpha, border_alpha);
-	
-	COLOR = vec4(color, alpha);
+	COLOR = cirle(xy, vec2(0.0), radius, main_color, border_width, border_color, act_smooth);
 }

@@ -12,7 +12,7 @@ func main(type: Emotion.Type) -> Color:
 		Emotion.Type.ANTICIPATION: return Color.ORANGE
 		_: return Color.BLACK
 
-func border(type: Emotion.Type) -> Color:
+func core_border(type: Emotion.Type) -> Color:
 	return main(type).darkened((0.2))
 	
 func ray(type: Emotion.Type) -> Color:
@@ -20,3 +20,9 @@ func ray(type: Emotion.Type) -> Color:
 	
 func additional_ray(type: Emotion.Type) -> Color:
 	return main(type).darkened(0.1)
+
+func area(type: Emotion.Type) -> Color:
+	return main(type).darkened((0.925))
+
+func area_border(type: Emotion.Type) -> Color:
+	return main(type).darkened((0.9))
