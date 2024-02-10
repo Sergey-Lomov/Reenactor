@@ -1,5 +1,7 @@
 shader_type canvas_item;
 
+#include "res://utils/shaders/circle.gdshaderinc"
+
 uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
 
 uniform vec2 texture_size;
@@ -94,16 +96,9 @@ void fragment() {
 		float act_i = float(i) + TIME / 4.0;
 		color = apply_ray(act_i - 0.5, xy, c1, color);
 	}
-	
-	float core_dist = length(xy);
-	float core_alpha = step(core_dist, core_radius);
-	color = mix(color, core_color, core_alpha);
-	
-	float border_dist = abs(core_dist - core_radius);
-	float out_border = (border_width + act_smooth) / 2.0;
-	float in_border = (border_width - act_smooth) / 2.0;
-	float border_alpha = smoothstep(out_border, in_border, border_dist);
-	color = mix(color, border_color, border_alpha);
+		
+	vec4 circle = cirle(xy, vec2(0.0), core_radius, core_color.rgb, border_width, border_color.rgb, act_smooth);
+	color = vec4(mix(color.rgb, circle.rgb, circle.a), color.a + circle.a);
 	
 	COLOR = vec4(color);
 }
