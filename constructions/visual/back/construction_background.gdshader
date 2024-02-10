@@ -31,8 +31,7 @@ float line_segment(in vec2 p, in vec2 a, in vec2 b) {
 float poly_distance(vec2 p) {	
 	float d = dot(p-points[0],p-points[0]);
     float s = 1.0;
-    for( int i=0, j=points_count-1; i<points_count; j=i, i++ )
-    {
+    for (int i=0, j=points_count-1; i<points_count; j=i, i++) {
         vec2 e = points[j] - points[i];
         vec2 w = p - points[i];
         vec2 b = w - e*clamp( dot(w,e)/dot(e,e), 0.0, 1.0 );

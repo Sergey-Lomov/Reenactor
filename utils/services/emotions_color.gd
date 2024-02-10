@@ -21,6 +21,9 @@ func ray(type: Emotion.Type) -> Color:
 func additional_ray(type: Emotion.Type) -> Color:
 	return main(type).darkened(0.1)
 
+func mandala(type: Emotion.Type) -> Color:
+	return main(type).darkened((0.5))
+
 func area(type: Emotion.Type) -> Color:
 	return main(type).darkened((0.925))
 
