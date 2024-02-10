@@ -3,9 +3,6 @@ uniform int search_step = 1;
 uniform int glow_radius = 5;
 
 void fragment() {
-	//vec2 s_step = vec2(textureSize(TEXTURE, 1)) / float(search_step);
-	//vec2 g_radius = vec2(textureSize(TEXTURE, 1)) / glow_radius;
-	//vec2 s_radius = vec2(0);
 	ivec2 center = ivec2(vec2(textureSize(TEXTURE, 0)) * UV);
 	int search_radius = glow_radius;
 	float min_dist = -1.0;

@@ -1,6 +1,52 @@
-[gd_scene load_steps=2 format=3 uid="uid://dqn2ih740t6ko"]
+[gd_scene load_steps=7 format=3 uid="uid://dqn2ih740t6ko"]
 
 [ext_resource type="Script" path="res://memory/nodes/test/memory_node_test.gd" id="1_x8bt7"]
+[ext_resource type="Shader" path="res://addons/CustomNodesManager/geometry/circle_2d.gdshader" id="2_syoj2"]
+[ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/circle_2d.gd" id="3_0obue"]
+[ext_resource type="Shader" path="res://memory/nodes/core/node_core.gdshader" id="4_4bkei"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c20ka"]
+shader = ExtResource("2_syoj2")
+shader_parameter/texture_size = Vector2(214, 214)
+shader_parameter/radius = null
+shader_parameter/main_color = Color(0.286275, 0.262745, 1, 1)
+shader_parameter/border_color = Color(1, 1, 0.254902, 1)
+shader_parameter/border_width = 10.0
+shader_parameter/zoom = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tymp6"]
+shader = ExtResource("4_4bkei")
+shader_parameter/texture_size = Vector2(300, 300)
+shader_parameter/zoom = 1.0
+shader_parameter/core_color = Color(0.847059, 0, 0, 1)
+shader_parameter/core_radius = 40.0
+shader_parameter/border_color = Color(0.34902, 0, 0, 1)
+shader_parameter/border_width = 4.0
+shader_parameter/ray_count = 8
+shader_parameter/ray_color1 = Color(1, 1, 0.101961, 1)
+shader_parameter/ray_border_color1 = Color(0.8, 0.8, 0, 1)
+shader_parameter/ray_length1 = 60.0
+shader_parameter/ray_color2 = Color(0.603922, 0, 0.443137, 1)
+shader_parameter/ray_border_color2 = Color(0.545098, 0, 0.776471, 1)
+shader_parameter/ray_length2 = 40.0
+shader_parameter/ray_border_width = 4.0
 
 [node name="MemoryNodeTest" type="Node2D"]
 script = ExtResource("1_x8bt7")
+
+[node name="Circle2D" type="Node2D" parent="."]
+material = SubResource("ShaderMaterial_c20ka")
+position = Vector2(110, 155)
+script = ExtResource("3_0obue")
+radius = 100
+color = Color(0.286275, 0.262745, 1, 1)
+border_width = 10.0
+border_color = Color(1, 1, 0.254902, 1)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_tymp6")
+offset_left = 385.0
+offset_top = 108.0
+offset_right = 685.0
+offset_bottom = 408.0
