@@ -1,57 +1,33 @@
 @tool
-class_name Circle2D extends Node2D
+class_name Circle2D extends ShaderRenderable
 	
 @export var radius: int:
 	set(value):
 		radius = value
-		if is_node_ready(): update_shader_parameters()
-		notify_property_list_changed()
+		update_renderer_size()
+		set_renderer_parameter("radius", radius)
 
 @export var color: Color = Color.WHITE:
 	set(value):
 		color = value
-		if is_node_ready(): update_shader_parameters()
-		notify_property_list_changed()
+		set_renderer_parameter("main_color", color)
 		
 @export var border_width: float = 0:
 	set(value):
 		border_width = value
-		if is_node_ready(): update_shader_parameters()
-		notify_property_list_changed()
+		update_renderer_size()
+		set_renderer_parameter("border_width", border_width)
 
 @export var border_color: Color = Color.WHITE:
 	set(value):
 		border_color = value
-		if is_node_ready(): update_shader_parameters()
-		notify_property_list_changed()
+		set_renderer_parameter("border_color", border_color)
 		
-const gap: Vector2 = Vector2(2, 2) #Additional gap for cover edge smoothing
+const gap: float = 2 #Additional gap for cover edge smoothing
 
-var rect: Rect2:
-	get:
-		var size = (Vector2(radius + border_width, radius + border_width) + gap) * 2
-		return Rect2(size * -0.5, size)
+func get_shader() -> Shader:
+	return preload("res://addons/CustomNodesManager/geometry/circle_2d.gdshader")
 
-var shader = preload("res://addons/CustomNodesManager/geometry/circle_2d.gdshader")
-
-func _draw():
-	draw_rect(rect, Color.WHITE)
-
-func _enter_tree():
-	if not material:
-		material = ShaderMaterial.new()
-		material.shader = shader
-
-func _ready():
-	update_shader_parameters()
-	
-func _process(delta):
-	if Engine.is_editor_hint():
-		queue_redraw()
-
-func update_shader_parameters():
-	material.set_shader_parameter("texture_size", rect.size)
-	material.set_shader_parameter("radius", radius)
-	material.set_shader_parameter("main_color", color)
-	material.set_shader_parameter("border_color", border_color)
-	material.set_shader_parameter("border_width", border_width)
+func get_size() -> Vector2:
+	var size = (radius + gap) * 2 + border_width #Border width not multiplied by 2, because half of width overlap circle (moves inside radius)
+	return Vector2(size, size)

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CurvesArray" load_steps=14 format=3]
+[gd_resource type="Resource" script_class="CurvesArray" load_steps=14 format=3 uid="uid://cupdty4ees2eg"]
 
 [ext_resource type="Script" path="res://utils/resources/curves_array.gd" id="1_2ahl8"]
 
