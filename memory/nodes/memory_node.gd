@@ -18,8 +18,16 @@ func _init(_state: MN_State):
 	
 func _enter_tree():
 	area = MN_Area.new()
-	area.size = size
+	area.radius = min(size.x, size.y) / 2
+	
+	var connectors: Array[float] = []
+	for curve in state.mandala.curves:
+		var point = curve.get_point_position(curve.point_count - 1)
+		var angle = point.angle()
+		if not connectors.has(angle): connectors.append(angle)
+	state.area.connectors = connectors
 	area.state = state.area
+		
 	area.position = size * 0.5
 	add_child(area)
 	
@@ -38,7 +46,6 @@ func _enter_tree():
 	core.position = size * 0.5
 	var c_buffer = BackBufferCopy.new()
 	c_buffer.copy_mode = BackBufferCopy.COPY_MODE_VIEWPORT
-	c_buffer.add_child(mandala)
 	c_buffer.add_child(core)
 	add_child(c_buffer)
 
@@ -47,7 +54,7 @@ func _ready():
 
 func update_components_positions():
 	core.position = size * 0.5
-	area.size = size
+	area.radius = min(size.x, size.y) / 2
 	area.position = size * 0.5
 	mandala.size = size
 	mandala.position = size * 0.5

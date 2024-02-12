@@ -97,7 +97,7 @@ void fragment() {
 		color = apply_ray(act_i - 0.5, xy, c1, color);
 	}
 		
-	vec4 circle = cirle(xy, vec2(0.0), core_radius, core_color.rgb, border_width, border_color.rgb, act_smooth);
+	vec4 circle = circle(xy, vec2(0.0), core_radius, core_color.rgb, border_width, border_color.rgb, act_smooth);
 	color = vec4(mix(color.rgb, circle.rgb, circle.a), color.a + circle.a);
 	
 	COLOR = vec4(color);

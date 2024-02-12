@@ -4,7 +4,7 @@
 [ext_resource type="Shader" path="res://addons/CustomNodesManager/geometry/circle_2d.gdshader" id="2_syoj2"]
 [ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/circle_2d.gd" id="3_0obue"]
 [ext_resource type="Shader" path="res://memory/nodes/core/node_core.gdshader" id="4_4bkei"]
-[ext_resource type="Shader" path="res://memory/nodes/mandala/node_mandala.gdshader" id="5_xhgf8"]
+[ext_resource type="Shader" path="res://memory/nodes/area/node_area.gdshader" id="5_o1a1w"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c20ka"]
 shader = ExtResource("2_syoj2")
@@ -32,15 +32,18 @@ shader_parameter/ray_border_color2 = Color(0.545098, 0, 0.776471, 1)
 shader_parameter/ray_length2 = 40.0
 shader_parameter/ray_border_width = 4.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8ow24"]
-shader = ExtResource("5_xhgf8")
-shader_parameter/points = PackedVector2Array(30, 30, 60, 60)
-shader_parameter/curves_count = null
-shader_parameter/curve_sizes = null
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5vqlr"]
+shader = ExtResource("5_o1a1w")
 shader_parameter/texture_size = Vector2(500, 500)
+shader_parameter/radius = 245.0
+shader_parameter/connectors = PackedFloat32Array(0)
+shader_parameter/connectors_count = 1
+shader_parameter/connector_displacement = 10.0
+shader_parameter/connector_radius = 25.0
+shader_parameter/main_color = Color(0, 0.513726, 0, 1)
+shader_parameter/border_color = Color(0, 0.290196, 0, 1)
+shader_parameter/border_width = 10.0
 shader_parameter/zoom = 1.0
-shader_parameter/width = 10.0
-shader_parameter/main_color = Color(0, 0.627451, 0, 1)
 
 [node name="MemoryNodeTest" type="Node2D"]
 script = ExtResource("1_x8bt7")
@@ -63,10 +66,10 @@ offset_top = 108.0
 offset_right = 685.0
 offset_bottom = 408.0
 
-[node name="MandalaRect" type="ColorRect" parent="."]
-visible = false
-material = SubResource("ShaderMaterial_8ow24")
-offset_left = 385.0
-offset_top = 108.0
-offset_right = 885.0
-offset_bottom = 608.0
+[node name="AreaRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_5vqlr")
+custom_minimum_size = Vector2(500, 500)
+offset_left = 300.0
+offset_top = 50.0
+offset_right = 800.0
+offset_bottom = 550.0

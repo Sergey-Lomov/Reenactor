@@ -23,7 +23,7 @@ var show_curves: bool = true:
 		show_curves = value
 		queue_redraw()
 		
-var show_spaces: bool = true:
+var show_spaces: bool = false:
 	set(value):
 		show_spaces = value
 		queue_redraw()

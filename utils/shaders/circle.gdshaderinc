@@ -1,4 +1,4 @@
-vec4 cirle(vec2 _xy, 
+vec4 circle(vec2 _xy, 
 		vec2 _center, 
 		float _radius, 
 		vec3 _main_color, 

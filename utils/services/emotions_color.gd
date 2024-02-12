@@ -22,10 +22,10 @@ func additional_ray(type: Emotion.Type) -> Color:
 	return main(type).darkened(0.1)
 
 func mandala(type: Emotion.Type) -> Color:
-	return main(type).darkened((0.5))
+	return HarmonyWheel.complementary(area(type))
 
 func area(type: Emotion.Type) -> Color:
-	return main(type).darkened((0.925))
+	return HarmonyWheel.soft(main(type), 0.8)
 
 func area_border(type: Emotion.Type) -> Color:
-	return main(type).darkened((0.9))
+	return area(type).darkened((0.15))

@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="MandalaGenerationConfig" load_steps=2 format=3 uid="uid://dy0uk28l747o"]
+[gd_resource type="Resource" script_class="MandalaGenerationConfig" load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://memory/nodes/generation/mandala_generation_config.gd" id="1_4lavg"]
+[ext_resource type="Script" path="res://memory/nodes/generation/mandala_generation_config.gd" id="1_0gcup"]
 
 [resource]
-script = ExtResource("1_4lavg")
-points = Array[Vector2]([Vector2(264.645, 250), Vector2(289.295, 300.229), Vector2(334.171, 384.728), Vector2(500, 250)])
+script = ExtResource("1_0gcup")
+points = Array[Vector2]([Vector2(470, 376), Vector2(368, 251), Vector2(250, 250)])
 sectors = 6
 mirroring = true

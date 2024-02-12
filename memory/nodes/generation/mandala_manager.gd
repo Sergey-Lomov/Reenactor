@@ -440,9 +440,20 @@ func modify_space(space: NodeFreeSpace, spaces: Array, center_angle: float):
 	var length = (space.position - center).length()
 	var new_spaces = spaces.duplicate()
 	new_spaces.erase(space)
+	
 	#Try to centrate
 	var new_position = Vector2.from_angle(center_angle) * length + center
 	var new_space = NodeFreeSpace.new(new_position, space.radius)
 	new_spaces.append(new_space)
-	if spaces_intersects(new_spaces): return
-	space.position = new_position
+	if not spaces_intersects(new_spaces): 
+		space.position = new_position
+		return
+		
+	#Try to move to edge
+	#var new_position = Vector2.from_angle(center_angle * 2) * length + center
+	##new_spaces.erase(new_space)
+	#var new_space = NodeFreeSpace.new(new_position, space.radius)
+	#new_spaces.append(new_space)
+	#if not spaces_intersects(new_spaces): 
+		#space.position = new_position
+		#return

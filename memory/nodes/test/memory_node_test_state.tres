@@ -10,6 +10,7 @@
 [sub_resource type="Resource" id="Resource_gt40s"]
 script = ExtResource("1_2212i")
 primary_emotion = 1
+connectors_count = 6
 
 [sub_resource type="Resource" id="Resource_t6vre"]
 script = ExtResource("2_8wj51")

@@ -17,7 +17,7 @@ func get_shader() -> Shader:
 # Should be overrided in derived class
 func get_size() -> Vector2:
 	return Vector2.ZERO
-	
+
 func _draw():
 	draw_rect(Rect2(get_size() * -0.5, get_size()), Color.WHITE)
 	

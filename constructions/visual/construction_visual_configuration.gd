@@ -20,7 +20,7 @@ var gap_displacement: Vector2:
 var adapted_edge: Curve2D:
 	get:
 		if not edge: return null
-		var adapted = AdMath.scaled_curve(edge, cell_size, cell_size)
+		var adapted = AdMath.scaled_curve_s(edge, cell_size, cell_size)
 		adapted = AdMath.translated_curve_g(adapted, gap_displacement)
 		return adapted
 

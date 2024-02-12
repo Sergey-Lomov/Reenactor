@@ -116,7 +116,7 @@ func _on_curves_pressed():
 	preview.show_curves = not preview.show_curves
 	
 func _on_spaces_pressed():
-	preview.show_spaces = not preview.show_curves
+	preview.show_spaces = not preview.show_spaces
 
 func _on_randomize_pressed():
 	var manager = MandalaManager.new(sectors, mirroring, preview.size)

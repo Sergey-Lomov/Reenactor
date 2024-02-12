@@ -1,11 +1,21 @@
-[gd_scene load_steps=7 format=3 uid="uid://dyvxs6ibspf15"]
+[gd_scene load_steps=9 format=3 uid="uid://dyvxs6ibspf15"]
 
 [ext_resource type="Material" uid="uid://6ln7hj8262ws" path="res://constructions/visual/back/construction_background.tres" id="1_flygh"]
 [ext_resource type="Script" path="res://experimental/DemoCurve.gd" id="2_abn50"]
+[ext_resource type="Shader" path="res://addons/CustomNodesManager/geometry/circle_2d.gdshader" id="2_f6jck"]
 [ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/circle_2d.gd" id="3_s7ibe"]
 [ext_resource type="Script" path="res://constructions/visual/back/construction_background.gd" id="4_3bhvx"]
 [ext_resource type="Script" path="res://addons/CustomNodesManager/geometry/rectangle_2d.gd" id="5_kjchk"]
 [ext_resource type="Material" uid="uid://cym60p7600qh2" path="res://experimental/costruction_background/construction_background_test1.tres" id="5_tdwfn"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ykw60"]
+shader = ExtResource("2_f6jck")
+shader_parameter/texture_size = Vector2(10, 10)
+shader_parameter/radius = null
+shader_parameter/main_color = null
+shader_parameter/border_color = null
+shader_parameter/border_width = null
+shader_parameter/zoom = 1.0
 
 [node name="StructureEmotion" type="Node2D"]
 
@@ -38,12 +48,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 1)
+color = Color(0.521569, 0.239216, 0.239216, 1)
 
 [node name="Circle2D" type="Node2D" parent="SubViewportContainer/SubViewport"]
 visible = false
+material = SubResource("ShaderMaterial_ykw60")
 script = ExtResource("3_s7ibe")
-center = Vector2(50, 50)
 radius = 3
 
 [node name="Node2D" type="Node2D" parent="."]

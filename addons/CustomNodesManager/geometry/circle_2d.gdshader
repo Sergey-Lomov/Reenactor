@@ -14,8 +14,5 @@ const float smooth_dist = 1.7;
 void fragment() {
 	vec2 xy = (UV - 0.5) * texture_size;
 	float act_smooth = smooth_dist / zoom;
-	vec3 color = vec3(0.0);
-	float alpha = 0.0;
-	
-	COLOR = cirle(xy, vec2(0.0), radius, main_color, border_width, border_color, act_smooth);
+	COLOR = circle(xy, vec2(0.0), radius, main_color, border_width, border_color, act_smooth);
 }
