@@ -13,6 +13,7 @@ var size: Vector2:
 	set(value):
 		size = value
 		update_renderer_size()
+		update_renderer_params()
 	
 var state: MN_CoreState:
 	set(value):
@@ -26,13 +27,23 @@ var primary_emotion: Emotion.Type:
 var secondary_emotion: Emotion.Type:
 	get: return state.transmutation.secondary_emotion
 
+const borders_width := 4.0
+const core_radius_mult := 0.4
+
 func get_shader() -> Shader:
 	return preload("res://memory/nodes/core/node_core.gdshader")
 	
 func get_size() -> Vector2:
 	return size
 
+func setup_renderer_constants():
+	set_renderer_parameter("zoom", 1.0)
+	set_renderer_parameter("border_width", borders_width)
+	set_renderer_parameter("ray_border_width", borders_width)
+
 func update_renderer_params():
+	if not state: return
+	
 	var main_color: Color = EmColor.main(primary_emotion)
 	var ray1_color: Color = EmColor.ray(primary_emotion) 
 	var ray2_color = EmColor.ray(secondary_emotion) 
@@ -44,14 +55,12 @@ func update_renderer_params():
 	if secondary_emotion == Emotion.Type.NONE:
 		secondary_border_color = primary_border_color
 	
-	var core_radius = min(size.x, size.y) * state.core_radius_mult * 0.5
-	var ray_length = min(size.x, size.y) * (1 - state.core_radius_mult) * 0.5 - state.borders_width
+	var core_radius = min(size.x, size.y) * core_radius_mult * 0.5
+	var ray_length = min(size.x, size.y) * (1 - core_radius_mult) * 0.5 - borders_width
 
-	set_renderer_parameter("zoom", 1.0)
 	set_renderer_parameter("core_color", main_color)
 	set_renderer_parameter("core_radius", core_radius)
 	set_renderer_parameter("border_color", primary_border_color)
-	set_renderer_parameter("border_width", state.borders_width)
 	
 	set_renderer_parameter("ray_count", state.rays_count)
 	set_renderer_parameter("ray_color1", ray1_color)
@@ -60,4 +69,3 @@ func update_renderer_params():
 	set_renderer_parameter("ray_color2", ray2_color)
 	set_renderer_parameter("ray_border_color2", secondary_border_color)
 	set_renderer_parameter("ray_length2", ray_length)
-	set_renderer_parameter("ray_border_width", state.borders_width)

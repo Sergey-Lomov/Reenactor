@@ -4,6 +4,7 @@ var size: Vector2:
 	set(value):
 		size = value
 		update_renderer_size()
+		update_renderer_params()
 	
 var state: MN_MandalaState:
 	set(value):
@@ -19,7 +20,13 @@ func get_shader() -> Shader:
 func get_size() -> Vector2:
 	return (size + gap) * 2 + Vector2(lines_width, lines_width)
 
+func setup_renderer_constants():
+	set_renderer_parameter("zoom", 1.0)
+	set_renderer_parameter("width", lines_width)
+
 func update_renderer_params():
+	if not state: return
+	
 	var main_color: Color = EmColor.mandala(state.primary_emotion)
 	
 	var curves: Array[Curve2D] = []
@@ -32,10 +39,8 @@ func update_renderer_params():
 	for curve in curves:
 		points.append_array(curve.get_baked_points())
 		sizes.append(curve.get_baked_points().size())
-	
-	set_renderer_parameter("zoom", 1.0)
+
 	set_renderer_parameter("main_color", main_color)
-	set_renderer_parameter("width", lines_width)
 	set_renderer_parameter("curves_count", curves.size())
 	set_renderer_parameter("points", points)
 	set_renderer_parameter("curve_sizes", sizes)

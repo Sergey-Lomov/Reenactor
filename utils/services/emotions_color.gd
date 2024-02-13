@@ -2,6 +2,7 @@ extends Node
 
 func main(type: Emotion.Type) -> Color:
 	match type:
+		Emotion.Type.ETHER: return Color(0.07, 0.07, 0.07)
 		Emotion.Type.JOY: return Color.YELLOW
 		Emotion.Type.TRUST: return Color.LIME_GREEN
 		Emotion.Type.FEAR: return Color.DARK_GREEN 

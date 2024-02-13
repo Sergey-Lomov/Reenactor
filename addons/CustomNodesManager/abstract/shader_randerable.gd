@@ -8,6 +8,7 @@ var renderer: ShaderMaterial:
 		
 		material = ShaderMaterial.new()
 		material.shader = get_shader()
+		setup_renderer_constants()
 		return material
 
 # Should be overrided in derived class
@@ -27,3 +28,7 @@ func set_renderer_parameter(name: StringName, value: Variant):
 func update_renderer_size():
 	set_renderer_parameter("texture_size", get_size())
 	queue_redraw()
+
+#This method may be overloaded to setup shader params, which willn't change
+func setup_renderer_constants():
+	pass

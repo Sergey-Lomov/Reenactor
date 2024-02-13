@@ -1,20 +1,30 @@
-[gd_resource type="Resource" script_class="MN_State" load_steps=25 format=3 uid="uid://cxglxxn0asr2r"]
+[gd_resource type="Resource" script_class="MN_State" load_steps=27 format=3 uid="uid://cxglxxn0asr2r"]
 
 [ext_resource type="Script" path="res://memory/nodes/core/node_core_state.gd" id="1_5a36i"]
 [ext_resource type="Script" path="res://memory/nodes/area/node_area_state.gd" id="1_2212i"]
+[ext_resource type="Script" path="res://memory/nodes/ether_absorber/ether_absorber_state.gd" id="1_ggkr4"]
 [ext_resource type="Script" path="res://memory/nodes/memory_node_state.gd" id="1_j1ey5"]
 [ext_resource type="Script" path="res://memory/nodes/core/transmutation_configuration_item.gd" id="2_8wj51"]
 [ext_resource type="Script" path="res://memory/nodes/core/transmutation_configuration.gd" id="3_n8gxu"]
 [ext_resource type="Script" path="res://memory/nodes/mandala/node_mandala_state.gd" id="5_qcb6h"]
 
+[sub_resource type="Resource" id="Resource_io2jt"]
+script = ExtResource("1_ggkr4")
+primary_emotion = 2
+orientation = 0.0
+sector = 2.1
+particle_duration = 1.5
+particles_count = 6
+portion_per_drop = 60
+
 [sub_resource type="Resource" id="Resource_gt40s"]
 script = ExtResource("1_2212i")
-primary_emotion = 1
-connectors_count = 6
+primary_emotion = 2
+connectors = Array[float]([])
 
 [sub_resource type="Resource" id="Resource_t6vre"]
 script = ExtResource("2_8wj51")
-emotion = 1
+emotion = 2
 weight = 1.0
 ether_cost = 30.0
 energy_cost = 100.0
@@ -22,7 +32,7 @@ duration = 5.0
 
 [sub_resource type="Resource" id="Resource_7ujf5"]
 script = ExtResource("2_8wj51")
-emotion = 3
+emotion = 4
 weight = 0.2
 ether_cost = 25.0
 energy_cost = 120.0
@@ -117,7 +127,7 @@ point_count = 4
 
 [sub_resource type="Resource" id="Resource_ugju2"]
 script = ExtResource("5_qcb6h")
-primary_emotion = 1
+primary_emotion = 2
 curves = Array[Curve2D]([SubResource("Curve2D_bqexh"), SubResource("Curve2D_i1gf0"), SubResource("Curve2D_aq13n"), SubResource("Curve2D_yf1va"), SubResource("Curve2D_mmh4h"), SubResource("Curve2D_o3dl2"), SubResource("Curve2D_kf2fo"), SubResource("Curve2D_p8w4i"), SubResource("Curve2D_aksia"), SubResource("Curve2D_meesb"), SubResource("Curve2D_22byw"), SubResource("Curve2D_ghv03")])
 
 [resource]
@@ -125,3 +135,4 @@ script = ExtResource("1_j1ey5")
 core = SubResource("Resource_tyqgg")
 area = SubResource("Resource_gt40s")
 mandala = SubResource("Resource_ugju2")
+absorbers = Array[ExtResource("1_ggkr4")]([SubResource("Resource_io2jt")])
