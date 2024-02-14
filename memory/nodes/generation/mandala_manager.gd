@@ -196,10 +196,7 @@ func out_control(point: Vector2, postpoint: Variant, in_pos: Variant) -> Vector2
 
 	return Vector2.from_angle(angle) * length
 
-func get_intersections(curves: Array[Curve2D]) -> Array[Vector2] :
-	var max_angle = uniq_angle()
-	var uniq_inters: Array[Vector2] = []
-
+func lines_in_angle(curves: Array[Curve2D], max_angle: float) -> Array[Line]:
 	var lines: Array[Line] = []
 	for curve in curves:
 		var backed = curve.get_baked_points()
@@ -209,8 +206,14 @@ func get_intersections(curves: Array[Curve2D]) -> Array[Vector2] :
 			var prepoint_in_sector = in_angle_area(backed[i-1] - center, max_angle)
 			if not point_in_sector and not prepoint_in_sector: continue
 			lines.append(Line.new(backed[i-1], backed[i]))
-	
+	return lines
+
+func get_intersections(curves: Array[Curve2D]) -> Array[Vector2] :
+	var max_angle = uniq_angle()
+	var uniq_inters: Array[Vector2] = []
+	var lines = lines_in_angle(curves, max_angle)
 	var unhandled_lines = lines.duplicate()
+	
 	for line in lines:
 		unhandled_lines.erase(line)
 		for co_line in unhandled_lines:

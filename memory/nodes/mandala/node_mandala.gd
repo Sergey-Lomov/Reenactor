@@ -32,15 +32,19 @@ func update_renderer_params():
 	var curves: Array[Curve2D] = []
 	for curve in state.curves:
 		var scaled = AdMath.scaled_curve_g(curve, size);
+		scaled.bake_interval = 5
 		curves.append(scaled)
 	
-	var points: Array[Vector2] = []
-	var sizes: Array[int] = []
-	for curve in curves:
-		points.append_array(curve.get_baked_points())
-		sizes.append(curve.get_baked_points().size())
+	@warning_ignore("integer_division")
+	var sectors = state.curves.size() / 2
+	var manager = MandalaManager.new(sectors, true, Vector2.ZERO)
+	var lines = manager.lines_in_angle(curves, TAU / sectors)
+	
+	var from_points = lines.map(func(l): return l.from)
+	var to_points = lines.map(func(l): return l.to)
 
 	set_renderer_parameter("main_color", main_color)
-	set_renderer_parameter("curves_count", curves.size())
-	set_renderer_parameter("points", points)
-	set_renderer_parameter("curve_sizes", sizes)
+	set_renderer_parameter("sectors", sectors)
+	set_renderer_parameter("from_points", from_points)
+	set_renderer_parameter("to_points", to_points)
+	set_renderer_parameter("lines_count", lines.size())
