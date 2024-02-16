@@ -23,6 +23,11 @@ func normalized_angle(value: float, zero_to_full: bool = false):
 func normalized_points_angle(point1: Vector2, point2: Vector2, zero_to_full: bool = false):
 	return normalized_angle(point1.angle_to_point(point2), zero_to_full)
 
+func array_has_approx(array: Array[float], value: float):
+	for cursor in array:
+		if is_equal_approx(cursor, value): return true
+	return false
+
 #Points array routine
 func points_wrapp_rect(points: Array[Vector2]) -> Rect2:
 	if points.is_empty(): return Rect2(0, 0, 0, 0)

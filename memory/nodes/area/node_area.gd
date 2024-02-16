@@ -3,12 +3,14 @@ class_name MN_Area extends ShaderRenderable
 var radius: float:
 	set(value):
 		radius = value
-		update_radius_params()
+		handle_radius_update()
 		
 var state: MN_AreaState:
 	set(value):
+		if state: state.value_chagned.disconnect(handle_state_param_updated)
 		state = value
-		update_state_params()
+		if state: state.value_chagned.connect(handle_state_param_updated)
+		handle_state_update()
 
 const border_width := 10.0
 const connector_mult := 0.05
@@ -26,19 +28,29 @@ func setup_renderer_constants():
 	set_renderer_parameter("zoom", 1.0)
 	set_renderer_parameter("border_width", border_width)
 
-func update_state_params():
+func handle_state_update():
+	handle_absorbers_angles_update()
+	handle_emotion_update()	
+
+func handle_emotion_update():
 	var main_color = EmColor.area(state.primary_emotion)
 	var border_color = EmColor.area_border(state.primary_emotion)
-	
-	set_renderer_parameter("connectors", state.connectors)
-	set_renderer_parameter("connectors_count", state.connectors.size())
 	set_renderer_parameter("main_color", main_color)
 	set_renderer_parameter("border_color", border_color)
-	
-func update_radius_params():
+
+func handle_absorbers_angles_update():
+	set_renderer_parameter("connectors", state.absorbers_angles)
+	set_renderer_parameter("connectors_count", state.absorbers_angles.size())
+
+func handle_radius_update():
 	update_renderer_size()
 	var connector_radius = radius * connector_mult
 	
 	set_renderer_parameter("radius", radius)
 	set_renderer_parameter("connector_displacement", connector_radius * connector_displacement)
-	set_renderer_parameter("connector_radius",connector_radius )
+	set_renderer_parameter("connector_radius",connector_radius)
+	
+func handle_state_param_updated(param):
+	match param:
+		MN_AreaState.Param.PRIMARY_EMOTION: handle_emotion_update()
+		MN_AreaState.Param.ABSORBERS_ANGLES: handle_absorbers_angles_update()

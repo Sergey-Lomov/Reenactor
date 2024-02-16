@@ -4,7 +4,7 @@ class_name MemoryNode extends Node2D
 var core: MN_Core
 var area: MN_Area
 var mandala: MN_Mandala
-var absorbers: MN_EtherAbsorber
+var absorbers: Array[MN_EtherAbsorber]
 
 var state: MN_State
 var size: Vector2:
@@ -34,7 +34,6 @@ func _ready():
 func setup_area():
 	area = MN_Area.new()
 	area.radius = radius
-	state.area.connectors = get_mandala_vertices_angles()
 	area.state = state.area
 	area.position = center
 	add_child(area)
@@ -44,6 +43,7 @@ func setup_mandala():
 	mandala.size = size
 	mandala.state = state.mandala
 	mandala.position = center
+	
 	var buffer = BackBufferCopy.new()
 	buffer.copy_mode = BackBufferCopy.COPY_MODE_VIEWPORT
 	buffer.add_child(mandala)
@@ -54,34 +54,28 @@ func setup_core():
 	core.size = core_size
 	core.state = state.core
 	core.position = center
+	
 	var buffer = BackBufferCopy.new()
 	buffer.copy_mode = BackBufferCopy.COPY_MODE_VIEWPORT
 	buffer.add_child(core)
 	add_child(buffer)
 
 func setup_absorbers():
-	var angles = get_mandala_vertices_angles()
-	for i in angles.size():
-		var absorber = MN_EtherAbsorber.new()
-		var absorber_state
-		if i < state.absorbers.size():
-			absorber_state = state.absorbers[i]
-		else:
-			absorber_state = state.absorbers.back().duplicate()
-		absorber_state.orientation = angles[i]
+	var angles = state.absorbers_angles
+	absorbers = []
+	
+	if angles.size() != state.absorbers.size():
+		printerr("Absorbers state count not equal mandala vertices count at memory node setup")
+		return
 		
-		absorber.state = absorber_state
+	for i in state.absorbers.size():
+		var absorber = MN_EtherAbsorber.new()
+		absorber.state = state.absorbers[i]
+		absorber.state.orientation = angles[i]
 		absorber.position = Vector2.from_angle(angles[i]) * radius + center
-		absorber.radius = absorber_radius		
+		absorber.radius = absorber_radius	
+		absorbers.append(absorber)	
 		add_child(absorber)
-
-func get_mandala_vertices_angles() -> Array[float]:
-	var angles: Array[float] = []
-	for curve in state.mandala.curves:
-		var point = curve.get_point_position(curve.point_count - 1)
-		var angle = point.angle()
-		if not angles.has(angle): angles.append(angle)
-	return angles
 
 func update_components_positions():
 	core.position = center

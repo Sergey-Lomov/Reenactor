@@ -13,19 +13,13 @@ var size: Vector2:
 	set(value):
 		size = value
 		update_renderer_size()
-		update_renderer_params()
 	
 var state: MN_CoreState:
 	set(value):
+		if state: state.value_chagned.disconnect(handle_state_param_updated)
 		state = value
-		update_renderer_params()
-
-#State proxy properties
-var primary_emotion: Emotion.Type:
-	get: return state.transmutation.primary_emotion
-	
-var secondary_emotion: Emotion.Type:
-	get: return state.transmutation.secondary_emotion
+		if state: state.value_chagned.connect(handle_state_param_updated)
+		handle_state_update()
 
 const borders_width := 4.0
 const core_radius_mult := 0.4
@@ -41,31 +35,42 @@ func setup_renderer_constants():
 	set_renderer_parameter("border_width", borders_width)
 	set_renderer_parameter("ray_border_width", borders_width)
 
-func update_renderer_params():
-	if not state: return
-	
-	var main_color: Color = EmColor.main(primary_emotion)
-	var ray1_color: Color = EmColor.ray(primary_emotion) 
-	var ray2_color = EmColor.ray(secondary_emotion) 
-	if secondary_emotion == Emotion.Type.NONE:
-		ray2_color = EmColor.additional_ray(primary_emotion)
-	
-	var primary_border_color = EmColor.core_border(primary_emotion)
-	var secondary_border_color = EmColor.core_border(secondary_emotion)
-	if secondary_emotion == Emotion.Type.NONE:
-		secondary_border_color = primary_border_color
-	
+func update_renderer_size():
+	super.update_renderer_size()
 	var core_radius = min(size.x, size.y) * core_radius_mult * 0.5
 	var ray_length = min(size.x, size.y) * (1 - core_radius_mult) * 0.5 - borders_width
 
-	set_renderer_parameter("core_color", main_color)
 	set_renderer_parameter("core_radius", core_radius)
-	set_renderer_parameter("border_color", primary_border_color)
+	set_renderer_parameter("ray_length1", ray_length)
+	set_renderer_parameter("ray_length2", ray_length)
+
+func handle_state_update():
+	handle_emotions_update()
+	handle_rays_count_update()
+
+func handle_emotions_update():
+	var main_color: Color = EmColor.main(state.primary_emotion)
+	var ray1_color: Color = EmColor.ray(state.primary_emotion) 
+	var ray2_color = EmColor.ray(state.secondary_emotion) 
+	if state.secondary_emotion == Emotion.Type.NONE:
+		ray2_color = EmColor.additional_ray(state.primary_emotion)
 	
-	set_renderer_parameter("ray_count", state.rays_count)
+	var primary_border_color = EmColor.core_border(state.primary_emotion)
+	var secondary_border_color = EmColor.core_border(state.secondary_emotion)
+	if state.secondary_emotion == Emotion.Type.NONE:
+		secondary_border_color = primary_border_color
+		
+	set_renderer_parameter("core_color", main_color)
+	set_renderer_parameter("border_color", primary_border_color)
 	set_renderer_parameter("ray_color1", ray1_color)
 	set_renderer_parameter("ray_border_color1", primary_border_color)
-	set_renderer_parameter("ray_length1", ray_length)
 	set_renderer_parameter("ray_color2", ray2_color)
 	set_renderer_parameter("ray_border_color2", secondary_border_color)
-	set_renderer_parameter("ray_length2", ray_length)
+
+func handle_rays_count_update():
+	set_renderer_parameter("ray_count", state.rays_count)
+
+func handle_state_param_updated(param):
+	match param:
+		MN_CoreState.Param.RAYS_COUNT: handle_rays_count_update()
+		MN_CoreState.Param.EMOTIONS: handle_emotions_update()

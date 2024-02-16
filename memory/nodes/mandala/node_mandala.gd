@@ -1,15 +1,16 @@
 class_name MN_Mandala extends ShaderRenderable
 
-var size: Vector2:
+var size: Vector2 = Vector2.ZERO:
 	set(value):
 		size = value
 		update_renderer_size()
-		update_renderer_params()
 	
 var state: MN_MandalaState:
 	set(value):
+		if state: state.value_chagned.disconnect(handle_state_param_updated)
 		state = value
-		update_renderer_params()
+		if state: state.value_chagned.connect(handle_state_param_updated)
+		handle_state_update()
 		
 const lines_width := 10.0
 const gap := Vector2(2.0, 2.0)
@@ -24,10 +25,16 @@ func setup_renderer_constants():
 	set_renderer_parameter("zoom", 1.0)
 	set_renderer_parameter("width", lines_width)
 
-func update_renderer_params():
-	if not state: return
-	
-	var main_color: Color = EmColor.mandala(state.primary_emotion)
+func update_renderer_size():
+	super.update_renderer_size()
+	handle_curves_update()
+
+func handle_state_update():
+	handle_emotion_update()
+	handle_curves_update()
+
+func handle_curves_update():
+	if not state or size == Vector2.ZERO: return
 	
 	var curves: Array[Curve2D] = []
 	for curve in state.curves:
@@ -43,8 +50,16 @@ func update_renderer_params():
 	var from_points = lines.map(func(l): return l.from)
 	var to_points = lines.map(func(l): return l.to)
 
-	set_renderer_parameter("main_color", main_color)
 	set_renderer_parameter("sectors", sectors)
 	set_renderer_parameter("from_points", from_points)
 	set_renderer_parameter("to_points", to_points)
 	set_renderer_parameter("lines_count", lines.size())
+
+func handle_emotion_update():
+	var main_color: Color = EmColor.mandala(state.primary_emotion)
+	set_renderer_parameter("main_color", main_color)
+
+func handle_state_param_updated(param):
+	match param:
+		MN_MandalaState.Param.PRIMARY_EMOTION: handle_emotion_update()
+		MN_MandalaState.Param.CURVES: handle_curves_update()
