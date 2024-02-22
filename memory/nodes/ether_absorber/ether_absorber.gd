@@ -4,7 +4,7 @@ signal ether_absorbed
 
 const particle_radius := 3.0
 const min_core_radius := particle_radius
-const max_core_radius := 6.0
+const max_core_radius := MN_EmotionDrop.default_radius
 const border_width := 2.0
 const size_gap := Vector2(2.0, 2.0)
 
@@ -20,12 +20,10 @@ var state: MN_EtherAbsorberState:
 		if state: state.value_chagned.connect(handle_state_param_updated)
 		handle_state_update()
 
-var progress: float = 0:
-	set(value):
-		progress = clampf(value, 0, 1)
-		var core_radius = lerpf(min_core_radius, max_core_radius, progress) 
-		set_renderer_parameter("core_radius", core_radius)
-		
+var progress: float:
+	get: return state.progress
+	set(value): state.progress = value
+
 func get_shader() -> Shader:
 	return preload("res://memory/nodes/ether_absorber/ether_absorber.gdshader")
 	
@@ -52,7 +50,7 @@ func _process(delta):
 		progress += growth
 	else:
 		ether_absorbed.emit()
-		progress = progress + growth - floor(progress + growth)
+		progress = state.progress + growth - floor(progress + growth)
 
 func handle_state_update():
 	handle_emotion_update()
@@ -71,8 +69,13 @@ func handle_particles_update():
 	set_renderer_parameter("particle_absorb_duration", state.particle_duration)
 	set_renderer_parameter("particles_count", state.particles_count)
 
+func handle_progress_update():
+	var core_radius = lerpf(min_core_radius, max_core_radius, progress) 
+	set_renderer_parameter("core_radius", core_radius)
+
 func handle_state_param_updated(param):
 	match param:
 		MN_EtherAbsorberState.Param.PRIMARY_EMOTION: handle_emotion_update()
 		MN_EtherAbsorberState.Param.ORIENTATION, MN_EtherAbsorberState.Param.SECTOR: handle_geometry_update()
 		MN_EtherAbsorberState.Param.PARTICLES_COUNT, MN_EtherAbsorberState.Param.PARTICLE_DURATION: handle_particles_update()
+		MN_EtherAbsorberState.Param.PROGRESS: handle_progress_update()

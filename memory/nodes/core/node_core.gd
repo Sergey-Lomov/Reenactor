@@ -74,3 +74,9 @@ func handle_state_param_updated(param):
 	match param:
 		MN_CoreState.Param.RAYS_COUNT: handle_rays_count_update()
 		MN_CoreState.Param.EMOTIONS: handle_emotions_update()
+		
+func consume_emotion_drop(drop: MN_EmotionDrop):
+	if drop.state.emotion != Emotion.Type.ETHER:
+		printerr("Core try to consume emotion drop with emotion (should be ether)")
+	state.ether += drop.state.value
+	

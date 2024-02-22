@@ -7,6 +7,7 @@ enum Param {
 	PARTICLE_DURATION,
 	PARTICLES_COUNT,
 	PORTIONS_PER_DROP,
+	PROGRESS,
 }
 
 @export var orientation: float:
@@ -36,6 +37,11 @@ enum Param {
 	set(value):
 		portions_per_drop = value
 		value_chagned.emit(Param.PORTIONS_PER_DROP)
+
+@export var progress: float = 0:
+	set(value):
+		progress = clampf(value, 0, 1)
+		value_chagned.emit(Param.PROGRESS)
 
 var primary_emotion: Emotion.Type:
 	get: return (parent as MN_State).primary_emotion

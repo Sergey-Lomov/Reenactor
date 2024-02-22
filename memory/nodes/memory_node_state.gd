@@ -5,6 +5,7 @@ enum Param {
 	AREA,
 	MANDALA,
 	ABSORBERS,
+	DROPS_PATHS,
 	TRANSMUTATION,
 	ABSORBERS_ANGLES,
 }
@@ -33,12 +34,29 @@ enum Param {
 		mandala.value_chagned.connect(handle_mandala_update)
 		value_chagned.emit(Param.MANDALA)
 		
-@export var absorbers: Array[MN_EtherAbsorberState]:
+@export var absorbers: Array[MN_EtherAbsorberState] = []:
 	set(value):
 		for absorber in absorbers: absorber.parent = null
 		absorbers = value
 		for absorber in absorbers: absorber.parent = self
 		value_chagned.emit(Param.ABSORBERS)
+		
+@export var drops_paths: Array[MN_EmotionDropPathState] = []:
+	set(value):
+		for path in drops_paths: path.parent = null
+		drops_paths = value
+		for path in drops_paths: path.parent = self
+		value_chagned.emit(Param.DROPS_PATHS)
+
+func append_drop_path(path: MN_EmotionDropPathState):
+	path.parent = self
+	drops_paths.append(path)
+	value_chagned.emit(Param.DROPS_PATHS)
+	
+func erase_drop_path(path: MN_EmotionDropPathState):
+	path.parent = null
+	drops_paths.erase(path)
+	value_chagned.emit(Param.DROPS_PATHS)
 
 @export var transmutation: MN_TransmutationConfig:
 	set(value):

@@ -29,10 +29,10 @@ func _input(event):
 func update(is_initial: bool = false):
 	switch_to_on(is_initial) if is_on else switch_to_off(is_initial)
 	
+#Should be overrided by derived class
 func switch_to_on(_is_initial: bool = false):
-	#Should be overrided by derived class
 	pass
 	
+#Should be overrided by derived class
 func switch_to_off(_is_initial: bool = false):
-	#Should be overrided by derived class
 	pass
