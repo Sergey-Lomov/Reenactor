@@ -1,6 +1,6 @@
 class_name MN_EtherAbsorberState extends BaseState
 
-enum Param {
+enum Update {
 	PRIMARY_EMOTION,
 	ORIENTATION,
 	SECTOR,
@@ -12,36 +12,42 @@ enum Param {
 
 @export var orientation: float:
 	set(value):
+		var old = orientation
 		orientation = value
-		value_chagned.emit(Param.ORIENTATION)
+		state_updated.emit(Update.ORIENTATION, old, value)
 		
 @export var sector: float:
 	set(value):
+		var old = sector
 		sector = value
-		value_chagned.emit(Param.SECTOR)
+		state_updated.emit(Update.SECTOR, old, value)
 		
 #Time to absorb minimal portion of ether
 @export var particle_duration: float:
 	set(value):
+		var old = particle_duration
 		particle_duration = value
-		value_chagned.emit(Param.PARTICLE_DURATION)
+		state_updated.emit(Update.PARTICLE_DURATION, old, value)
 
 #Number of particles absrobes at same time
 @export var particles_count: int:
 	set(value):
+		var old = particles_count
 		particles_count = value
-		value_chagned.emit(Param.PARTICLES_COUNT)
+		state_updated.emit(Update.PARTICLES_COUNT, old, value)
 
 #Number of portions necessary to complete one ether drop
 @export var portions_per_drop: int:
 	set(value):
+		var old = portions_per_drop
 		portions_per_drop = value
-		value_chagned.emit(Param.PORTIONS_PER_DROP)
+		state_updated.emit(Update.PORTIONS_PER_DROP, old, value)
 
 @export var progress: float = 0:
 	set(value):
+		var old = progress
 		progress = clampf(value, 0, 1)
-		value_chagned.emit(Param.PROGRESS)
+		state_updated.emit(Update.PROGRESS, old, value)
 
 var primary_emotion: Emotion.Type:
 	get: return (parent as MN_State).primary_emotion
@@ -49,7 +55,7 @@ var primary_emotion: Emotion.Type:
 var drop_duration: float:
 	get: return float(portions_per_drop) / float(particles_count) * particle_duration
 
-func parent_parameters_mapping():
+func parent_updates_mapping():
 	return {
-		MN_State.Param.TRANSMUTATION: Param.PRIMARY_EMOTION,
+		MN_State.Update.TRANSMUTATION: Update.PRIMARY_EMOTION,
 	}

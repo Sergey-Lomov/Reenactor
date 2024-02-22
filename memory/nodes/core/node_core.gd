@@ -16,9 +16,9 @@ var size: Vector2:
 	
 var state: MN_CoreState:
 	set(value):
-		if state: state.value_chagned.disconnect(handle_state_param_updated)
+		if state: state.state_updated.disconnect(on_state_updated)
 		state = value
-		if state: state.value_chagned.connect(handle_state_param_updated)
+		if state: state.state_updated.connect(on_state_updated)
 		handle_state_update()
 
 const borders_width := 4.0
@@ -70,10 +70,10 @@ func handle_emotions_update():
 func handle_rays_count_update():
 	set_renderer_parameter("ray_count", state.rays_count)
 
-func handle_state_param_updated(param):
-	match param:
-		MN_CoreState.Param.RAYS_COUNT: handle_rays_count_update()
-		MN_CoreState.Param.EMOTIONS: handle_emotions_update()
+func on_state_updated(update, _old, _new):
+	match update:
+		MN_CoreState.Update.RAYS_COUNT: handle_rays_count_update()
+		MN_CoreState.Update.EMOTIONS: handle_emotions_update()
 		
 func consume_emotion_drop(drop: MN_EmotionDrop):
 	if drop.state.emotion != Emotion.Type.ETHER:

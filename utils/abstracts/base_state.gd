@@ -1,18 +1,18 @@
 class_name BaseState extends Resource
 
-signal value_chagned(parameter: Variant)
+signal state_updated(update: Variant, old: Variant, new: Variant)
 
 var parent: BaseState:
 	set(value):
-		if parent: parent.value_chagned.disconnect(handle_parent_value_changed)
+		if parent: parent.state_updated.disconnect(handle_parent_state_updated)
 		parent = value
-		if parent: parent.value_chagned.connect(handle_parent_value_changed)
+		if parent: parent.state_updated.connect(handle_parent_state_updated)
 
-func handle_parent_value_changed(parameter):
-	var mapping = parent_parameters_mapping()
-	if mapping.has(parameter):
-		value_chagned.emit(mapping[parameter])
+func handle_parent_state_updated(update: Variant, old: Variant, new: Variant):
+	var mapping = parent_updates_mapping()
+	if mapping.has(update):
+		state_updated.emit(mapping[update], old, new)
 	
 #May be overrided by derived class
-func parent_parameters_mapping() -> Dictionary:
+func parent_updates_mapping() -> Dictionary:
 	return {}

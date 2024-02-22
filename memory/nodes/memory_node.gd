@@ -14,9 +14,9 @@ const drops_z := 3
 
 var state: MN_State:
 	set(value):
-		if state: state.value_chagned.disconnect(handle_state_param_updated)
+		if state: state.state_updated.disconnect(on_state_updated)
 		state = value
-		if state: state.value_chagned.connect(handle_state_param_updated)
+		if state: state.state_updated.connect(on_state_updated)
 		handle_state_update()
 
 var size: Vector2:
@@ -52,15 +52,17 @@ func handle_emotion_update():
 	handle_drops_update()
 	handle_core_update()
 
-func handle_state_param_updated(param):
-	match param:
-		MN_State.Param.CORE: handle_core_update()
-		MN_State.Param.AREA: handle_area_update()
-		MN_State.Param.MANDALA: handle_mandala_update()
-		MN_State.Param.ABSORBERS: handle_absorbers_update()
-		MN_State.Param.DROPS_PATHS: handle_drops_update()
-		MN_State.Param.TRANSMUTATION: handle_emotion_update()
-		MN_State.Param.ABSORBERS_ANGLES: update_absorbers_positions()
+func on_state_updated(update, old, new):
+	match update:
+		MN_State.Update.CORE: handle_core_update()
+		MN_State.Update.AREA: handle_area_update()
+		MN_State.Update.MANDALA: handle_mandala_update()
+		MN_State.Update.ABSORBERS: handle_absorbers_update()
+		MN_State.Update.DROPS_PATHS: handle_drops_update()
+		MN_State.Update.TRANSMUTATION: handle_emotion_update()
+		MN_State.Update.ABSORBERS_ANGLES: update_absorbers_positions()
+		MN_State.Update.DROP_APPENDED: handle_drop_append(new)
+		MN_State.Update.DROP_ERASED: handle_drop_erase(old)
 
 func handle_area_update():
 	if area: area.queue_free()
@@ -137,12 +139,25 @@ func handle_drops_update():
 	drops_pathes = []
 	
 	for drop_path_state in state.drops_paths:
-		var path = MN_EmotionDropPath.new()
-		path.state = drop_path_state
-		path.completed.connect(on_drop_path_completed.bind(path))
-		path.z_index = drops_z
-		drops_pathes.append(path)
-		add_child(path)
+		add_drop_path(drop_path_state)
+
+func handle_drop_append(path_state):
+	add_drop_path(path_state)
+
+func handle_drop_erase(path_state):
+	var filter = func(a): return a.state == path_state
+	var path = ArrayUtils.front_where(drops_pathes, filter)
+	if not path: return
+	drops_pathes.erase(path)
+	path.queue_free()
+	
+func add_drop_path(path_state):
+	var path = MN_EmotionDropPath.new()
+	path.state = path_state
+	path.completed.connect(on_drop_path_completed.bind(path))
+	path.z_index = drops_z
+	drops_pathes.append(path)
+	add_child(path)
 
 func update_components_positions():
 	core.position = center
@@ -176,10 +191,6 @@ func on_absorbation_completed(absorber: MN_EtherAbsorber):
 	path_curve = AdMath.translated_curve_g(path_curve, center)
 	drop_path_state.curve = path_curve
 	state.append_drop_path(drop_path_state)
-	
-	#var drop_path = MN_EmotionDropPath.new()
-	#drop_path.state = drop_path_state
-	#add_child(drop_path)
 
 func on_drop_path_completed(path: MN_EmotionDropPath):
 	core.consume_emotion_drop(path.drop)

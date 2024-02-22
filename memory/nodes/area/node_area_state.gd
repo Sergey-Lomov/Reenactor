@@ -1,14 +1,14 @@
 class_name MN_AreaState extends BaseState
 
-enum Param {
+enum Update {
 	PRIMARY_EMOTION,
 	ABSORBERS_ANGLES,
 }
 
-func parent_parameters_mapping():
+func parent_updates_mapping():
 	return {
-		MN_State.Param.TRANSMUTATION: Param.PRIMARY_EMOTION,
-		MN_State.Param.ABSORBERS_ANGLES: Param.ABSORBERS_ANGLES,
+		MN_State.Update.TRANSMUTATION: Update.PRIMARY_EMOTION,
+		MN_State.Update.ABSORBERS_ANGLES: Update.ABSORBERS_ANGLES,
 	}
 
 var primary_emotion: Emotion.Type:

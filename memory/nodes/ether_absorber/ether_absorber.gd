@@ -15,9 +15,9 @@ var radius: float:
 		
 var state: MN_EtherAbsorberState:
 	set(value):
-		if state: state.value_chagned.disconnect(handle_state_param_updated)
+		if state: state.state_updated.disconnect(on_state_updated)
 		state = value
-		if state: state.value_chagned.connect(handle_state_param_updated)
+		if state: state.state_updated.connect(on_state_updated)
 		handle_state_update()
 
 var progress: float:
@@ -73,9 +73,9 @@ func handle_progress_update():
 	var core_radius = lerpf(min_core_radius, max_core_radius, progress) 
 	set_renderer_parameter("core_radius", core_radius)
 
-func handle_state_param_updated(param):
-	match param:
-		MN_EtherAbsorberState.Param.PRIMARY_EMOTION: handle_emotion_update()
-		MN_EtherAbsorberState.Param.ORIENTATION, MN_EtherAbsorberState.Param.SECTOR: handle_geometry_update()
-		MN_EtherAbsorberState.Param.PARTICLES_COUNT, MN_EtherAbsorberState.Param.PARTICLE_DURATION: handle_particles_update()
-		MN_EtherAbsorberState.Param.PROGRESS: handle_progress_update()
+func on_state_updated(update, _old, _new):
+	match update:
+		MN_EtherAbsorberState.Update.PRIMARY_EMOTION: handle_emotion_update()
+		MN_EtherAbsorberState.Update.ORIENTATION, MN_EtherAbsorberState.Update.SECTOR: handle_geometry_update()
+		MN_EtherAbsorberState.Update.PARTICLES_COUNT, MN_EtherAbsorberState.Update.PARTICLE_DURATION: handle_particles_update()
+		MN_EtherAbsorberState.Update.PROGRESS: handle_progress_update()

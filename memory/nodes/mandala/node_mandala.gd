@@ -7,9 +7,9 @@ var size: Vector2 = Vector2.ZERO:
 	
 var state: MN_MandalaState:
 	set(value):
-		if state: state.value_chagned.disconnect(handle_state_param_updated)
+		if state: state.state_updated.disconnect(on_state_updated)
 		state = value
-		if state: state.value_chagned.connect(handle_state_param_updated)
+		if state: state.state_updated.connect(on_state_updated)
 		handle_state_update()
 		
 const lines_width := 10.0
@@ -59,7 +59,7 @@ func handle_emotion_update():
 	var main_color: Color = EmColor.mandala(state.primary_emotion)
 	set_renderer_parameter("main_color", main_color)
 
-func handle_state_param_updated(param):
+func on_state_updated(param):
 	match param:
-		MN_MandalaState.Param.PRIMARY_EMOTION: handle_emotion_update()
-		MN_MandalaState.Param.CURVES: handle_curves_update()
+		MN_MandalaState.Update.PRIMARY_EMOTION: handle_emotion_update()
+		MN_MandalaState.Update.CURVES: handle_curves_update()

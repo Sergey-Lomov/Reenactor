@@ -7,9 +7,9 @@ var radius: float:
 		
 var state: MN_AreaState:
 	set(value):
-		if state: state.value_chagned.disconnect(handle_state_param_updated)
+		if state: state.state_updated.disconnect(on_state_updated)
 		state = value
-		if state: state.value_chagned.connect(handle_state_param_updated)
+		if state: state.state_updated.connect(on_state_updated)
 		handle_state_update()
 
 const border_width := 10.0
@@ -50,7 +50,7 @@ func handle_radius_update():
 	set_renderer_parameter("connector_displacement", connector_radius * connector_displacement)
 	set_renderer_parameter("connector_radius",connector_radius)
 	
-func handle_state_param_updated(param):
-	match param:
-		MN_AreaState.Param.PRIMARY_EMOTION: handle_emotion_update()
-		MN_AreaState.Param.ABSORBERS_ANGLES: handle_absorbers_angles_update()
+func on_state_updated(update, _old, _new):
+	match update:
+		MN_AreaState.Update.PRIMARY_EMOTION: handle_emotion_update()
+		MN_AreaState.Update.ABSORBERS_ANGLES: handle_absorbers_angles_update()

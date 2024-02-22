@@ -1,6 +1,6 @@
 class_name MN_CoreState extends BaseState
 
-enum Param {
+enum Update {
 	ENERGY,
 	ETHER,
 	RAYS_COUNT,
@@ -13,41 +13,48 @@ enum Param {
 
 @export var energy: float:
 	set(value):
+		var old = energy
 		energy = value
-		value_chagned.emit(Param.ENERGY)
+		state_updated.emit(Update.ENERGY, old, value)
 
 @export var ether: float:
 	set(value):
+		var old = ether
 		ether = value
-		value_chagned.emit(Param.ETHER)
+		state_updated.emit(Update.ETHER, old, value)
 
 @export var rays_count: int:
 	set(value):
+		var old = rays_count
 		rays_count = value
-		value_chagned.emit(Param.RAYS_COUNT)
+		state_updated.emit(Update.RAYS_COUNT, old, value)
 		
 @export var transmutation_speed: float:
 	set(value):
+		var old = transmutation_speed
 		transmutation_speed = value
-		value_chagned.emit(Param.TRASNMUTATION_SPEED)
+		state_updated.emit(Update.TRASNMUTATION_SPEED, old, value)
 		
 @export var energy_capacity: float:
 	set(value):
+		var old = energy_capacity
 		energy_capacity = value
-		value_chagned.emit(Param.ENERGY_CAPACITY)
+		state_updated.emit(Update.ENERGY_CAPACITY, old, value)
 		
 @export var ether_capacity: float:
 	set(value):
+		var old = ether_capacity
 		ether_capacity = value
-		value_chagned.emit(Param.ETHER_CAPACITY)
+		state_updated.emit(Update.ETHER_CAPACITY, old, value)
 		
 @export var awakening_energy: float:
 	set(value):
+		var old = awakening_energy
 		awakening_energy = value
-		value_chagned.emit(Param.AWAKENING_ENERGY)
+		state_updated.emit(Update.AWAKENING_ENERGY, old, value)
 
-func parent_parameters_mapping():
-	return {MN_State.Param.TRANSMUTATION: Param.EMOTIONS}
+func parent_updates_mapping():
+	return {MN_State.Update.TRANSMUTATION: Update.EMOTIONS}
 
 var primary_emotion: Emotion.Type:
 	get: return (parent as MN_State).primary_emotion

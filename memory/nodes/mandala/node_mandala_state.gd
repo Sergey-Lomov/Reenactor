@@ -1,6 +1,6 @@
 class_name MN_MandalaState extends BaseState
 
-enum Param {
+enum Update {
 	PRIMARY_EMOTION,
 	CURVES,
 }
@@ -8,14 +8,14 @@ enum Param {
 @export var curves: Array[Curve2D]:
 	set(value):
 		curves = value
-		value_chagned.emit(Param.CURVES)
+		state_updated.emit(Update.CURVES)
 
 var primary_emotion: Emotion.Type:
 	get: return (parent as MN_State).primary_emotion
 
-func parent_parameters_mapping():
+func parent_updates_mapping():
 	return {
-		MN_State.Param.TRANSMUTATION: Param.PRIMARY_EMOTION,
+		MN_State.Update.TRANSMUTATION: Update.PRIMARY_EMOTION,
 	}
 
 func get_vertices_angles() -> Array[float]:

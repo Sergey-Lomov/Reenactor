@@ -22,6 +22,7 @@ AdMath="*res://utils/autoload/additional_math.gd"
 NodeUtils="*res://utils/autoload/node_utils.gd"
 EmColor="*res://utils/autoload/emotions_color.gd"
 HarmonyWheel="*res://utils/autoload/harmony_wheel.gd"
+ArrayUtils="*res://utils/autoload/array_utils.gd"
 
 [display]
 

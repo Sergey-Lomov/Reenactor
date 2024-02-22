@@ -1,6 +1,6 @@
 class_name MN_EmotionDropState extends BaseState
 
-enum Param {
+enum Update {
 	NODE_PRIMARY_EMOTION,
 	DROP_EMOTION,
 }
@@ -9,8 +9,9 @@ const value := 10.0
 
 @export var emotion: Emotion.Type:
 	set(value):
+		var old = emotion
 		emotion = value
-		value_chagned.emit(Param.DROP_EMOTION)
+		state_updated.emit(Update.DROP_EMOTION, old, value)
 
 var node_primary_emotion: Emotion.Type:
 	get: return (parent as MN_EmotionDropPathState).node_primary_emotion
@@ -18,7 +19,7 @@ var node_primary_emotion: Emotion.Type:
 func _init(_emotion: Emotion.Type = Emotion.Type.NONE):
 	emotion = _emotion
 
-func parent_parameters_mapping():
+func parent_updates_mapping():
 	return {
-		MN_EmotionDropPathState.Param.NODE_PRIMARY_EMOTION: Param.NODE_PRIMARY_EMOTION,
+		MN_EmotionDropPathState.Update.NODE_PRIMARY_EMOTION: Update.NODE_PRIMARY_EMOTION,
 	}

@@ -7,9 +7,9 @@ var radius: float:
 		
 var state: MN_EmotionDropState:
 	set(value):
-		if state: state.value_chagned.disconnect(handle_state_param_updated)
+		if state: state.state_updated.disconnect(on_state_updated)
 		state = value
-		if state: state.value_chagned.connect(handle_state_param_updated)
+		if state: state.state_updated.connect(on_state_updated)
 		handle_state_update()
 
 const gap: float = 2 #Additional gap for cover edge smoothing
@@ -40,6 +40,6 @@ func handle_emotion_update():
 	set_renderer_parameter("main_color", main_color)
 	set_renderer_parameter("border_color", border_color)
 	
-func handle_state_param_updated(param):
-	match param:
-		MN_EmotionDropState.Param.NODE_PRIMARY_EMOTION, MN_EmotionDropState.Param.DROP_EMOTION: handle_emotion_update()
+func on_state_updated(update, _old, _new):
+	match update:
+		MN_EmotionDropState.Update.NODE_PRIMARY_EMOTION, MN_EmotionDropState.Update.DROP_EMOTION: handle_emotion_update()
